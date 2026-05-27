@@ -1,63 +1,52 @@
 <view class="page publish">
-  <view class="section-title">笔记类型</view>
-  <view class="type-row">
-    <view
-      wx:for="{{postTypes}}"
-      wx:key="value"
-      class="type-pill {{postType === item.value ? 'active' : ''}}"
-      data-type="{{item.value}}"
-      bindtap="selectPostType"
-    >{{item.label}}</view>
+  <view class="composer-head">
+    <view>
+      <view class="composer-title">发布笔记</view>
+      <view class="composer-subtitle">分享攻略、提问、失物招领或校园瞬间</view>
+    </view>
+    <button class="publish-btn" loading="{{submitting}}" bindtap="submit">发布</button>
   </view>
 
-  <view class="section-title">选择版块</view>
-  <view class="category-row">
-    <block wx:for="{{categories}}" wx:key="code">
-      <view class="category-pill {{categoryCode === item.code ? 'active' : ''}}" data-code="{{item.code}}" bindtap="selectCategory">{{item.name}}</view>
-    </block>
-  </view>
-
-  <view class="form panel">
-    <input value="{{title}}" bindinput="onTitle" maxlength="60" placeholder="标题" />
-    <textarea value="{{content}}" bindinput="onContent" maxlength="2000" placeholder="正文" />
-
-    <view wx:if="{{postType === 'lost'}}" class="extra-panel">
-      <view class="lost-kind">
-        <view class="{{extra.lost_kind === '丢失' ? 'active' : ''}}" data-kind="丢失" bindtap="changeLostKind">丢失</view>
-        <view class="{{extra.lost_kind === '捡到' ? 'active' : ''}}" data-kind="捡到" bindtap="changeLostKind">捡到</view>
+  <view wx:if="{{showMediaChooser && !localImages.length && !localVideo && mediaType !== 'text'}}" class="starter panel">
+    <view class="starter-title">选择创作方式</view>
+    <view class="starter-grid">
+      <view class="starter-item" bindtap="chooseFromAlbum">
+        <view class="starter-icon image-icon"></view>
+        <view>从相册选择</view>
       </view>
-      <input value="{{extra.location}}" data-key="location" bindinput="onExtraInput" placeholder="地点，例如 宿舍楼下/教学楼" />
-      <input value="{{extra.event_time}}" data-key="event_time" bindinput="onExtraInput" placeholder="时间，例如 今天中午" />
-      <input value="{{extra.contact}}" data-key="contact" bindinput="onExtraInput" placeholder="联系方式，可选" />
+      <view class="starter-item" bindtap="takePhoto">
+        <view class="starter-icon camera-icon"></view>
+        <view>相机</view>
+      </view>
+      <view class="starter-item" bindtap="writeText">
+        <view class="starter-icon text-icon">Aa</view>
+        <view>写文字</view>
+      </view>
     </view>
+  </view>
 
-    <view wx:if="{{postType === 'club'}}" class="extra-panel">
-      <input value="{{extra.club_name}}" data-key="club_name" bindinput="onExtraInput" placeholder="社团名称" />
-      <input value="{{extra.activity_time}}" data-key="activity_time" bindinput="onExtraInput" placeholder="活动/招新时间" />
-      <input value="{{extra.activity_place}}" data-key="activity_place" bindinput="onExtraInput" placeholder="活动/招新地点" />
-      <input value="{{extra.contact}}" data-key="contact" bindinput="onExtraInput" placeholder="联系方式，可选" />
-    </view>
-
-    <view wx:if="{{postType === 'guide'}}" class="extra-panel">
-      <input value="{{extra.location}}" data-key="location" bindinput="onExtraInput" placeholder="相关地点，可选" />
-    </view>
-
-    <view class="media-tabs">
-      <view class="media-tab {{mediaType === 'image' ? 'active' : ''}}" data-type="image" bindtap="changeMediaType">图文</view>
-      <view class="media-tab {{mediaType === 'video' ? 'active' : ''}}" data-type="video" bindtap="changeMediaType">视频</view>
+  <view class="media-panel panel">
+    <view class="media-panel-head">
+      <text>内容素材</text>
+      <text wx:if="{{mediaType === 'image'}}">{{localImages.length}}/9</text>
+      <text wx:elif="{{mediaType === 'video'}}">最长30秒</text>
+      <text wx:else>文字笔记</text>
     </view>
 
     <view wx:if="{{mediaType === 'image'}}" class="image-picker">
       <block wx:for="{{localImages}}" wx:key="*this">
         <view class="image-wrap">
           <image class="picked-image" src="{{item}}" mode="aspectFill" />
-          <view class="remove" data-index="{{index}}" bindtap="removeImage">×</view>
+          <view class="image-actions">
+            <view data-index="{{index}}" bindtap="editImage">编辑</view>
+            <view data-index="{{index}}" bindtap="removeImage">删除</view>
+          </view>
         </view>
       </block>
       <view wx:if="{{localImages.length < 9}}" class="add-image" bindtap="chooseImages">+</view>
     </view>
 
-    <view wx:else class="video-picker">
+    <view wx:elif="{{mediaType === 'video'}}" class="video-picker">
       <view wx:if="{{localVideo}}" class="video-wrap">
         <video class="picked-video" src="{{localVideo}}" poster="{{coverImage}}" controls></video>
         <view class="remove" bindtap="removeVideo">×</view>
@@ -82,7 +71,53 @@
         <view wx:else class="add-cover" bindtap="chooseCover">+</view>
       </view>
     </view>
+
+    <view wx:else class="text-preview">
+      <view>{{content || '写一段校园见闻、攻略、问题或提醒。'}}</view>
+    </view>
   </view>
 
-  <button class="primary-btn submit" loading="{{submitting}}" bindtap="submit">发布</button>
+  <view class="form panel">
+    <input value="{{title}}" bindinput="onTitle" maxlength="60" placeholder="加个标题，会更容易被看到" />
+    <textarea value="{{content}}" bindinput="onContent" maxlength="2000" placeholder="分享正文..." />
+
+    <view class="section-title compact">笔记类型</view>
+    <view class="type-row">
+      <view
+        wx:for="{{postTypes}}"
+        wx:key="value"
+        class="type-pill {{postType === item.value ? 'active' : ''}}"
+        data-type="{{item.value}}"
+        bindtap="selectPostType"
+      >{{item.label}}</view>
+    </view>
+
+    <view class="section-title compact">版块</view>
+    <view class="category-row">
+      <block wx:for="{{categories}}" wx:key="code">
+        <view class="category-pill {{categoryCode === item.code ? 'active' : ''}}" data-code="{{item.code}}" bindtap="selectCategory">{{item.name}}</view>
+      </block>
+    </view>
+
+    <view wx:if="{{postType === 'lost'}}" class="extra-panel">
+      <view class="lost-kind">
+        <view class="{{extra.lost_kind === '丢失' ? 'active' : ''}}" data-kind="丢失" bindtap="changeLostKind">丢失</view>
+        <view class="{{extra.lost_kind === '捡到' ? 'active' : ''}}" data-kind="捡到" bindtap="changeLostKind">捡到</view>
+      </view>
+      <input value="{{extra.location}}" data-key="location" bindinput="onExtraInput" placeholder="地点，例如 宿舍楼下/教学楼" />
+      <input value="{{extra.event_time}}" data-key="event_time" bindinput="onExtraInput" placeholder="时间，例如 今天中午" />
+      <input value="{{extra.contact}}" data-key="contact" bindinput="onExtraInput" placeholder="联系方式，可选" />
+    </view>
+
+    <view wx:if="{{postType === 'club'}}" class="extra-panel">
+      <input value="{{extra.club_name}}" data-key="club_name" bindinput="onExtraInput" placeholder="社团名称" />
+      <input value="{{extra.activity_time}}" data-key="activity_time" bindinput="onExtraInput" placeholder="活动/招新时间" />
+      <input value="{{extra.activity_place}}" data-key="activity_place" bindinput="onExtraInput" placeholder="活动/招新地点" />
+      <input value="{{extra.contact}}" data-key="contact" bindinput="onExtraInput" placeholder="联系方式，可选" />
+    </view>
+
+    <view wx:if="{{postType === 'guide'}}" class="extra-panel">
+      <input value="{{extra.location}}" data-key="location" bindinput="onExtraInput" placeholder="相关地点，可选" />
+    </view>
+  </view>
 </view>

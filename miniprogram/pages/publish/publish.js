@@ -26,6 +26,8 @@ Page({
     videoDurationLabel: '',
     videoProcessLabel: '',
     coverImage: '',
+    createMode: 'album',
+    showMediaChooser: true,
     extra: {
       lost_kind: '丢失',
       location: '',
@@ -38,8 +40,19 @@ Page({
     submitting: false
   },
 
-  onLoad() {
+  onLoad(options = {}) {
     this.loadCategories()
+    const mode = options.mode || 'album'
+    this.setData({
+      createMode: mode,
+      mediaType: mode === 'text' ? 'text' : 'image',
+      showMediaChooser: mode !== 'text'
+    })
+    if (mode === 'album') {
+      setTimeout(() => this.chooseFromAlbum(), 250)
+    } else if (mode === 'camera') {
+      setTimeout(() => this.takePhoto(), 250)
+    }
   },
 
   async loadCategories() {
@@ -100,17 +113,108 @@ Page({
     })
   },
 
-  chooseImages() {
+  chooseFromAlbum() {
+    this.chooseMixedMedia(['album'])
+  },
+
+  takePhoto() {
+    this.chooseMixedMedia(['camera'])
+  },
+
+  writeText() {
+    this.setData({
+      mediaType: 'text',
+      localImages: [],
+      localVideo: '',
+      videoSizeLabel: '',
+      videoDurationLabel: '',
+      videoProcessLabel: '',
+      coverImage: '',
+      showMediaChooser: false
+    })
+  },
+
+  chooseMedia(sourceType) {
     const remain = 9 - this.data.localImages.length
     if (remain <= 0) return
     wx.chooseImage({
       count: remain,
       sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
+      sourceType,
       success: res => {
-        this.setData({ localImages: this.data.localImages.concat(res.tempFilePaths || []) })
+        this.setData({
+          mediaType: 'image',
+          showMediaChooser: false,
+          localImages: this.data.localImages.concat(res.tempFilePaths || [])
+        })
       }
     })
+  },
+
+  chooseMixedMedia(sourceType) {
+    if (!wx.chooseMedia) {
+      this.chooseMedia(sourceType)
+      return
+    }
+    wx.chooseMedia({
+      count: 9,
+      mediaType: ['image', 'video'],
+      sourceType,
+      sizeType: ['compressed'],
+      maxDuration: MAX_VIDEO_DURATION,
+      camera: 'back',
+      success: async res => {
+        const files = res.tempFiles || []
+        const first = files[0]
+        if (!first) return
+        const fileType = first.fileType || res.type || inferMediaType(first.tempFilePath)
+        if (fileType === 'video') {
+          const duration = Number(first.duration || 0)
+          if (duration > MAX_VIDEO_DURATION + 1) {
+            wx.showToast({ title: `视频不能超过 ${MAX_VIDEO_DURATION} 秒`, icon: 'none' })
+            return
+          }
+          try {
+            const video = await prepareVideoForUpload(first.tempFilePath || '', Number(first.size || 0), duration)
+            this.setData({
+              mediaType: 'video',
+              showMediaChooser: false,
+              localImages: [],
+              localVideo: video.filePath,
+              coverImage: first.thumbTempFilePath || '',
+              videoSizeLabel: video.size ? formatFileSize(video.size) : '',
+              videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
+              videoProcessLabel: video.compressed ? '已自动压缩' : ''
+            })
+          } catch (err) {
+            wx.showModal({
+              title: '视频太大',
+              content: err.message || '这个视频压缩后还是偏大，建议裁剪到30秒以内或换一个更短的视频。',
+              showCancel: false
+            })
+          }
+          return
+        }
+        const images = files
+          .filter(file => (file.fileType || inferMediaType(file.tempFilePath)) !== 'video')
+          .map(file => file.tempFilePath)
+          .filter(Boolean)
+        this.setData({
+          mediaType: 'image',
+          showMediaChooser: false,
+          localVideo: '',
+          coverImage: '',
+          videoSizeLabel: '',
+          videoDurationLabel: '',
+          videoProcessLabel: '',
+          localImages: this.data.localImages.concat(images).slice(0, 9)
+        })
+      }
+    })
+  },
+
+  chooseImages() {
+    this.chooseMedia(['album', 'camera'])
   },
 
   removeImage(e) {
@@ -120,9 +224,28 @@ Page({
     this.setData({ localImages: next })
   },
 
-  chooseVideo() {
+  editImage(e) {
+    const index = Number(e.currentTarget.dataset.index)
+    const filePath = this.data.localImages[index]
+    if (!filePath) return
+    if (!wx.editImage) {
+      wx.showToast({ title: '当前微信版本不支持图片编辑', icon: 'none' })
+      return
+    }
+    wx.editImage({
+      src: filePath,
+      success: res => {
+        const next = this.data.localImages.slice()
+        next[index] = res.tempFilePath
+        this.setData({ localImages: next })
+      }
+    })
+  },
+
+  chooseVideo(sourceType = ['album', 'camera']) {
+    const sources = Array.isArray(sourceType) ? sourceType : ['album', 'camera']
     wx.chooseVideo({
-      sourceType: ['album', 'camera'],
+      sourceType: sources,
       maxDuration: MAX_VIDEO_DURATION,
       compressed: true,
       success: async res => {
@@ -135,6 +258,8 @@ Page({
         try {
           const video = await prepareVideoForUpload(res.tempFilePath || '', size, duration)
           this.setData({
+            mediaType: 'video',
+            showMediaChooser: false,
             localVideo: video.filePath,
             videoSizeLabel: video.size ? formatFileSize(video.size) : '',
             videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
@@ -201,7 +326,7 @@ Page({
         payload.media_type = 'video'
         payload.video_url = uploadedVideo.url
         payload.cover_url = uploadedCover.url
-      } else {
+      } else if (this.data.mediaType === 'image') {
         const images = []
         for (const filePath of this.data.localImages) {
           const uploaded = await uploadImage(filePath)
@@ -212,6 +337,8 @@ Page({
           payload.images = images
           payload.cover_url = images[0]
         }
+      } else {
+        payload.media_type = 'text'
       }
       await request({
         url: '/campus/forum/posts',
@@ -319,6 +446,14 @@ function formatFileSize(size) {
     return `${(size / 1024 / 1024).toFixed(1)}MB`
   }
   return `${Math.ceil(size / 1024)}KB`
+}
+
+function inferMediaType(filePath) {
+  const lower = String(filePath || '').toLowerCase()
+  if (lower.endsWith('.mp4') || lower.endsWith('.mov') || lower.endsWith('.m4v')) {
+    return 'video'
+  }
+  return 'image'
 }
 
 function pick(source, keys) {

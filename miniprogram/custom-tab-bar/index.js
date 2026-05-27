@@ -37,7 +37,17 @@ Component({
         wx.switchTab({ url: '/pages/mine/mine' })
         return
       }
-      wx.navigateTo({ url: '/pages/publish/publish' })
+      wx.showActionSheet({
+        itemList: ['从相册选择', '拍摄', '写文字'],
+        success: res => {
+          const urls = [
+            '/pages/publish/publish?mode=album',
+            '/pages/publish/publish?mode=camera',
+            '/pages/publish/publish?mode=text'
+          ]
+          wx.navigateTo({ url: urls[res.tapIndex] || urls[0] })
+        }
+      })
     }
   }
 })
