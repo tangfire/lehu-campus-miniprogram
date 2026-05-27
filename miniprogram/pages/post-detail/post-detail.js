@@ -174,18 +174,18 @@ Page({
     this.reportContent(`/campus/forum/comments/${e.currentTarget.dataset.id}/report`)
   },
 
-  deleteComment(e) {
+  withdrawComment(e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({
-      title: '删除评论',
-      content: '确认删除这条评论吗？',
-      confirmText: '删除',
+      title: '撤回评论',
+      content: '撤回后，这条评论将不再展示给其他同学。',
+      confirmText: '撤回',
       confirmColor: '#dc2626',
       success: async res => {
         if (!res.confirm) return
         try {
           await request({ url: `/campus/forum/comments/${id}`, method: 'DELETE' })
-          wx.showToast({ title: '已删除' })
+          wx.showToast({ title: '已撤回' })
           this.loadPost()
           this.loadComments()
         } catch (err) {

@@ -3,7 +3,10 @@
 
   <block wx:for="{{comments}}" wx:key="id">
     <view class="comment-card" data-id="{{item.post_id}}" bindtap="openPost">
-      <view class="comment-content">{{item.content}}</view>
+      <view class="comment-top">
+        <view class="comment-content">{{item.content}}</view>
+        <button class="withdraw-btn" data-id="{{item.id}}" catchtap="withdrawComment">撤回</button>
+      </view>
       <view class="comment-time">{{item.created_at}}</view>
       <view class="post-box">
         <image wx:if="{{item.post_cover}}" class="post-cover" src="{{item.post_cover}}" mode="aspectFill" />

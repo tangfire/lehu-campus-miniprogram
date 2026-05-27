@@ -11,10 +11,36 @@
   box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.035);
 }
 
+.comment-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 18rpx;
+}
+
 .comment-content {
+  flex: 1;
+  min-width: 0;
   color: #18181b;
   font-size: 29rpx;
   line-height: 1.65;
+}
+
+.withdraw-btn {
+  flex: none;
+  width: 84rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  margin: 2rpx 0 0;
+  padding: 0;
+  border-radius: 999rpx;
+  background: #fff1f2;
+  color: #e11d48;
+  font-size: 23rpx;
+  font-weight: 700;
+}
+
+.withdraw-btn::after {
+  border: 0;
 }
 
 .comment-time {

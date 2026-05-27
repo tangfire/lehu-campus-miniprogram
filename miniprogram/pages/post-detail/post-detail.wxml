@@ -66,7 +66,7 @@
           <view class="author-name">{{item.display_author}}</view>
           <view class="post-meta">{{item.display_time}}</view>
         </view>
-        <button wx:if="{{item.author && item.author.user_id === currentUserId}}" class="mini-action danger" data-id="{{item.id}}" bindtap="deleteComment">删除</button>
+        <button wx:if="{{item.author && item.author.user_id === currentUserId}}" class="mini-action danger" data-id="{{item.id}}" bindtap="withdrawComment">撤回</button>
         <button wx:else class="mini-action" data-id="{{item.id}}" bindtap="reportComment">举报</button>
       </view>
       <view class="comment-content">{{item.content}}</view>

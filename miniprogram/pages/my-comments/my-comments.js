@@ -49,6 +49,26 @@ Page({
     const id = e.currentTarget.dataset.id
     if (!id) return
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${id}` })
+  },
+
+  withdrawComment(e) {
+    const id = e.currentTarget.dataset.id
+    wx.showModal({
+      title: '撤回评论',
+      content: '撤回后，这条评论将从帖子和你的评论记录里移除。',
+      confirmText: '撤回',
+      confirmColor: '#dc2626',
+      success: async res => {
+        if (!res.confirm) return
+        try {
+          await request({ url: `/campus/forum/comments/${id}`, method: 'DELETE' })
+          wx.showToast({ title: '已撤回' })
+          this.loadComments(true)
+        } catch (err) {
+          showError(err)
+        }
+      }
+    })
   }
 })
 
