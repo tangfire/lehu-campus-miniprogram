@@ -22,6 +22,7 @@
     <view class="content">{{post.content}}</view>
     <view class="action-row">
       <button class="{{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">{{post.is_liked ? '已赞' : '点赞'}} {{post.like_count}}</button>
+      <button class="{{post.is_collected ? 'collected' : ''}}" bindtap="toggleCollection">{{post.is_collected ? '已收藏' : '收藏'}} {{post.collected_count}}</button>
       <text>{{post.comment_count}} 评论</text>
     </view>
   </view>

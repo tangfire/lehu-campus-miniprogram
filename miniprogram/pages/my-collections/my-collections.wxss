@@ -1,0 +1,89 @@
+.my-collections {
+  padding-bottom: 48rpx;
+}
+
+.post {
+  display: flex;
+  gap: 18rpx;
+  padding: 24rpx;
+  margin-bottom: 18rpx;
+}
+
+.thumb-wrap,
+.text-thumb {
+  position: relative;
+  width: 132rpx;
+  height: 132rpx;
+  flex: none;
+  border-radius: 8rpx;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+}
+
+.text-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f766e;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.video-badge {
+  position: absolute;
+  left: 8rpx;
+  bottom: 8rpx;
+  width: 38rpx;
+  height: 38rpx;
+  line-height: 38rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.72);
+  color: #ffffff;
+  font-size: 18rpx;
+}
+
+.post-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-title {
+  font-size: 31rpx;
+  font-weight: 800;
+}
+
+.post-meta,
+.post-counts {
+  margin-top: 8rpx;
+  color: #64748b;
+  font-size: 24rpx;
+}
+
+.post-content {
+  margin-top: 12rpx;
+  color: #334155;
+  font-size: 27rpx;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.uncollect-btn {
+  align-self: flex-start;
+  margin: 0;
+  width: 100rpx;
+  height: 58rpx;
+  line-height: 58rpx;
+  border-radius: 8rpx;
+  background: #fffbeb;
+  color: #b45309;
+  font-size: 24rpx;
+}

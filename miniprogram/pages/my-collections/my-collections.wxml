@@ -1,0 +1,20 @@
+<view class="page my-collections">
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有收藏" desc="看到有用的校园攻略、资料或活动，可以先收藏起来。" />
+
+  <block wx:for="{{posts}}" wx:key="id">
+    <view class="post panel">
+      <view wx:if="{{item.display_cover}}" class="thumb-wrap" data-id="{{item.id}}" bindtap="openPost">
+        <image class="thumb" src="{{item.display_cover}}" mode="aspectFill" />
+        <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
+      </view>
+      <view wx:else class="text-thumb" data-id="{{item.id}}" bindtap="openPost">文</view>
+      <view class="post-main" data-id="{{item.id}}" bindtap="openPost">
+        <view class="post-title">{{item.title}}</view>
+        <view class="post-meta">{{item.category_name}} · {{item.created_at}}</view>
+        <view class="post-content">{{item.content}}</view>
+        <view class="post-counts">{{item.like_count}} 赞 · {{item.collected_count}} 收藏</view>
+      </view>
+      <button class="uncollect-btn" data-id="{{item.id}}" catchtap="uncollectPost">取消</button>
+    </view>
+  </block>
+</view>

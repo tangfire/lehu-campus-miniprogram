@@ -8,6 +8,7 @@
     "pages/publish/publish",
     "pages/profile-edit/profile-edit",
     "pages/my-posts/my-posts",
+    "pages/my-collections/my-collections",
     "pages/moderation/moderation"
   ],
   "window": {

@@ -20,6 +20,10 @@
       <text>我的帖子</text>
       <text>›</text>
     </view>
+    <view class="menu-row" bindtap="goMyCollections">
+      <text>我的收藏</text>
+      <text>›</text>
+    </view>
     <view class="menu-row" bindtap="goModeration">
       <text>内容审核</text>
       <text>›</text>

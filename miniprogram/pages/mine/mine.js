@@ -72,6 +72,14 @@ Page({
     wx.navigateTo({ url: '/pages/my-posts/my-posts' })
   },
 
+  goMyCollections() {
+    if (!this.data.token) {
+      this.login()
+      return
+    }
+    wx.navigateTo({ url: '/pages/my-collections/my-collections' })
+  },
+
   goModeration() {
     if (!this.data.token) {
       this.login()

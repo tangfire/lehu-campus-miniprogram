@@ -114,6 +114,11 @@
   color: #ffffff;
 }
 
+.action-row button.collected {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
 .comment-box textarea {
   width: 100%;
   min-height: 120rpx;

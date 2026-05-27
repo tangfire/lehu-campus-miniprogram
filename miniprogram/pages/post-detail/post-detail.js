@@ -86,6 +86,24 @@ Page({
     }
   },
 
+  async toggleCollection() {
+    const token = wx.getStorageSync('token')
+    if (!token) {
+      wx.switchTab({ url: '/pages/mine/mine' })
+      return
+    }
+    const post = this.data.post
+    try {
+      await request({
+        url: `/campus/forum/posts/${this.data.id}/collection`,
+        method: post.is_collected ? 'DELETE' : 'POST'
+      })
+      this.loadPost()
+    } catch (err) {
+      showError(err)
+    }
+  },
+
   openPostMenu() {
     const post = this.data.post
     if (!post) return
