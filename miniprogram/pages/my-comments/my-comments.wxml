@@ -1,0 +1,18 @@
+<view class="page my-comments">
+  <empty-state wx:if="{{!loading && comments.length === 0}}" title="还没有评论" desc="你在校园社区里的回复会出现在这里。" />
+
+  <block wx:for="{{comments}}" wx:key="id">
+    <view class="comment-card" data-id="{{item.post_id}}" bindtap="openPost">
+      <view class="comment-content">{{item.content}}</view>
+      <view class="comment-time">{{item.created_at}}</view>
+      <view class="post-box">
+        <image wx:if="{{item.post_cover}}" class="post-cover" src="{{item.post_cover}}" mode="aspectFill" />
+        <view wx:else class="post-cover text-cover">帖</view>
+        <view class="post-main">
+          <view class="post-title">{{item.post_title}}</view>
+          <view class="post-meta">{{item.post_meta}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

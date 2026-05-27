@@ -1,0 +1,64 @@
+<view class="page about">
+  <view class="intro">
+    <image class="logo" src="/assets/logo-192.png" mode="aspectFit" />
+    <view>
+      <view class="name">深汕校园e站</view>
+      <view class="tagline">深汕校区同学的课表工具与校园生活入口</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">产品简介</view>
+    <view class="paragraph">
+      深汕校园e站是面向深圳职业技术大学深汕校区同学打造的校园工具和校园社区。我们希望把每天最常用的课表、入学指南、校园攻略、问答互助、失物招领和社团信息放在一个轻量入口里，让新校区的学习生活更好找、更好问、更好分享。
+    </view>
+    <view class="paragraph">
+      目前产品仍处于早期建设阶段，功能会根据同学们的真实使用反馈持续调整。涉及学校正式通知、报到安排、教务信息等内容，请以学校官方渠道为准。
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">基础信息</view>
+    <view class="info-row">
+      <text>服务对象</text>
+      <text>深汕校区学生</text>
+    </view>
+    <view class="info-row">
+      <text>产品类型</text>
+      <text>校园工具 / 同学社区</text>
+    </view>
+    <view class="info-row">
+      <text>运营地区</text>
+      <text>广东深圳 / 深汕</text>
+    </view>
+    <view class="info-row">
+      <text>官方属性</text>
+      <text>非学校官方应用</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">我们在做什么</view>
+    <view class="service-list">
+      <view>课表导入、今日课表、本周课表和课表分享</view>
+      <view>新生工具包：报到、宿舍、交通、官网入口等信息整理</view>
+      <view>校园社区：攻略、问答、失物招领、社团招新和校园笔记</view>
+      <view>持续收集同学反馈，把深汕校区常用信息整理得更清楚</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">名称记录</view>
+    <view class="paragraph muted">
+      2026年5月，项目名称确定为“深汕校园e站”，定位为深汕校区同学的一站式校园生活入口。
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">联系与反馈</view>
+    <view class="paragraph">
+      如果你发现信息不准确、功能不好用，或者希望一起参与内容维护，可以通过后续公布的公众号、朋友圈或小程序反馈入口联系我们。
+    </view>
+    <button class="copy-btn" bindtap="copyWechat">复制联系方式</button>
+  </view>
+</view>

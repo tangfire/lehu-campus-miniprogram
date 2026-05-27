@@ -1,5 +1,5 @@
 <view class="page detail">
-  <view wx:if="{{post}}" class="post panel">
+  <view wx:if="{{post}}" class="post">
     <video wx:if="{{post.media_type === 'video'}}" class="media-video" src="{{post.video_url}}" poster="{{post.cover_url}}" controls></video>
     <swiper wx:elif="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
       <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
@@ -9,44 +9,53 @@
       </block>
     </swiper>
 
-    <view class="post-head">
-      <image wx:if="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
-      <view wx:else class="avatar avatar-placeholder">同</view>
-      <view class="author-main">
-        <view class="author-name">{{post.author ? post.author.name : '同学'}}</view>
-        <view class="post-meta">{{post.category_name}} · {{post.type_label}} · {{post.created_at}}</view>
+    <view class="post-main-card">
+      <view class="post-head">
+        <image wx:if="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
+        <view wx:else class="avatar avatar-placeholder">同</view>
+        <view class="author-main">
+          <view class="author-name">{{post.display_author}}</view>
+          <view class="post-meta">{{post.category_name}} · {{post.created_at}}</view>
+        </view>
+        <view class="type-tag">{{post.short_type_label}}</view>
+        <view class="more" bindtap="openPostMenu">···</view>
       </view>
-      <view class="more" bindtap="openPostMenu">···</view>
-    </view>
-    <view class="title">{{post.title}}</view>
-    <view wx:if="{{post.extra_items && post.extra_items.length}}" class="extra-box">
-      <view wx:for="{{post.extra_items}}" wx:key="label" class="extra-row">
-        <text>{{item.label}}</text>
-        <text>{{item.value}}</text>
+
+      <view class="title">{{post.title}}</view>
+      <view wx:if="{{post.extra_items && post.extra_items.length}}" class="extra-box">
+        <view wx:for="{{post.extra_items}}" wx:key="label" class="extra-row">
+          <text>{{item.label}}</text>
+          <text>{{item.value}}</text>
+        </view>
       </view>
-    </view>
-    <view class="content">{{post.content}}</view>
-    <view class="action-row">
-      <button class="{{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">{{post.is_liked ? '已赞' : '点赞'}} {{post.like_count}}</button>
-      <button class="{{post.is_collected ? 'collected' : ''}}" bindtap="toggleCollection">{{post.is_collected ? '已收藏' : '收藏'}} {{post.collected_count}}</button>
-      <text>{{post.comment_count}} 评论</text>
+      <view class="content">{{post.content}}</view>
+
+      <view class="action-row">
+        <view class="action {{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">
+          <text>{{post.is_liked ? '♥' : '♡'}}</text>
+          <text>{{post.like_count || 0}}</text>
+        </view>
+        <view class="action {{post.is_collected ? 'collected' : ''}}" bindtap="toggleCollection">
+          <text>{{post.is_collected ? '★' : '☆'}}</text>
+          <text>{{post.collected_count || 0}}</text>
+        </view>
+        <view class="action plain">
+          <text>评</text>
+          <text>{{post.comment_count || 0}}</text>
+        </view>
+      </view>
     </view>
   </view>
 
-  <view class="comment-box panel">
-    <textarea value="{{commentText}}" bindinput="onInput" placeholder="友善地说点什么" maxlength="500" />
-    <button class="primary-btn" bindtap="submitComment">发送</button>
-  </view>
-
-  <view class="comment-title">评论</view>
+  <view class="comment-title">评论 {{post ? (post.comment_count || 0) : ''}}</view>
   <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" />
   <block wx:for="{{comments}}" wx:key="id">
-    <view class="comment panel">
+    <view class="comment">
       <view class="post-head">
         <image wx:if="{{item.author && item.author.avatar}}" class="avatar small" src="{{item.author.avatar}}" mode="aspectFill" />
         <view wx:else class="avatar small avatar-placeholder">同</view>
         <view class="author-main">
-          <view class="author-name">{{item.author ? item.author.name : '同学'}}</view>
+          <view class="author-name">{{item.display_author}}</view>
           <view class="post-meta">{{item.created_at}}</view>
         </view>
         <button wx:if="{{item.author && item.author.user_id === currentUserId}}" class="mini-action danger" data-id="{{item.id}}" bindtap="deleteComment">删除</button>
@@ -55,4 +64,10 @@
       <view class="comment-content">{{item.content}}</view>
     </view>
   </block>
+
+  <view class="comment-safe"></view>
+  <view class="comment-bar">
+    <input value="{{commentText}}" bindinput="onInput" placeholder="友善地说点什么" confirm-type="send" bindconfirm="submitComment" maxlength="500" />
+    <button bindtap="submitComment">发送</button>
+  </view>
 </view>

@@ -75,27 +75,6 @@
   overflow: hidden;
 }
 
-.status {
-  display: inline-flex;
-  margin-top: 14rpx;
-  padding: 6rpx 14rpx;
-  border-radius: 8rpx;
-  background: #e8f8f8;
-  color: #078894;
-  font-size: 23rpx;
-}
-
-.status-0 {
-  background: #fffbeb;
-  color: #b45309;
-}
-
-.status-2,
-.status-3 {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
 .delete-btn {
   align-self: flex-start;
   margin: 0;

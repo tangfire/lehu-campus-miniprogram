@@ -33,7 +33,7 @@ Page({
   async loadComments() {
     try {
       const data = await request({ url: `/campus/forum/posts/${this.data.id}/comments` })
-      this.setData({ comments: data.comments || [] })
+      this.setData({ comments: (data.comments || []).map(normalizeComment) })
     } catch (err) {
       showError(err)
     }
@@ -209,7 +209,16 @@ function normalizePost(post) {
     media_type: post.media_type || (images.length ? 'image' : 'text'),
     post_type: post.post_type || 'note',
     type_label: postTypeLabel(post.post_type),
+    short_type_label: shortPostTypeLabel(post.post_type),
+    display_author: displayAuthor(post.author),
     extra_items: extraItems(post.post_type, post.extra || {})
+  }
+}
+
+function normalizeComment(comment) {
+  return {
+    ...comment,
+    display_author: displayAuthor(comment.author)
   }
 }
 
@@ -222,6 +231,16 @@ function postTypeLabel(postType) {
     note: '校园笔记'
   }
   return map[postType || 'note'] || '校园笔记'
+}
+
+function shortPostTypeLabel(postType) {
+  const map = { lost: '失物', question: '问答', guide: '攻略', club: '社团', note: '笔记' }
+  return map[postType || 'note'] || '笔记'
+}
+
+function displayAuthor(author) {
+  if (!author) return '深汕同学'
+  return author.nickname || author.name || '深汕同学'
 }
 
 function extraItems(postType, extra) {

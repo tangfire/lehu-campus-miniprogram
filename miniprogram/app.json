@@ -9,27 +9,29 @@
     "pages/profile-edit/profile-edit",
     "pages/my-posts/my-posts",
     "pages/my-collections/my-collections",
-    "pages/moderation/moderation"
+    "pages/my-comments/my-comments",
+    "pages/about-us/about-us"
   ],
   "window": {
-    "navigationBarTitleText": "深汕 e站",
+    "navigationBarTitleText": "深汕校园e站",
     "navigationBarBackgroundColor": "#078894",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F4FAFA"
   },
   "tabBar": {
+    "custom": true,
     "color": "#64748B",
     "selectedColor": "#078894",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/timetable/timetable",
-        "text": "课表"
+        "pagePath": "pages/community/community",
+        "text": "首页"
       },
       {
-        "pagePath": "pages/community/community",
-        "text": "同学圈"
+        "pagePath": "pages/timetable/timetable",
+        "text": "课表"
       },
       {
         "pagePath": "pages/mine/mine",

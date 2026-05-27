@@ -1,7 +1,6 @@
 {
-  "navigationBarTitleText": "深汕校园e站",
+  "navigationBarTitleText": "我的评论",
   "usingComponents": {
     "empty-state": "../../components/empty-state/empty-state"
-  },
-  "enablePullDownRefresh": true
+  }
 }

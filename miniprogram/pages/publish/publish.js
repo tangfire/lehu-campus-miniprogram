@@ -156,30 +156,7 @@ Page({
         images: [],
         cover_url: '',
         video_url: ''
-}
-
-function buildExtra(postType, extra) {
-  if (postType === 'lost') {
-    return pick(extra, ['lost_kind', 'location', 'event_time', 'contact'])
-  }
-  if (postType === 'club') {
-    return pick(extra, ['club_name', 'activity_time', 'activity_place', 'contact'])
-  }
-  if (postType === 'guide') {
-    return pick(extra, ['location'])
-  }
-  return {}
-}
-
-function pick(source, keys) {
-  const out = {}
-  keys.forEach(key => {
-    const value = String(source[key] || '').trim()
-    if (value) out[key] = value
-  })
-  return out
-}
-
+      }
       if (this.data.mediaType === 'video') {
         if (!this.data.localVideo) {
           wx.showToast({ title: '请选择视频', icon: 'none' })
@@ -223,3 +200,25 @@ function pick(source, keys) {
     }
   }
 })
+
+function buildExtra(postType, extra) {
+  if (postType === 'lost') {
+    return pick(extra, ['lost_kind', 'location', 'event_time', 'contact'])
+  }
+  if (postType === 'club') {
+    return pick(extra, ['club_name', 'activity_time', 'activity_place', 'contact'])
+  }
+  if (postType === 'guide') {
+    return pick(extra, ['location'])
+  }
+  return {}
+}
+
+function pick(source, keys) {
+  const out = {}
+  keys.forEach(key => {
+    const value = String(source[key] || '').trim()
+    if (value) out[key] = value
+  })
+  return out
+}

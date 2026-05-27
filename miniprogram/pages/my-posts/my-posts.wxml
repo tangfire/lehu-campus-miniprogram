@@ -12,9 +12,6 @@
         <view class="post-title">{{item.title}}</view>
         <view class="post-meta">{{item.category_name}} · {{item.type_label}} · {{item.created_at}}</view>
         <view class="post-content">{{item.content}}</view>
-        <view class="status status-{{item.status}}">
-          {{item.status === 1 ? '已公开' : (item.status === 0 ? '待审核' : (item.status === 2 ? '未通过' : '已删除'))}}
-        </view>
       </view>
       <button class="delete-btn" data-id="{{item.id}}" catchtap="deletePost">删除</button>
     </view>

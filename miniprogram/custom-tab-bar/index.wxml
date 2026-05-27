@@ -1,0 +1,18 @@
+<view class="tab-shell">
+  <view class="tab-bar">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="pagePath"
+      class="tab-item {{selected === index ? 'active' : ''}} tab-{{item.key}}"
+      data-index="{{index}}"
+      bindtap="switchTab"
+    >
+      <view class="tab-icon {{item.icon}}"></view>
+      <view class="tab-text">{{item.text}}</view>
+    </view>
+
+    <view class="publish-button" bindtap="goPublish" aria-role="button" aria-label="发布">
+      <view class="publish-plus">+</view>
+    </view>
+  </view>
+</view>

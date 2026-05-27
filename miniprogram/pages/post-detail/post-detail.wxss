@@ -1,20 +1,16 @@
 .detail {
-  padding-bottom: 48rpx;
+  padding: 0 0 48rpx;
+  background: #ffffff;
 }
 
-.post,
-.comment-box,
-.comment {
-  padding: 24rpx;
-  margin-bottom: 20rpx;
+.post {
+  margin-bottom: 18rpx;
 }
 
 .media-video,
 .media-swiper {
   width: 100%;
-  height: 520rpx;
-  margin-bottom: 24rpx;
-  border-radius: 8rpx;
+  height: 650rpx;
   overflow: hidden;
   background: #0f172a;
 }
@@ -24,10 +20,15 @@
   height: 100%;
 }
 
+.post-main-card {
+  padding: 26rpx 28rpx 18rpx;
+  background: #ffffff;
+}
+
 .post-head {
   display: flex;
   align-items: center;
-  gap: 18rpx;
+  gap: 16rpx;
 }
 
 .author-main {
@@ -36,12 +37,12 @@
 }
 
 .more {
-  width: 58rpx;
-  height: 58rpx;
-  line-height: 48rpx;
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 34rpx;
   text-align: center;
   color: #64748b;
-  font-size: 38rpx;
+  font-size: 34rpx;
 }
 
 .avatar {
@@ -67,26 +68,45 @@
 
 .author-name {
   font-size: 28rpx;
-  font-weight: 700;
+  font-weight: 800;
+  color: #10201d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .post-meta {
   color: #64748b;
-  font-size: 24rpx;
+  font-size: 23rpx;
   margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.type-tag {
+  flex: none;
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  background: #e8f8f8;
+  color: #078894;
+  font-size: 22rpx;
+  font-weight: 800;
 }
 
 .title {
-  margin-top: 26rpx;
-  font-size: 38rpx;
-  font-weight: 800;
+  margin-top: 30rpx;
+  color: #10201d;
+  font-size: 40rpx;
+  font-weight: 900;
+  line-height: 1.35;
 }
 
 .extra-box {
   margin-top: 20rpx;
-  padding: 4rpx 20rpx;
-  border-radius: 8rpx;
-  background: #f8fafc;
+  padding: 4rpx 22rpx;
+  border-radius: 12rpx;
+  background: #f7fbfb;
 }
 
 .extra-row {
@@ -114,56 +134,73 @@
 
 .content,
 .comment-content {
-  margin-top: 16rpx;
+  margin-top: 18rpx;
   color: #334155;
-  font-size: 29rpx;
-  line-height: 1.75;
+  font-size: 30rpx;
+  line-height: 1.78;
+  white-space: pre-wrap;
 }
 
 .action-row {
   display: flex;
   align-items: center;
-  gap: 28rpx;
-  margin-top: 22rpx;
+  gap: 18rpx;
+  margin-top: 28rpx;
   color: #64748b;
 }
 
-.action-row button {
-  margin: 0;
-  padding: 0 24rpx;
-  height: 60rpx;
-  line-height: 60rpx;
-  border-radius: 10rpx;
-  background: #e8f8f8;
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  min-width: 104rpx;
+  height: 58rpx;
+  padding: 0 20rpx;
+  border-radius: 999rpx;
+  background: #f7fbfb;
   color: #078894;
-  font-size: 26rpx;
+  font-size: 25rpx;
+  font-weight: 800;
+  box-sizing: border-box;
 }
 
-.action-row button.liked {
+.action.liked {
   background: #078894;
   color: #ffffff;
 }
 
-.action-row button.collected {
-  background: #f59e0b;
-  color: #ffffff;
+.action.collected {
+  background: #fff7ed;
+  color: #ea580c;
 }
 
-.comment-box textarea {
-  width: 100%;
-  min-height: 120rpx;
-  box-sizing: border-box;
-  font-size: 28rpx;
-}
-
-.comment-box button {
-  margin-top: 16rpx;
+.action.plain {
+  color: #64748b;
 }
 
 .comment-title {
-  margin: 28rpx 0 16rpx;
-  font-size: 32rpx;
-  font-weight: 800;
+  padding: 28rpx 28rpx 14rpx;
+  border-top: 14rpx solid #f7fbfb;
+  color: #10201d;
+  font-size: 31rpx;
+  font-weight: 900;
+}
+
+.comment {
+  padding: 24rpx 28rpx;
+  border-bottom: 1rpx solid #eef6f6;
+  background: #ffffff;
+}
+
+.comment .post-head {
+  align-items: flex-start;
+}
+
+.comment-content {
+  margin-left: 74rpx;
+  margin-top: 8rpx;
+  font-size: 28rpx;
+  line-height: 1.65;
 }
 
 .mini-action {
@@ -180,4 +217,49 @@
 .mini-action.danger {
   background: #fef2f2;
   color: #dc2626;
+}
+
+.comment-safe {
+  height: 118rpx;
+}
+
+.comment-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid #e5f0f0;
+  background: rgba(255, 255, 255, 0.96);
+  box-sizing: border-box;
+}
+
+.comment-bar input {
+  flex: 1;
+  min-width: 0;
+  height: 72rpx;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  background: #f1f7f7;
+  color: #10201d;
+  font-size: 27rpx;
+  box-sizing: border-box;
+}
+
+.comment-bar button {
+  flex: none;
+  width: 112rpx;
+  height: 70rpx;
+  margin: 0;
+  padding: 0;
+  border-radius: 999rpx;
+  background: #078894;
+  color: #ffffff;
+  font-size: 27rpx;
+  font-weight: 800;
+  line-height: 70rpx;
 }

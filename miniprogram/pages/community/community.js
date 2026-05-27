@@ -29,6 +29,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 0)
     if (this._needsRefresh) {
       this._needsRefresh = false
       this.loadPosts(true)
@@ -99,19 +100,18 @@ Page({
     this.loadPosts(true)
   },
 
-  goPublish() {
-    const token = wx.getStorageSync('token')
-    if (!token) {
-      wx.switchTab({ url: '/pages/mine/mine' })
-      return
-    }
-    wx.navigateTo({ url: '/pages/publish/publish' })
-  },
-
   openPost(e) {
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
   }
 })
+
+function syncTabBar(page, selected) {
+  if (typeof page.getTabBar !== 'function') return
+  const tabBar = page.getTabBar()
+  if (tabBar) {
+    tabBar.setData({ selected })
+  }
+}
 
 function normalizePost(post) {
   const images = post.images || []

@@ -1,44 +1,44 @@
 <view class="page mine">
-  <view class="profile panel">
-    <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
-    <image wx:else class="avatar logo-avatar" src="/assets/logo-192.png" mode="aspectFit" />
-    <view class="profile-main">
-      <view class="name">{{user ? (user.nickname || user.name || '深汕同学') : '深汕 e站'}}</view>
-      <view class="muted">{{profile ? profile.school_name : '登录后同步课表、收藏攻略、参与同学圈'}}</view>
+  <view class="profile-card">
+    <view class="profile-top">
+      <view class="avatar-wrap" bindtap="changeAvatar">
+        <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
+        <image wx:else class="avatar logo-avatar" src="/assets/logo-192.png" mode="aspectFit" />
+        <view wx:if="{{token}}" class="avatar-edit">{{uploadingAvatar ? '...' : '换'}}</view>
+      </view>
+      <view class="profile-main">
+        <view class="name">{{user ? (user.nickname || user.name || '深汕同学') : '深汕校园e站'}}</view>
+        <view class="bio">{{profile ? profile.school_name : '深汕校园生活入口'}}</view>
+      </view>
+    </view>
+    <button wx:if="{{!token}}" class="login-btn" loading="{{loggingIn}}" bindtap="login">微信登录</button>
+    <view wx:else class="profile-status">
+      <text>{{profile && profile.auth_status === 1 ? '已认证' : '待校园认证'}}</text>
+      <text>{{profile && profile.class_name ? profile.class_name : '完善资料后更好用'}}</text>
     </view>
   </view>
 
-  <button wx:if="{{!token}}" class="primary-btn" loading="{{loggingIn}}" bindtap="login">微信登录</button>
-  <button wx:else class="ghost-btn" bindtap="logout">退出登录</button>
-
-  <view class="panel menu" wx:if="{{token}}">
-    <view class="menu-row" bindtap="editProfile">
-      <text>编辑校园资料</text>
-      <text>›</text>
+  <view class="quick-grid">
+    <view class="quick-card" bindtap="goFreshmanKit">
+      <view class="quick-title">新生工具包</view>
+      <view class="quick-desc">报到/宿舍/官网</view>
     </view>
-    <view class="menu-row" bindtap="goFreshmanKit">
-      <text>新生工具包</text>
-      <text>›</text>
+    <view class="quick-card" bindtap="goMyPosts">
+      <view class="quick-title">我的发布</view>
+      <view class="quick-desc">笔记和动态</view>
     </view>
-    <view class="menu-row" bindtap="goMyPosts">
-      <text>我的帖子</text>
-      <text>›</text>
+    <view class="quick-card" bindtap="goMyCollections">
+      <view class="quick-title">我的收藏</view>
+      <view class="quick-desc">攻略和问答</view>
     </view>
-    <view class="menu-row" bindtap="goMyCollections">
-      <text>我的收藏</text>
-      <text>›</text>
-    </view>
-    <view class="menu-row" bindtap="goModeration">
-      <text>内容审核</text>
-      <text>›</text>
+    <view class="quick-card" bindtap="goMyComments">
+      <view class="quick-title">我的评论</view>
+      <view class="quick-desc">看过的讨论</view>
     </view>
   </view>
 
   <view class="panel info" wx:if="{{profile}}">
-    <view class="row">
-      <text>认证状态</text>
-      <text>{{profile.auth_status === 1 ? '已认证' : '待校园认证'}}</text>
-    </view>
+    <view class="info-head">校园资料</view>
     <view class="row">
       <text>宿舍</text>
       <text>{{profile.dorm_building || '未填写'}} {{profile.room_no || ''}}</text>
@@ -46,6 +46,21 @@
     <view class="row">
       <text>班级</text>
       <text>{{profile.class_name || '未填写'}}</text>
+    </view>
+  </view>
+
+  <view class="panel menu">
+    <view class="menu-row" bindtap="editProfile">
+      <text>编辑校园资料</text>
+      <text>›</text>
+    </view>
+    <view class="menu-row" bindtap="goAboutUs">
+      <text>关于我们</text>
+      <text>›</text>
+    </view>
+    <view class="menu-row" wx:if="{{token}}" bindtap="logout">
+      <text>退出登录</text>
+      <text>›</text>
     </view>
   </view>
 </view>

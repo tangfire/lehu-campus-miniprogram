@@ -1,6 +1,6 @@
 <view class="page community">
   <view class="topbar">
-    <view class="brand-title">同学圈</view>
+    <view class="brand-title">首页</view>
     <view class="search-pill">
       <input value="{{keyword}}" bindinput="onSearch" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索深汕攻略、问答" />
       <text wx:if="{{keyword}}" bindtap="clearSearch">×</text>
@@ -74,5 +74,4 @@
     </view>
   </view>
 
-  <view class="publish-fab" bindtap="goPublish">+</view>
 </view>

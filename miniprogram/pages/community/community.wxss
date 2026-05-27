@@ -1,5 +1,5 @@
 .community {
-  padding: 18rpx 18rpx 126rpx;
+  padding: 18rpx 18rpx 170rpx;
   background: #f7fbfb;
 }
 
@@ -207,20 +207,4 @@
 .like {
   flex: none;
   color: #64748b;
-}
-
-.publish-fab {
-  position: fixed;
-  right: 34rpx;
-  bottom: 54rpx;
-  width: 104rpx;
-  height: 104rpx;
-  line-height: 96rpx;
-  text-align: center;
-  border-radius: 50%;
-  background: #078894;
-  color: #ffffff;
-  font-size: 58rpx;
-  font-weight: 300;
-  box-shadow: 0 12rpx 34rpx rgba(7, 136, 148, 0.28);
 }

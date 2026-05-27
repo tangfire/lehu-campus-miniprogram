@@ -38,6 +38,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 1)
     const token = wx.getStorageSync('token') || ''
     this.setData({ token })
     if (token) {
@@ -67,10 +68,6 @@ Page({
 
   toggleImportForm() {
     this.setData({ showImportForm: !this.data.showImportForm })
-  },
-
-  goFreshmanKit() {
-    wx.navigateTo({ url: '/pages/freshman-kit/freshman-kit' })
   },
 
   shareToday() {
@@ -161,11 +158,19 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: this.data.courses.length ? `我的课表：${this.data.shareSummary}` : '深汕 e站课表',
+      title: this.data.courses.length ? `我的课表：${this.data.shareSummary}` : '深汕校园e站课表',
       path: '/pages/timetable/timetable'
     }
   }
 })
+
+function syncTabBar(page, selected) {
+  if (typeof page.getTabBar !== 'function') return
+  const tabBar = page.getTabBar()
+  if (tabBar) {
+    tabBar.setData({ selected })
+  }
+}
 
 function normalizeCourses(courses) {
   return (courses || []).map(course => ({

@@ -3,8 +3,8 @@
     <view class="brand-row">
       <image class="brand-logo" src="/assets/logo-192.png" mode="aspectFit" />
       <view>
-        <view class="brand-name">深汕 e站</view>
-        <view class="muted">深汕校区同学的课表与校园入口</view>
+        <view class="brand-name">深汕校园e站</view>
+        <view class="muted">深汕同学的课表与校园入口</view>
       </view>
     </view>
     <button class="primary-btn" bindtap="login">去登录</button>
@@ -12,13 +12,6 @@
 
   <block wx:else>
     <view class="today panel">
-      <view class="brand-strip">
-        <image class="brand-logo small" src="/assets/logo-192.png" mode="aspectFit" />
-        <view>
-          <view class="brand-name small">深汕 e站</view>
-          <view class="muted">深圳职业技术大学（深汕校区）</view>
-        </view>
-      </view>
       <view class="top-line">
         <view>
           <view class="eyebrow">{{term}}</view>
@@ -42,14 +35,6 @@
         </view>
       </view>
       <view wx:else class="empty-inline">{{courses.length ? '今天没有课程' : '还没有导入课表'}}</view>
-    </view>
-
-    <view class="tool-entry panel" bindtap="goFreshmanKit">
-      <view>
-        <view class="panel-title compact">深汕校区新生工具包</view>
-        <view class="muted">报到、宿舍、交通、官网入口和常用事项</view>
-      </view>
-      <text>›</text>
     </view>
 
     <view wx:if="{{showImportForm}}" class="panel import-panel">
