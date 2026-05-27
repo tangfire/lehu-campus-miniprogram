@@ -1,0 +1,78 @@
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 22rpx;
+  padding: 28rpx;
+  margin-bottom: 28rpx;
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  background: #dbeafe;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f766e;
+  font-size: 38rpx;
+  font-weight: 900;
+}
+
+.name {
+  font-size: 36rpx;
+  font-weight: 800;
+  margin-bottom: 8rpx;
+}
+
+button {
+  margin-bottom: 24rpx;
+}
+
+.info {
+  padding: 8rpx 24rpx;
+}
+
+.menu {
+  padding: 0 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.menu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #e2e8f0;
+  font-size: 29rpx;
+}
+
+.menu-row:last-child {
+  border-bottom: 0;
+}
+
+.menu-row text:last-child {
+  color: #94a3b8;
+  font-size: 38rpx;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 26rpx 0;
+  border-bottom: 1rpx solid #e2e8f0;
+  font-size: 28rpx;
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.row text:last-child {
+  color: #64748b;
+  text-align: right;
+}

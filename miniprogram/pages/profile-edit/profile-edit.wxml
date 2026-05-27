@@ -1,0 +1,34 @@
+<view class="page profile-edit">
+  <view class="panel form">
+    <view class="field">
+      <text>学校</text>
+      <input value="{{form.school_name}}" data-field="school_name" bindinput="onInput" />
+    </view>
+    <view class="field">
+      <text>学号</text>
+      <input value="{{form.student_no}}" data-field="student_no" bindinput="onInput" placeholder="后续 OAuth 接入后自动同步" />
+    </view>
+    <view class="field">
+      <text>姓名</text>
+      <input value="{{form.real_name}}" data-field="real_name" bindinput="onInput" placeholder="可先不填" />
+    </view>
+    <view class="field">
+      <text>班级</text>
+      <input value="{{form.class_name}}" data-field="class_name" bindinput="onInput" placeholder="如 计算机 24-1" />
+    </view>
+    <view class="field">
+      <text>宿舍楼</text>
+      <input value="{{form.dorm_building}}" data-field="dorm_building" bindinput="onInput" placeholder="如 1号宿舍楼" />
+    </view>
+    <view class="field">
+      <text>房间号</text>
+      <input value="{{form.room_no}}" data-field="room_no" bindinput="onInput" placeholder="如 508" />
+    </view>
+    <view class="field">
+      <text>手机号</text>
+      <input value="{{form.mobile}}" data-field="mobile" bindinput="onInput" type="number" placeholder="外卖配送后续会用到" />
+    </view>
+  </view>
+
+  <button class="primary-btn save" loading="{{saving}}" bindtap="save">保存</button>
+</view>

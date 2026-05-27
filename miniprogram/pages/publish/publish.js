@@ -1,0 +1,92 @@
+const { request, uploadImage, showError } = require('../../utils/request')
+
+Page({
+  data: {
+    categories: [],
+    categoryCode: 'study',
+    title: '',
+    content: '',
+    localImages: [],
+    submitting: false
+  },
+
+  onLoad() {
+    this.loadCategories()
+  },
+
+  async loadCategories() {
+    try {
+      const data = await request({ url: '/campus/forum/categories' })
+      const categories = data.categories || []
+      this.setData({
+        categories,
+        categoryCode: categories[0] ? categories[0].code : 'study'
+      })
+    } catch (err) {
+      showError(err)
+    }
+  },
+
+  selectCategory(e) {
+    this.setData({ categoryCode: e.currentTarget.dataset.code })
+  },
+
+  onTitle(e) {
+    this.setData({ title: e.detail.value })
+  },
+
+  onContent(e) {
+    this.setData({ content: e.detail.value })
+  },
+
+  chooseImages() {
+    const remain = 9 - this.data.localImages.length
+    if (remain <= 0) return
+    wx.chooseImage({
+      count: remain,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: res => {
+        this.setData({ localImages: this.data.localImages.concat(res.tempFilePaths || []) })
+      }
+    })
+  },
+
+  removeImage(e) {
+    const index = e.currentTarget.dataset.index
+    const next = this.data.localImages.slice()
+    next.splice(index, 1)
+    this.setData({ localImages: next })
+  },
+
+  async submit() {
+    if (this.data.submitting) return
+    this.setData({ submitting: true })
+    try {
+      const images = []
+      for (const filePath of this.data.localImages) {
+        const uploaded = await uploadImage(filePath)
+        if (uploaded && uploaded.url) images.push(uploaded.url)
+      }
+      await request({
+        url: '/campus/forum/posts',
+        method: 'POST',
+        data: {
+          category_code: this.data.categoryCode,
+          title: this.data.title,
+          content: this.data.content,
+          images
+        }
+      })
+      wx.showToast({ title: '已发布' })
+      const pages = getCurrentPages()
+      const prev = pages[pages.length - 2]
+      if (prev) prev._needsRefresh = true
+      setTimeout(() => wx.navigateBack(), 500)
+    } catch (err) {
+      showError(err)
+    } finally {
+      this.setData({ submitting: false })
+    }
+  }
+})

@@ -1,0 +1,8 @@
+<view class="page">
+  <view class="hero panel">
+    <view class="eyebrow">深职校园通</view>
+    <view class="title">今日课表</view>
+    <view class="desc">等待学校 OAuth 接入后，这里会自动显示当天课程、教室和课前提醒。</view>
+  </view>
+  <empty-state title="课表即将接入" desc="当前阶段先把校园社区跑稳，课表后续对接学校信息中心只读接口。" />
+</view>

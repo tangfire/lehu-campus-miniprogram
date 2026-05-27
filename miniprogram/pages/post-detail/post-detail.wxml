@@ -1,0 +1,44 @@
+<view class="page detail">
+  <view wx:if="{{post}}" class="post panel">
+    <view class="post-head">
+      <image wx:if="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
+      <view wx:else class="avatar avatar-placeholder">同</view>
+      <view>
+        <view class="author-name">{{post.author ? post.author.name : '同学'}}</view>
+        <view class="post-meta">{{post.category_name}} · {{post.created_at}}</view>
+      </view>
+    </view>
+    <view class="title">{{post.title}}</view>
+    <view class="content">{{post.content}}</view>
+    <view class="image-grid" wx:if="{{post.images && post.images.length}}">
+      <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
+        <image class="post-image" src="{{img}}" mode="aspectFill" />
+      </block>
+    </view>
+    <view class="action-row">
+      <button class="{{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">{{post.is_liked ? '已赞' : '点赞'}} {{post.like_count}}</button>
+      <text>{{post.comment_count}} 评论</text>
+    </view>
+  </view>
+
+  <view class="comment-box panel">
+    <textarea value="{{commentText}}" bindinput="onInput" placeholder="友善地说点什么" maxlength="500" />
+    <button class="primary-btn" bindtap="submitComment">发送</button>
+  </view>
+
+  <view class="comment-title">评论</view>
+  <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" />
+  <block wx:for="{{comments}}" wx:key="id">
+    <view class="comment panel">
+      <view class="post-head">
+        <image wx:if="{{item.author && item.author.avatar}}" class="avatar small" src="{{item.author.avatar}}" mode="aspectFill" />
+        <view wx:else class="avatar small avatar-placeholder">同</view>
+        <view>
+          <view class="author-name">{{item.author ? item.author.name : '同学'}}</view>
+          <view class="post-meta">{{item.created_at}}</view>
+        </view>
+      </view>
+      <view class="comment-content">{{item.content}}</view>
+    </view>
+  </block>
+</view>

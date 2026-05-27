@@ -1,0 +1,43 @@
+<view class="page mine">
+  <view class="profile panel">
+    <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
+    <view wx:else class="avatar avatar-placeholder">同</view>
+    <view class="profile-main">
+      <view class="name">{{user ? (user.nickname || user.name || '深职同学') : '未登录'}}</view>
+      <view class="muted">{{profile ? profile.school_name : '登录后使用校园社区'}}</view>
+    </view>
+  </view>
+
+  <button wx:if="{{!token}}" class="primary-btn" loading="{{loggingIn}}" bindtap="login">微信登录</button>
+  <button wx:else class="ghost-btn" bindtap="logout">退出登录</button>
+
+  <view class="panel menu" wx:if="{{token}}">
+    <view class="menu-row" bindtap="editProfile">
+      <text>编辑校园资料</text>
+      <text>›</text>
+    </view>
+    <view class="menu-row" bindtap="goMyPosts">
+      <text>我的帖子</text>
+      <text>›</text>
+    </view>
+    <view class="menu-row" bindtap="goModeration">
+      <text>内容审核</text>
+      <text>›</text>
+    </view>
+  </view>
+
+  <view class="panel info" wx:if="{{profile}}">
+    <view class="row">
+      <text>认证状态</text>
+      <text>{{profile.auth_status === 1 ? '已认证' : '待学校 OAuth 接入'}}</text>
+    </view>
+    <view class="row">
+      <text>宿舍</text>
+      <text>{{profile.dorm_building || '未填写'}} {{profile.room_no || ''}}</text>
+    </view>
+    <view class="row">
+      <text>班级</text>
+      <text>{{profile.class_name || '未填写'}}</text>
+    </view>
+  </view>
+</view>

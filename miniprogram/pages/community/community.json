@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "校园社区",
+  "usingComponents": {
+    "empty-state": "../../components/empty-state/empty-state"
+  },
+  "enablePullDownRefresh": true
+}

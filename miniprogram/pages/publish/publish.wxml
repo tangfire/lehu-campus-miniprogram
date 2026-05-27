@@ -1,0 +1,24 @@
+<view class="page publish">
+  <view class="section-title">选择版块</view>
+  <view class="category-row">
+    <block wx:for="{{categories}}" wx:key="code">
+      <view class="category-pill {{categoryCode === item.code ? 'active' : ''}}" data-code="{{item.code}}" bindtap="selectCategory">{{item.name}}</view>
+    </block>
+  </view>
+
+  <view class="form panel">
+    <input value="{{title}}" bindinput="onTitle" maxlength="60" placeholder="标题" />
+    <textarea value="{{content}}" bindinput="onContent" maxlength="2000" placeholder="正文" />
+    <view class="image-picker">
+      <block wx:for="{{localImages}}" wx:key="*this">
+        <view class="image-wrap">
+          <image class="picked-image" src="{{item}}" mode="aspectFill" />
+          <view class="remove" data-index="{{index}}" bindtap="removeImage">×</view>
+        </view>
+      </block>
+      <view wx:if="{{localImages.length < 9}}" class="add-image" bindtap="chooseImages">+</view>
+    </view>
+  </view>
+
+  <button class="primary-btn submit" loading="{{submitting}}" bindtap="submit">发布</button>
+</view>

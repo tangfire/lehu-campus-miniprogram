@@ -1,0 +1,56 @@
+<view class="page community">
+  <view class="topbar">
+    <view>
+      <view class="title">校园社区</view>
+      <view class="subtitle">学习、生活、社团都在这里</view>
+    </view>
+    <button class="publish-btn" bindtap="goPublish">发布</button>
+  </view>
+
+  <view class="search-row">
+    <input value="{{keyword}}" bindinput="onSearch" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索帖子、关键词" />
+    <button wx:if="{{keyword}}" bindtap="clearSearch">清除</button>
+  </view>
+
+  <scroll-view class="category-scroll" scroll-x>
+    <view class="category-row">
+      <view class="category-pill {{activeCategory === '' ? 'active' : ''}}" data-code="" bindtap="changeCategory">全部</view>
+      <block wx:for="{{categories}}" wx:key="code">
+        <view class="category-pill {{activeCategory === item.code ? 'active' : ''}}" data-code="{{item.code}}" bindtap="changeCategory">{{item.name}}</view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view class="sort-row">
+    <view class="sort-item {{sort === 'new' ? 'active' : ''}}" data-sort="new" bindtap="changeSort">最新</view>
+    <view class="sort-item {{sort === 'hot' ? 'active' : ''}}" data-sort="hot" bindtap="changeSort">热度</view>
+  </view>
+
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有帖子" desc="发布第一条校园动态，帮同学们把社区热起来。" />
+
+  <view class="post-list">
+    <block wx:for="{{posts}}" wx:key="id">
+      <view class="post panel" data-id="{{item.id}}" bindtap="openPost">
+        <view class="post-head">
+          <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+          <view wx:else class="avatar avatar-placeholder">同</view>
+          <view class="author-main">
+            <view class="author-name">{{item.author ? item.author.name : '同学'}}</view>
+            <view class="post-meta">{{item.category_name}} · {{item.created_at}}</view>
+          </view>
+        </view>
+        <view class="post-title">{{item.title}}</view>
+        <view class="post-content">{{item.content}}</view>
+        <view class="image-row" wx:if="{{item.images && item.images.length}}">
+          <block wx:for="{{item.images}}" wx:for-item="img" wx:key="*this">
+            <image class="post-image" src="{{img}}" mode="aspectFill" />
+          </block>
+        </view>
+        <view class="post-actions">
+          <text>{{item.like_count}} 赞</text>
+          <text>{{item.comment_count}} 评论</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
