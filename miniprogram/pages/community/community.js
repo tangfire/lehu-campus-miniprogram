@@ -1,8 +1,8 @@
 const { request, trackEvent, showError } = require('../../utils/request')
 
 const quickChannels = [
-  { label: '推荐', postType: '', sort: 'new' },
-  { label: '攻略', postType: 'guide', sort: 'hot' },
+  { label: '推荐', postType: '', sort: 'recommend' },
+  { label: '攻略', postType: 'guide', sort: 'recommend' },
   { label: '问答', postType: 'question', sort: 'hot' },
   { label: '失物', postType: 'lost', sort: 'new' },
   { label: '社团', postType: 'club', sort: 'new' }
@@ -13,7 +13,7 @@ Page({
     quickChannels,
     activeChannel: '推荐',
     activePostType: '',
-    sort: 'new',
+    sort: 'recommend',
     keyword: '',
     posts: [],
     leftPosts: [],
@@ -83,7 +83,7 @@ Page({
     this.setData({
       activeChannel: channel.label,
       activePostType: channel.postType,
-      sort: channel.sort || 'new'
+      sort: channel.sort || 'recommend'
     })
     this.loadPosts(true)
   },
