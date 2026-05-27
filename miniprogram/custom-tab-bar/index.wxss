@@ -5,13 +5,14 @@
   bottom: 0;
   z-index: 99;
   padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.96);
   border-top: 1rpx solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 -8rpx 24rpx rgba(15, 23, 42, 0.04);
+  box-shadow: 0 -10rpx 30rpx rgba(15, 23, 42, 0.05);
+  backdrop-filter: blur(18rpx);
 }
 
 .tab-bar {
-  height: 118rpx;
+  height: 112rpx;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
@@ -20,7 +21,7 @@
 }
 
 .tab-item {
-  height: 100rpx;
+  height: 96rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,14 +32,14 @@
 }
 
 .tab-item.active {
-  color: #078894;
+  color: #ff4d5f;
   font-weight: 800;
 }
 
 .tab-icon {
   position: relative;
-  width: 46rpx;
-  height: 46rpx;
+  width: 44rpx;
+  height: 44rpx;
   box-sizing: border-box;
 }
 
@@ -48,8 +49,8 @@
   top: 4rpx;
   width: 26rpx;
   height: 26rpx;
-  border-left: 4rpx solid currentColor;
-  border-top: 4rpx solid currentColor;
+  border-left: 3rpx solid currentColor;
+  border-top: 3rpx solid currentColor;
   border-radius: 4rpx 0 0 0;
   transform: rotate(45deg);
 }
@@ -60,29 +61,29 @@
   right: 8rpx;
   bottom: 4rpx;
   height: 26rpx;
-  border: 4rpx solid currentColor;
+  border: 3rpx solid currentColor;
   border-top: 0;
   border-radius: 5rpx;
 }
 
 .icon-calendar {
-  border: 4rpx solid currentColor;
-  border-radius: 9rpx;
+  border: 3rpx solid currentColor;
+  border-radius: 10rpx;
 }
 
 .calendar-line {
   position: absolute;
-  left: -4rpx;
-  right: -4rpx;
+  left: -3rpx;
+  right: -3rpx;
   top: 13rpx;
-  height: 4rpx;
+  height: 3rpx;
   background: currentColor;
 }
 
 .calendar-ring {
   position: absolute;
   top: -9rpx;
-  width: 4rpx;
+  width: 3rpx;
   height: 16rpx;
   border-radius: 999rpx;
   background: currentColor;
@@ -102,7 +103,7 @@
   top: 4rpx;
   width: 24rpx;
   height: 24rpx;
-  border: 4rpx solid currentColor;
+  border: 3rpx solid currentColor;
   border-radius: 50%;
   box-sizing: border-box;
 }
@@ -113,30 +114,30 @@
   right: 5rpx;
   bottom: 2rpx;
   height: 20rpx;
-  border: 4rpx solid currentColor;
+  border: 3rpx solid currentColor;
   border-radius: 22rpx 22rpx 10rpx 10rpx;
   box-sizing: border-box;
 }
 
 .tab-text {
   max-width: 100%;
-  font-size: 22rpx;
+  font-size: 21rpx;
   line-height: 1;
   white-space: nowrap;
 }
 
 .publish-slot {
-  color: #078894;
+  color: #ff4d5f;
 }
 
 .publish-button {
   position: relative;
-  width: 78rpx;
-  height: 78rpx;
+  width: 72rpx;
+  height: 72rpx;
   border-radius: 50%;
-  background: #078894;
+  background: #ff4d5f;
   color: #ffffff;
-  box-shadow: 0 10rpx 24rpx rgba(7, 136, 148, 0.22);
+  box-shadow: 0 10rpx 22rpx rgba(255, 77, 95, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +155,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 34rpx;
+  width: 31rpx;
   height: 4rpx;
   border-radius: 999rpx;
   background: #ffffff;
@@ -163,10 +164,10 @@
 
 .publish-line.vertical {
   width: 4rpx;
-  height: 34rpx;
+  height: 31rpx;
 }
 
 .publish-text {
-  color: #078894;
+  color: #ff4d5f;
   font-weight: 800;
 }

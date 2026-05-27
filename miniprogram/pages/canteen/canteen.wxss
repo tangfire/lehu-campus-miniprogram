@@ -13,7 +13,7 @@
 }
 
 .eyebrow {
-  color: #078894;
+  color: #ff4d5f;
   font-size: 24rpx;
   font-weight: 700;
 }

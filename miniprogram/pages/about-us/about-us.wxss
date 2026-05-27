@@ -1,25 +1,29 @@
 .about {
   padding: 34rpx 38rpx 64rpx;
-  background: #ffffff;
+  background: #f8f7f5;
 }
 
 .intro {
   display: flex;
   align-items: center;
   gap: 22rpx;
-  padding: 18rpx 0 42rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 30rpx rgba(15, 23, 42, 0.04);
 }
 
 .logo {
   width: 108rpx;
   height: 108rpx;
   border-radius: 24rpx;
-  background: #f7fbfb;
+  background: #faf9f7;
   flex: none;
 }
 
 .name {
-  color: #10201d;
+  color: #18181b;
   font-size: 42rpx;
   font-weight: 900;
   line-height: 1.25;
@@ -33,19 +37,23 @@
 }
 
 .section {
-  padding: 34rpx 0;
-  border-top: 1rpx solid #edf4f4;
+  padding: 28rpx;
+  margin-bottom: 18rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  border-top: 0;
+  box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.035);
 }
 
 .section-title {
   margin-bottom: 22rpx;
-  color: #10201d;
+  color: #18181b;
   font-size: 32rpx;
   font-weight: 900;
 }
 
 .paragraph {
-  color: #263734;
+  color: #3f3f46;
   font-size: 29rpx;
   line-height: 1.82;
 }
@@ -76,7 +84,7 @@
 .info-row text:last-child {
   flex: 1;
   min-width: 0;
-  color: #10201d;
+  color: #18181b;
 }
 
 .service-list {
@@ -87,7 +95,7 @@
 .service-list view {
   position: relative;
   padding-left: 28rpx;
-  color: #263734;
+  color: #3f3f46;
   font-size: 28rpx;
   line-height: 1.7;
 }
@@ -100,15 +108,15 @@
   width: 10rpx;
   height: 10rpx;
   border-radius: 50%;
-  background: #078894;
+  background: #ff4d5f;
 }
 
 .copy-btn {
   height: 72rpx;
   margin: 28rpx 0 0;
   border-radius: 999rpx;
-  background: #e8f8f8;
-  color: #078894;
+  background: #fff1f3;
+  color: #ff4d5f;
   font-size: 27rpx;
   font-weight: 800;
   line-height: 72rpx;

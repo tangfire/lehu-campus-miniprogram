@@ -5,7 +5,7 @@
 }
 
 .empty-title {
-  color: #10201d;
+  color: #18181b;
   font-size: 32rpx;
   font-weight: 700;
   margin-bottom: 12rpx;

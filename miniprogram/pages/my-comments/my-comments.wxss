@@ -1,17 +1,18 @@
 .my-comments {
   padding: 22rpx;
-  background: #f7fbfb;
+  background: #f8f7f5;
 }
 
 .comment-card {
   padding: 24rpx;
-  margin-bottom: 18rpx;
-  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  border-radius: 22rpx;
   background: #ffffff;
+  box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.035);
 }
 
 .comment-content {
-  color: #10201d;
+  color: #18181b;
   font-size: 29rpx;
   line-height: 1.65;
 }
@@ -28,15 +29,15 @@
   gap: 16rpx;
   margin-top: 18rpx;
   padding: 16rpx;
-  border-radius: 12rpx;
-  background: #f7fbfb;
+  border-radius: 18rpx;
+  background: #faf9f7;
 }
 
 .post-cover {
   width: 92rpx;
   height: 92rpx;
-  border-radius: 10rpx;
-  background: #eef6f6;
+  border-radius: 14rpx;
+  background: #f5f1ee;
   flex: none;
 }
 
@@ -44,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #078894;
+  color: #ff4d5f;
   font-size: 32rpx;
   font-weight: 900;
 }
@@ -55,7 +56,7 @@
 }
 
 .post-title {
-  color: #10201d;
+  color: #18181b;
   font-size: 27rpx;
   font-weight: 800;
   line-height: 1.35;

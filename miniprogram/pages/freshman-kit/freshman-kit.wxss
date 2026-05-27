@@ -5,20 +5,20 @@
 .guide-hero {
   padding: 30rpx 30rpx 28rpx;
   margin-bottom: 16rpx;
-  border: 1rpx solid #dbe7e5;
+  border: 1rpx solid #ece7e2;
   border-radius: 16rpx;
   background: #ffffff;
 }
 
 .guide-eyebrow {
-  color: #078894;
+  color: #ff4d5f;
   font-size: 24rpx;
   font-weight: 800;
 }
 
 .guide-title {
   margin-top: 10rpx;
-  color: #10201d;
+  color: #18181b;
   font-size: 42rpx;
   font-weight: 900;
 }
@@ -40,14 +40,14 @@
 .guide-card {
   min-height: 118rpx;
   padding: 20rpx;
-  border: 1rpx solid #dbe7e5;
+  border: 1rpx solid #ece7e2;
   border-radius: 14rpx;
   background: #ffffff;
   box-sizing: border-box;
 }
 
 .guide-card-title {
-  color: #10201d;
+  color: #18181b;
   font-size: 28rpx;
   font-weight: 900;
 }
@@ -76,14 +76,14 @@
   border-radius: 999rpx;
   background: #ffffff;
   color: #475569;
-  border: 1rpx solid #d9ecee;
+  border: 1rpx solid #ece7e2;
   font-size: 26rpx;
 }
 
 .category-pill.active {
-  background: #078894;
+  background: #ff4d5f;
   color: #ffffff;
-  border-color: #078894;
+  border-color: #ff4d5f;
 }
 
 .favorite-filter {
@@ -97,7 +97,7 @@
 }
 
 .empty-title {
-  color: #10201d;
+  color: #18181b;
   font-size: 30rpx;
   font-weight: 900;
 }
@@ -140,8 +140,8 @@
 }
 
 .badge {
-  background: #e8f8f8;
-  color: #078894;
+  background: #fff1f3;
+  color: #ff4d5f;
   font-weight: 800;
 }
 
@@ -160,7 +160,7 @@
 }
 
 .tool-title {
-  color: #10201d;
+  color: #18181b;
   font-size: 31rpx;
   font-weight: 900;
 }
@@ -185,13 +185,13 @@
 }
 
 .favorite.active {
-  background: #078894;
+  background: #ff4d5f;
   color: #ffffff;
 }
 
 .tool-detail {
   padding: 0 24rpx 24rpx;
-  border-top: 1rpx solid #d9ecee;
+  border-top: 1rpx solid #ece7e2;
 }
 
 .body {
@@ -213,7 +213,7 @@
 
 .checklist {
   margin-top: 22rpx;
-  border: 1rpx solid #dbe7e5;
+  border: 1rpx solid #ece7e2;
   border-radius: 12rpx;
   overflow: hidden;
 }
@@ -252,8 +252,8 @@
 }
 
 .check-row.checked .check-box {
-  border-color: #078894;
-  background: #078894;
+  border-color: #ff4d5f;
+  background: #ff4d5f;
 }
 
 .check-text {
@@ -317,8 +317,8 @@
   height: 58rpx;
   line-height: 58rpx;
   border-radius: 8rpx;
-  background: #e8f8f8;
-  color: #078894;
+  background: #fff1f3;
+  color: #ff4d5f;
   font-size: 24rpx;
 }
 
@@ -328,7 +328,7 @@
 
 .links {
   margin-top: 18rpx;
-  border-top: 1rpx solid #d9ecee;
+  border-top: 1rpx solid #ece7e2;
 }
 
 .link-row {
@@ -337,7 +337,7 @@
   justify-content: space-between;
   gap: 18rpx;
   padding: 18rpx 0;
-  border-bottom: 1rpx solid #d9ecee;
+  border-bottom: 1rpx solid #ece7e2;
 }
 
 .link-row text {

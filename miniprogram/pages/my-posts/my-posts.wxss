@@ -1,12 +1,14 @@
 .my-posts {
   padding-bottom: 48rpx;
+  background: #f8f7f5;
 }
 
 .post {
   display: flex;
   gap: 18rpx;
-  padding: 24rpx;
-  margin-bottom: 18rpx;
+  padding: 22rpx;
+  margin-bottom: 16rpx;
+  border-radius: 22rpx;
 }
 
 .thumb-wrap,
@@ -15,7 +17,7 @@
   width: 132rpx;
   height: 132rpx;
   flex: none;
-  border-radius: 8rpx;
+  border-radius: 16rpx;
   overflow: hidden;
   background: #f1f5f9;
 }
@@ -29,7 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #078894;
+  color: #ff4d5f;
   font-size: 42rpx;
   font-weight: 800;
 }
@@ -54,8 +56,10 @@
 }
 
 .post-title {
+  color: #18181b;
   font-size: 31rpx;
   font-weight: 800;
+  line-height: 1.35;
 }
 
 .post-meta {
@@ -81,7 +85,7 @@
   width: 100rpx;
   height: 58rpx;
   line-height: 58rpx;
-  border-radius: 8rpx;
+  border-radius: 999rpx;
   background: #fef2f2;
   color: #dc2626;
   font-size: 24rpx;

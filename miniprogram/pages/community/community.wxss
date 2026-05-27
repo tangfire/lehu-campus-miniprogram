@@ -1,17 +1,18 @@
 .community {
   min-height: 100vh;
-  padding: 0 14rpx 170rpx;
-  background: #f7f8fa;
+  padding: 0 16rpx 170rpx;
+  background: #f8f7f5;
 }
 
 .feed-sticky {
   position: sticky;
   top: 0;
   z-index: 8;
-  margin: 0 -14rpx 14rpx;
-  padding: 16rpx 14rpx 0;
-  background: rgba(247, 248, 250, 0.98);
+  margin: 0 -16rpx 16rpx;
+  padding: 18rpx 16rpx 0;
+  background: rgba(248, 247, 245, 0.97);
   border-bottom: 1rpx solid rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(16rpx);
 }
 
 .topbar {
@@ -24,7 +25,7 @@
 .brand-title {
   flex: none;
   color: #111827;
-  font-size: 40rpx;
+  font-size: 39rpx;
   font-weight: 900;
 }
 
@@ -37,6 +38,7 @@
   padding: 0 20rpx;
   border-radius: 999rpx;
   background: #ffffff;
+  border: 1rpx solid rgba(15, 23, 42, 0.04);
   box-sizing: border-box;
 }
 
@@ -78,13 +80,13 @@
 
 .channel-scroll {
   white-space: nowrap;
-  margin: 0 -14rpx;
+  margin: 0 -16rpx;
 }
 
 .channel-row {
   display: flex;
-  gap: 36rpx;
-  padding: 0 14rpx;
+  gap: 34rpx;
+  padding: 0 16rpx;
 }
 
 .channel {
@@ -92,7 +94,7 @@
   flex: none;
   padding: 12rpx 0 17rpx;
   color: #64748b;
-  font-size: 29rpx;
+  font-size: 28rpx;
   font-weight: 700;
 }
 
@@ -109,14 +111,14 @@
   width: 30rpx;
   height: 6rpx;
   border-radius: 999rpx;
-  background: #ef4056;
+  background: #ff4d5f;
   transform: translateX(-50%);
 }
 
 .waterfall {
   display: flex;
   align-items: flex-start;
-  gap: 12rpx;
+  gap: 14rpx;
 }
 
 .waterfall-col {
@@ -125,17 +127,17 @@
 }
 
 .note-card {
-  margin-bottom: 12rpx;
+  margin-bottom: 14rpx;
   overflow: hidden;
-  border-radius: 12rpx;
+  border-radius: 18rpx;
   background: #ffffff;
-  box-shadow: none;
+  box-shadow: 0 8rpx 26rpx rgba(15, 23, 42, 0.045);
 }
 
 .cover-wrap {
   position: relative;
   min-height: 230rpx;
-  background: #f1f5f9;
+  background: #f3f4f6;
 }
 
 .note-cover {
@@ -188,7 +190,7 @@
 
 .poster-cover {
   position: relative;
-  min-height: 318rpx;
+  min-height: 306rpx;
   padding: 28rpx 24rpx;
   box-sizing: border-box;
   overflow: hidden;
@@ -222,7 +224,7 @@
   padding: 7rpx 13rpx;
   border-radius: 999rpx;
   background: rgba(255, 255, 255, 0.72);
-  color: #0f766e;
+  color: #ef4056;
   font-size: 21rpx;
   font-weight: 800;
   overflow: hidden;
@@ -233,7 +235,7 @@
 .poster-title {
   position: relative;
   color: #222222;
-  font-size: 38rpx;
+  font-size: 36rpx;
   font-weight: 900;
   line-height: 1.28;
   letter-spacing: 0;
@@ -244,7 +246,7 @@
 }
 
 .note-body {
-  padding: 14rpx 14rpx 16rpx;
+  padding: 16rpx 16rpx 18rpx;
 }
 
 .flag-row {
@@ -259,16 +261,16 @@
   line-height: 27rpx;
   padding: 0 9rpx;
   border-radius: 999rpx;
-  background: #f1f5f9;
-  color: #0f766e;
+  background: #fff1f3;
+  color: #ef4056;
   font-size: 18rpx;
   font-weight: 800;
 }
 
 .note-title {
   color: #111827;
-  font-size: 28rpx;
-  font-weight: 700;
+  font-size: 27rpx;
+  font-weight: 800;
   line-height: 1.36;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -281,7 +283,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8rpx;
-  margin-top: 14rpx;
+  margin-top: 16rpx;
   color: #7b8494;
   font-size: 22rpx;
 }
@@ -301,10 +303,10 @@
 }
 
 .avatar {
-  width: 36rpx;
-  height: 36rpx;
+  width: 38rpx;
+  height: 38rpx;
   border-radius: 50%;
-  background: #e0f2fe;
+  background: #fff1f3;
   flex: none;
 }
 
@@ -312,7 +314,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0f766e;
+  color: #ff4d5f;
   font-size: 19rpx;
   font-weight: 800;
 }

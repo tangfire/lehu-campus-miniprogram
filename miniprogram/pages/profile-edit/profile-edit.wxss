@@ -1,3 +1,7 @@
+.profile-edit {
+  background: #f8f7f5;
+}
+
 .form {
   padding: 0 24rpx;
 }
@@ -7,7 +11,7 @@
   align-items: center;
   gap: 24rpx;
   min-height: 92rpx;
-  border-bottom: 1rpx solid #d9ecee;
+  border-bottom: 1rpx solid #f1ede8;
 }
 
 .field:last-child {
@@ -28,4 +32,6 @@
 
 .save {
   margin-top: 28rpx;
+  height: 78rpx;
+  line-height: 78rpx;
 }

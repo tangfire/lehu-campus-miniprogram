@@ -14,14 +14,14 @@
   ],
   "window": {
     "navigationBarTitleText": "深汕校园e站",
-    "navigationBarBackgroundColor": "#078894",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F4FAFA"
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f8f7f5"
   },
   "tabBar": {
     "custom": true,
     "color": "#64748B",
-    "selectedColor": "#078894",
+    "selectedColor": "#ff4d5f",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
