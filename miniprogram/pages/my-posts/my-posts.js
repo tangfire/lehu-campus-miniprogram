@@ -39,7 +39,7 @@ Page({
         url: '/campus/forum/my-posts',
         data: { page, size: this.data.size }
       })
-      const posts = data.posts || []
+      const posts = (data.posts || []).map(normalizePost)
       this.setData({
         posts: reset ? posts : this.data.posts.concat(posts),
         total: data.page_stats ? data.page_stats.total : 0,
@@ -76,3 +76,13 @@ Page({
     })
   }
 })
+
+function normalizePost(post) {
+  const images = post.images || []
+  return {
+    ...post,
+    images,
+    media_type: post.media_type || (images.length ? 'image' : 'text'),
+    display_cover: post.cover_url || images[0] || ''
+  }
+}

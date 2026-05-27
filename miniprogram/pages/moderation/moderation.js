@@ -22,7 +22,7 @@ Page({
     try {
       if (this.data.tab === 'posts') {
         const data = await request({ url: '/campus/moderation/posts', data: { status: 0, size: 50 } })
-        this.setData({ posts: data.posts || [] })
+        this.setData({ posts: (data.posts || []).map(normalizePost) })
       } else {
         const data = await request({ url: '/campus/moderation/comments', data: { status: 0, size: 50 } })
         this.setData({ comments: data.comments || [] })
@@ -65,3 +65,13 @@ Page({
     })
   }
 })
+
+function normalizePost(post) {
+  const images = post.images || []
+  return {
+    ...post,
+    images,
+    media_type: post.media_type || (images.length ? 'image' : 'text'),
+    display_cover: post.cover_url || images[0] || ''
+  }
+}

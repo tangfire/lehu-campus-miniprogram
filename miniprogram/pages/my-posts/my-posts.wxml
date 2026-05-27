@@ -3,6 +3,11 @@
 
   <block wx:for="{{posts}}" wx:key="id">
     <view class="post panel">
+      <view wx:if="{{item.display_cover}}" class="thumb-wrap" data-id="{{item.id}}" bindtap="openPost">
+        <image class="thumb" src="{{item.display_cover}}" mode="aspectFill" />
+        <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
+      </view>
+      <view wx:else class="text-thumb" data-id="{{item.id}}" bindtap="openPost">文</view>
       <view class="post-main" data-id="{{item.id}}" bindtap="openPost">
         <view class="post-title">{{item.title}}</view>
         <view class="post-meta">{{item.category_name}} · {{item.created_at}}</view>

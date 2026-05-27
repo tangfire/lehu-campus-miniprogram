@@ -1,8 +1,8 @@
 <view class="page community">
   <view class="topbar">
     <view>
-      <view class="title">校园社区</view>
-      <view class="subtitle">学习、生活、社团都在这里</view>
+      <view class="title">校园笔记</view>
+      <view class="subtitle">同学们正在分享的校园瞬间</view>
     </view>
     <button class="publish-btn" bindtap="goPublish">发布</button>
   </view>
@@ -26,31 +26,52 @@
     <view class="sort-item {{sort === 'hot' ? 'active' : ''}}" data-sort="hot" bindtap="changeSort">热度</view>
   </view>
 
-  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有帖子" desc="发布第一条校园动态，帮同学们把社区热起来。" />
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有笔记" desc="发布第一条校园笔记，记录深汕校区的新鲜事。" />
 
-  <view class="post-list">
-    <block wx:for="{{posts}}" wx:key="id">
-      <view class="post panel" data-id="{{item.id}}" bindtap="openPost">
-        <view class="post-head">
-          <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
-          <view wx:else class="avatar avatar-placeholder">同</view>
-          <view class="author-main">
-            <view class="author-name">{{item.author ? item.author.name : '同学'}}</view>
-            <view class="post-meta">{{item.category_name}} · {{item.created_at}}</view>
+  <view class="waterfall" wx:if="{{posts.length}}">
+    <view class="waterfall-col">
+      <block wx:for="{{leftPosts}}" wx:key="id">
+        <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
+          <view wx:if="{{item.display_cover}}" class="cover-wrap">
+            <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
+            <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
+          </view>
+          <view wx:else class="text-cover">{{item.content}}</view>
+          <view class="note-body">
+            <view class="note-title">{{item.title}}</view>
+            <view class="note-meta">
+              <view class="author">
+                <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+                <view wx:else class="avatar avatar-placeholder">同</view>
+                <text>{{item.display_author}}</text>
+              </view>
+              <text>{{item.like_count}}赞</text>
+            </view>
           </view>
         </view>
-        <view class="post-title">{{item.title}}</view>
-        <view class="post-content">{{item.content}}</view>
-        <view class="image-row" wx:if="{{item.images && item.images.length}}">
-          <block wx:for="{{item.images}}" wx:for-item="img" wx:key="*this">
-            <image class="post-image" src="{{img}}" mode="aspectFill" />
-          </block>
+      </block>
+    </view>
+    <view class="waterfall-col">
+      <block wx:for="{{rightPosts}}" wx:key="id">
+        <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
+          <view wx:if="{{item.display_cover}}" class="cover-wrap">
+            <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
+            <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
+          </view>
+          <view wx:else class="text-cover">{{item.content}}</view>
+          <view class="note-body">
+            <view class="note-title">{{item.title}}</view>
+            <view class="note-meta">
+              <view class="author">
+                <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+                <view wx:else class="avatar avatar-placeholder">同</view>
+                <text>{{item.display_author}}</text>
+              </view>
+              <text>{{item.like_count}}赞</text>
+            </view>
+          </view>
         </view>
-        <view class="post-actions">
-          <text>{{item.like_count}} 赞</text>
-          <text>{{item.comment_count}} 评论</text>
-        </view>
-      </view>
-    </block>
+      </block>
+    </view>
   </view>
 </view>

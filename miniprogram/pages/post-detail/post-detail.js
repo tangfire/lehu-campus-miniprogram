@@ -24,7 +24,7 @@ Page({
   async loadPost() {
     try {
       const data = await request({ url: `/campus/forum/posts/${this.data.id}` })
-      this.setData({ post: data.post })
+      this.setData({ post: normalizePost(data.post) })
     } catch (err) {
       showError(err)
     }
@@ -181,3 +181,13 @@ Page({
     })
   }
 })
+
+function normalizePost(post) {
+  if (!post) return post
+  const images = post.images || []
+  return {
+    ...post,
+    images,
+    media_type: post.media_type || (images.length ? 'image' : 'text')
+  }
+}

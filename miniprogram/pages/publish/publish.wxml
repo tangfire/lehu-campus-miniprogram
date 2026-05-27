@@ -9,7 +9,13 @@
   <view class="form panel">
     <input value="{{title}}" bindinput="onTitle" maxlength="60" placeholder="标题" />
     <textarea value="{{content}}" bindinput="onContent" maxlength="2000" placeholder="正文" />
-    <view class="image-picker">
+
+    <view class="media-tabs">
+      <view class="media-tab {{mediaType === 'image' ? 'active' : ''}}" data-type="image" bindtap="changeMediaType">图文</view>
+      <view class="media-tab {{mediaType === 'video' ? 'active' : ''}}" data-type="video" bindtap="changeMediaType">视频</view>
+    </view>
+
+    <view wx:if="{{mediaType === 'image'}}" class="image-picker">
       <block wx:for="{{localImages}}" wx:key="*this">
         <view class="image-wrap">
           <image class="picked-image" src="{{item}}" mode="aspectFill" />
@@ -17,6 +23,26 @@
         </view>
       </block>
       <view wx:if="{{localImages.length < 9}}" class="add-image" bindtap="chooseImages">+</view>
+    </view>
+
+    <view wx:else class="video-picker">
+      <view wx:if="{{localVideo}}" class="video-wrap">
+        <video class="picked-video" src="{{localVideo}}" poster="{{coverImage}}" controls></video>
+        <view class="remove" bindtap="removeVideo">×</view>
+      </view>
+      <view wx:else class="add-video" bindtap="chooseVideo">
+        <view class="add-video-icon">▶</view>
+        <view>选择视频</view>
+      </view>
+
+      <view class="cover-row">
+        <view class="cover-label">封面</view>
+        <view wx:if="{{coverImage}}" class="cover-wrap">
+          <image class="cover-image" src="{{coverImage}}" mode="aspectFill" />
+          <view class="remove small" bindtap="removeCover">×</view>
+        </view>
+        <view wx:else class="add-cover" bindtap="chooseCover">+</view>
+      </view>
     </view>
   </view>
 

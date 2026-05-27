@@ -7,6 +7,8 @@ Page({
     sort: 'new',
     keyword: '',
     posts: [],
+    leftPosts: [],
+    rightPosts: [],
     page: 1,
     size: 20,
     total: 0,
@@ -53,9 +55,11 @@ Page({
           keyword: this.data.keyword
         }
       })
-      const nextPosts = data.posts || []
+      const nextPosts = (data.posts || []).map(normalizePost)
+      const posts = reset ? nextPosts : this.data.posts.concat(nextPosts)
       this.setData({
-        posts: reset ? nextPosts : this.data.posts.concat(nextPosts),
+        posts,
+        ...splitColumns(posts),
         total: data.page_stats ? data.page_stats.total : 0,
         page: page + 1
       })
@@ -108,3 +112,28 @@ Page({
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
   }
 })
+
+function normalizePost(post) {
+  const images = post.images || []
+  const cover = post.cover_url || images[0] || ''
+  return {
+    ...post,
+    images,
+    media_type: post.media_type || (images.length ? 'image' : 'text'),
+    display_cover: cover,
+    display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学'
+  }
+}
+
+function splitColumns(posts) {
+  const leftPosts = []
+  const rightPosts = []
+  posts.forEach((post, index) => {
+    if (index % 2 === 0) {
+      leftPosts.push(post)
+    } else {
+      rightPosts.push(post)
+    }
+  })
+  return { leftPosts, rightPosts }
+}

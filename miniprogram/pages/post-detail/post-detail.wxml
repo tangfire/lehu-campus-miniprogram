@@ -1,5 +1,14 @@
 <view class="page detail">
   <view wx:if="{{post}}" class="post panel">
+    <video wx:if="{{post.media_type === 'video'}}" class="media-video" src="{{post.video_url}}" poster="{{post.cover_url}}" controls></video>
+    <swiper wx:elif="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
+      <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
+        <swiper-item>
+          <image class="media-image" src="{{img}}" mode="aspectFill" />
+        </swiper-item>
+      </block>
+    </swiper>
+
     <view class="post-head">
       <image wx:if="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
       <view wx:else class="avatar avatar-placeholder">同</view>
@@ -11,11 +20,6 @@
     </view>
     <view class="title">{{post.title}}</view>
     <view class="content">{{post.content}}</view>
-    <view class="image-grid" wx:if="{{post.images && post.images.length}}">
-      <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
-        <image class="post-image" src="{{img}}" mode="aspectFill" />
-      </block>
-    </view>
     <view class="action-row">
       <button class="{{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">{{post.is_liked ? '已赞' : '点赞'}} {{post.like_count}}</button>
       <text>{{post.comment_count}} 评论</text>

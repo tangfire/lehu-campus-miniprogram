@@ -64,6 +64,37 @@ function uploadImage(filePath) {
   })
 }
 
+function uploadVideo(filePath) {
+  const token = wx.getStorageSync('token')
+  return new Promise((resolve, reject) => {
+    wx.uploadFile({
+      url: `${app.globalData.apiBase}/campus/upload/video`,
+      filePath,
+      name: 'file',
+      header: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      success(res) {
+        let body = {}
+        try {
+          body = JSON.parse(res.data || '{}')
+        } catch (err) {
+          reject(new Error('上传响应无效'))
+          return
+        }
+        if (res.statusCode >= 200 && res.statusCode < 300 && body.code === 0) {
+          resolve(body.data)
+          return
+        }
+        reject(new Error(body.message || '视频上传失败'))
+      },
+      fail(err) {
+        reject(new Error(err.errMsg || '视频上传失败'))
+      }
+    })
+  })
+}
+
 function showError(err) {
   wx.showToast({
     title: err.message || '操作失败',
@@ -74,5 +105,6 @@ function showError(err) {
 module.exports = {
   request,
   uploadImage,
+  uploadVideo,
   showError
 }
