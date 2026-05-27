@@ -81,6 +81,9 @@
   </view>
 
   <view class="form panel">
+    <view class="rules-tip" bindtap="goRules">
+      发布即代表遵守社区规范：不发联系方式、人身攻击、虚假信息或他人隐私。
+    </view>
     <input value="{{title}}" bindinput="onTitle" maxlength="60" placeholder="加个标题，会更容易被看到" />
     <textarea value="{{content}}" bindinput="onContent" maxlength="2000" placeholder="分享正文..." />
 

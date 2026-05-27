@@ -1,4 +1,4 @@
-const { request, uploadImage, uploadVideo, showError } = require('../../utils/request')
+const { request, uploadImage, uploadVideo, trackEvent, showError } = require('../../utils/request')
 
 const postTypes = [
   { value: 'note', label: '普通笔记', category: 'life' },
@@ -45,17 +45,21 @@ Page({
   onLoad(options = {}) {
     this.loadCategories()
     const mode = options.mode || 'album'
+    const restore = options.restore === '1'
+    trackEvent('publish_open', { page: 'publish', channel: restore ? 'draft' : mode })
     this.setData({
       createMode: mode,
       mediaType: mode === 'text' ? 'text' : 'image',
-      showMediaChooser: mode !== 'text'
+      showMediaChooser: !restore && mode !== 'text'
     })
-    if (mode === 'album') {
+    if (restore) {
+      this.restoreSavedDraft()
+    } else if (mode === 'album') {
       setTimeout(() => this.chooseFromAlbum(), 250)
     } else if (mode === 'camera') {
       setTimeout(() => this.takePhoto(), 250)
     }
-    this.checkDraft()
+    if (!restore) this.checkDraft()
   },
 
   async loadCategories() {
@@ -333,6 +337,15 @@ Page({
     })
   },
 
+  restoreSavedDraft() {
+    const draft = wx.getStorageSync(DRAFT_KEY)
+    if (!draft || !draft.updated_at) {
+      wx.showToast({ title: '暂无草稿', icon: 'none' })
+      return
+    }
+    this.restoreDraft(draft)
+  },
+
   restoreDraft(draft) {
     this.setData({
       postType: draft.postType || 'note',
@@ -378,6 +391,10 @@ Page({
         })
       }
     })
+  },
+
+  goRules() {
+    wx.navigateTo({ url: '/pages/policy/policy?type=rules' })
   },
 
   saveDraftSoon() {
@@ -460,18 +477,32 @@ Page({
       } else {
         payload.media_type = 'text'
       }
-      await request({
+      const created = await request({
         url: '/campus/forum/posts',
         method: 'POST',
         data: payload
       })
+      const postID = created && created.post ? created.post.id : ''
+      trackEvent('publish_success', {
+        page: 'publish',
+        targetType: 'post',
+        targetId: Number(postID || 0),
+        channel: payload.media_type,
+        extra: { post_type: this.data.postType }
+      })
       wx.removeStorageSync(DRAFT_KEY)
       this.setData({ hasDraft: false })
-      wx.showToast({ title: '已发布' })
+      wx.showToast({ title: '已发布，去看看' })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]
       if (prev) prev._needsRefresh = true
-      setTimeout(() => wx.navigateBack(), 500)
+      setTimeout(() => {
+        if (postID) {
+          wx.redirectTo({ url: `/pages/post-detail/post-detail?id=${postID}` })
+          return
+        }
+        wx.navigateBack()
+      }, 600)
     } catch (err) {
       showError(err)
     } finally {

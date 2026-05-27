@@ -1,0 +1,15 @@
+<view class="page policy">
+  <view class="policy-hero">
+    <view class="policy-title">{{doc.title}}</view>
+    <view class="policy-desc">{{doc.desc}}</view>
+  </view>
+
+  <block wx:for="{{doc.sections}}" wx:key="title">
+    <view class="policy-section">
+      <view class="section-title">{{item.title}}</view>
+      <view class="rule-list">
+        <view wx:for="{{item.items}}" wx:for-item="rule" wx:key="*this" class="rule-item">{{rule}}</view>
+      </view>
+    </view>
+  </block>
+</view>

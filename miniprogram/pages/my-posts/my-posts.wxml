@@ -13,7 +13,7 @@
         <view class="post-meta">{{item.category_name}} · {{item.type_label}} · {{item.created_at}}</view>
         <view class="post-content">{{item.content}}</view>
       </view>
-      <button class="delete-btn" data-id="{{item.id}}" catchtap="deletePost">删除</button>
+      <button class="delete-btn" data-id="{{item.id}}" catchtap="withdrawPost">撤回</button>
     </view>
   </block>
 </view>

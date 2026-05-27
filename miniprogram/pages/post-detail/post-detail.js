@@ -1,5 +1,7 @@
 const { request, trackEvent, showError } = require('../../utils/request')
 
+const reportReasons = ['虚假信息', '人身攻击', '泄露隐私', '广告引流', '低俗不适', '其他']
+
 Page({
   data: {
     id: '',
@@ -15,7 +17,7 @@ Page({
   onLoad(query) {
     this.setupNavBar()
     this.setData({ id: query.id })
-    trackEvent('visit', { page: 'post-detail', targetType: 'post', targetId: query.id })
+    trackEvent('post_detail_visit', { page: 'post-detail', targetType: 'post', targetId: query.id })
     this.loadPost()
     this.loadComments()
   },
@@ -86,6 +88,7 @@ Page({
         method: 'POST',
         data: { content }
       })
+      trackEvent('comment_create', { page: 'post-detail', targetType: 'post', targetId: this.data.id })
       this.setData({ commentText: '' })
       this.loadPost()
       this.loadComments()
@@ -106,6 +109,7 @@ Page({
         url: `/campus/forum/posts/${this.data.id}/like`,
         method: post.is_liked ? 'DELETE' : 'POST'
       })
+      if (!post.is_liked) trackEvent('like', { page: 'post-detail', targetType: 'post', targetId: this.data.id })
       this.loadPost()
     } catch (err) {
       showError(err)
@@ -124,6 +128,7 @@ Page({
         url: `/campus/forum/posts/${this.data.id}/collection`,
         method: post.is_collected ? 'DELETE' : 'POST'
       })
+      if (!post.is_collected) trackEvent('collect', { page: 'post-detail', targetType: 'post', targetId: this.data.id })
       this.loadPost()
     } catch (err) {
       showError(err)
@@ -134,27 +139,27 @@ Page({
     const post = this.data.post
     if (!post) return
     const isOwner = post.author && post.author.user_id === this.data.currentUserId
-    const itemList = isOwner ? ['删除帖子'] : ['举报帖子']
+    const itemList = isOwner ? ['撤回帖子'] : ['举报帖子']
     wx.showActionSheet({
       itemList,
       success: res => {
-        if (isOwner && res.tapIndex === 0) this.deletePost()
+        if (isOwner && res.tapIndex === 0) this.withdrawPost()
         if (!isOwner && res.tapIndex === 0) this.reportPost()
       }
     })
   },
 
-  deletePost() {
+  withdrawPost() {
     wx.showModal({
-      title: '删除帖子',
-      content: '删除后同学将无法再看到这条内容。',
-      confirmText: '删除',
+      title: '撤回帖子',
+      content: '撤回后，同学将无法再看到这条内容。',
+      confirmText: '撤回',
       confirmColor: '#dc2626',
       success: async res => {
         if (!res.confirm) return
         try {
           await request({ url: `/campus/forum/posts/${this.data.id}`, method: 'DELETE' })
-          wx.showToast({ title: '已删除' })
+          wx.showToast({ title: '已撤回' })
           const pages = getCurrentPages()
           const prev = pages[pages.length - 2]
           if (prev) prev._needsRefresh = true
@@ -201,10 +206,20 @@ Page({
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }
+    wx.showActionSheet({
+      itemList: reportReasons,
+      success: res => {
+        const reason = reportReasons[res.tapIndex] || '其他'
+        this.submitReport(url, reason)
+      }
+    })
+  },
+
+  submitReport(url, reason) {
     wx.showModal({
-      title: '举报内容',
+      title: reason,
       editable: true,
-      placeholderText: '请简单说明原因',
+      placeholderText: '补充说明，可不填',
       confirmText: '提交',
       success: async res => {
         if (!res.confirm) return
@@ -213,10 +228,11 @@ Page({
             url,
             method: 'POST',
             data: {
-              reason: '内容不合适',
+              reason,
               detail: res.content || ''
             }
           })
+          trackEvent('report_create', { page: 'post-detail', channel: reason })
           wx.showToast({ title: '已提交' })
         } catch (err) {
           showError(err)

@@ -3,7 +3,6 @@
     "pages/community/community",
     "pages/timetable/timetable",
     "pages/mine/mine",
-    "pages/freshman-kit/freshman-kit",
     "pages/post-detail/post-detail",
     "pages/publish/publish",
     "pages/profile-edit/profile-edit",
@@ -11,7 +10,8 @@
     "pages/my-collections/my-collections",
     "pages/my-comments/my-comments",
     "pages/feedback/feedback",
-    "pages/about-us/about-us"
+    "pages/about-us/about-us",
+    "pages/policy/policy"
   ],
   "window": {
     "navigationBarTitleText": "深汕校园e站",

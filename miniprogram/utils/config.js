@@ -1,7 +1,7 @@
 const apiBaseMap = {
   develop: 'http://localhost:18080/v1',
-  trial: 'https://api.example.com/v1',
-  release: 'https://api.example.com/v1'
+  trial: 'https://YOUR_TRIAL_API_DOMAIN/v1',
+  release: 'https://YOUR_RELEASE_API_DOMAIN/v1'
 }
 
 function getEnvVersion() {

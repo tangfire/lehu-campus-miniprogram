@@ -1,0 +1,68 @@
+.policy {
+  min-height: 100vh;
+  padding: 34rpx 30rpx 70rpx;
+  background: #f8f7f5;
+  box-sizing: border-box;
+}
+
+.policy-hero,
+.policy-section {
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.035);
+}
+
+.policy-hero {
+  padding: 34rpx 30rpx;
+  margin-bottom: 18rpx;
+}
+
+.policy-title {
+  color: #18181b;
+  font-size: 42rpx;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.policy-desc {
+  margin-top: 14rpx;
+  color: #64748b;
+  font-size: 27rpx;
+  line-height: 1.65;
+}
+
+.policy-section {
+  padding: 28rpx;
+  margin-bottom: 18rpx;
+}
+
+.section-title {
+  margin-bottom: 18rpx;
+  color: #18181b;
+  font-size: 31rpx;
+  font-weight: 900;
+}
+
+.rule-list {
+  display: grid;
+  gap: 16rpx;
+}
+
+.rule-item {
+  position: relative;
+  padding-left: 28rpx;
+  color: #3f3f46;
+  font-size: 28rpx;
+  line-height: 1.72;
+}
+
+.rule-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 19rpx;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #ff4d5f;
+}

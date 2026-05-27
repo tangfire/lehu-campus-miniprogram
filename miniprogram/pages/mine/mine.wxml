@@ -57,6 +57,12 @@
       <view class="quick-desc">看过的讨论</view>
       <view class="quick-arrow">›</view>
     </view>
+    <view class="quick-card draft-card {{hasDraft ? 'has-draft' : ''}}" bindtap="goDrafts">
+      <view class="quick-icon draft-icon"></view>
+      <view class="quick-title">草稿箱</view>
+      <view class="quick-desc">{{draftDesc}}</view>
+      <view class="quick-arrow">›</view>
+    </view>
   </view>
 
   <view class="panel menu">
@@ -80,6 +86,17 @@
         <text>意见反馈 / 联系我们</text>
       </view>
       <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" data-type="rules" bindtap="goPolicy">
+      <view class="menu-left">
+        <view class="menu-icon rules-icon"></view>
+        <text>社区规范</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row compact-links">
+      <view class="policy-link" data-type="terms" bindtap="goPolicy">用户协议</view>
+      <view class="policy-link" data-type="privacy" bindtap="goPolicy">隐私政策</view>
     </view>
     <view class="menu-row" wx:if="{{token}}" bindtap="logout">
       <view class="menu-left">

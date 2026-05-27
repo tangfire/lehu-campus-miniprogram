@@ -353,6 +353,16 @@
   border-bottom: 1rpx solid #f1ede8;
 }
 
+.rules-tip {
+  margin-bottom: 18rpx;
+  padding: 18rpx 22rpx;
+  border-radius: 18rpx;
+  background: #fff7f8;
+  color: #9f1239;
+  font-size: 24rpx;
+  line-height: 1.55;
+}
+
 .form textarea {
   width: 100%;
   min-height: 260rpx;

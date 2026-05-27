@@ -1,5 +1,7 @@
 const { request, uploadImage, trackEvent, showError } = require('../../utils/request')
 
+const DRAFT_KEY = 'campus_publish_draft_v1'
+
 Page({
   data: {
     token: '',
@@ -7,7 +9,9 @@ Page({
     profile: null,
     statusBarHeight: 0,
     loggingIn: false,
-    uploadingAvatar: false
+    uploadingAvatar: false,
+    hasDraft: false,
+    draftDesc: '暂无草稿'
   },
 
   onLoad() {
@@ -18,10 +22,14 @@ Page({
   onShow() {
     syncTabBar(this, 2)
     trackEvent('visit', { page: 'mine' })
+    const draft = wx.getStorageSync(DRAFT_KEY)
+    const hasDraft = Boolean(draft && draft.updated_at)
     this.setData({
       token: wx.getStorageSync('token') || '',
       user: wx.getStorageSync('user') || null,
-      profile: wx.getStorageSync('profile') || null
+      profile: wx.getStorageSync('profile') || null,
+      hasDraft,
+      draftDesc: hasDraft ? '1篇未发布' : '暂无草稿'
     })
   },
 
@@ -141,6 +149,24 @@ Page({
       return
     }
     wx.navigateTo({ url: '/pages/my-comments/my-comments' })
+  },
+
+  goDrafts() {
+    const draft = wx.getStorageSync(DRAFT_KEY)
+    if (!draft || !draft.updated_at) {
+      wx.showToast({ title: '暂无草稿', icon: 'none' })
+      return
+    }
+    if (!this.data.token) {
+      this.login()
+      return
+    }
+    wx.navigateTo({ url: '/pages/publish/publish?restore=1' })
+  },
+
+  goPolicy(e) {
+    const type = e.currentTarget.dataset.type || 'terms'
+    wx.navigateTo({ url: `/pages/policy/policy?type=${type}` })
   }
 })
 

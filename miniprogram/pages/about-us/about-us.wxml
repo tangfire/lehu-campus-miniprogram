@@ -61,4 +61,20 @@
     </view>
     <button class="copy-btn" bindtap="copyWechat">复制联系方式</button>
   </view>
+
+  <view class="section">
+    <view class="section-title">规则与协议</view>
+    <view class="policy-row" data-type="rules" bindtap="goPolicy">
+      <text>社区规范</text>
+      <text>发布前建议先看</text>
+    </view>
+    <view class="policy-row" data-type="terms" bindtap="goPolicy">
+      <text>用户协议</text>
+      <text>服务说明</text>
+    </view>
+    <view class="policy-row" data-type="privacy" bindtap="goPolicy">
+      <text>隐私政策</text>
+      <text>信息使用说明</text>
+    </view>
+  </view>
 </view>

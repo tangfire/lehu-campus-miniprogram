@@ -121,3 +121,27 @@
   font-weight: 800;
   line-height: 72rpx;
 }
+
+.policy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid #f1ede8;
+}
+
+.policy-row:last-child {
+  border-bottom: 0;
+}
+
+.policy-row text:first-child {
+  color: #18181b;
+  font-size: 28rpx;
+  font-weight: 900;
+}
+
+.policy-row text:last-child {
+  color: #94a3b8;
+  font-size: 24rpx;
+}

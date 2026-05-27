@@ -56,18 +56,18 @@ Page({
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
   },
 
-  deletePost(e) {
+  withdrawPost(e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({
-      title: '删除帖子',
-      content: '删除后同学将无法再看到这条内容。',
-      confirmText: '删除',
+      title: '撤回帖子',
+      content: '撤回后，同学将无法再看到这条内容。',
+      confirmText: '撤回',
       confirmColor: '#dc2626',
       success: async res => {
         if (!res.confirm) return
         try {
           await request({ url: `/campus/forum/posts/${id}`, method: 'DELETE' })
-          wx.showToast({ title: '已删除' })
+          wx.showToast({ title: '已撤回' })
           this.loadPosts(true)
         } catch (err) {
           showError(err)
