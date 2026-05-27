@@ -30,10 +30,6 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/freshman-kit/freshman-kit",
-        "text": "新生指引"
-      },
-      {
         "pagePath": "pages/timetable/timetable",
         "text": "课表"
       },

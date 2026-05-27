@@ -19,10 +19,6 @@
   </view>
 
   <view class="quick-grid">
-    <view class="quick-card" bindtap="goFreshmanKit">
-      <view class="quick-title">新生工具包</view>
-      <view class="quick-desc">报到/宿舍/官网</view>
-    </view>
     <view class="quick-card" bindtap="goMyPosts">
       <view class="quick-title">我的发布</view>
       <view class="quick-desc">笔记和动态</view>

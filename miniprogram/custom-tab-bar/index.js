@@ -9,12 +9,6 @@ Component({
         pagePath: '/pages/community/community'
       },
       {
-        key: 'freshman',
-        text: '新生指引',
-        icon: 'icon-guide',
-        pagePath: '/pages/freshman-kit/freshman-kit'
-      },
-      {
         key: 'timetable',
         text: '课表',
         icon: 'icon-calendar',

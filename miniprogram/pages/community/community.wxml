@@ -19,7 +19,7 @@
     </view>
   </scroll-view>
 
-  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有内容" desc="先看看新生工具包，也可以发一条攻略或提问。" />
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有内容" desc="可以发一条攻略、提问、失物招领或校园瞬间。" />
 
   <view class="waterfall" wx:if="{{posts.length}}">
     <view class="waterfall-col">
@@ -34,7 +34,9 @@
             <view>{{item.content}}</view>
           </view>
           <view class="note-body">
-            <view wx:if="{{item.is_official || item.is_featured}}" class="flag-row">
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">深汕e仔</text>
               <text wx:if="{{item.is_official}}">官方</text>
               <text wx:if="{{item.is_featured}}">精选</text>
             </view>
@@ -43,7 +45,7 @@
               <view class="author">
                 <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
                 <view wx:else class="avatar avatar-placeholder">同</view>
-                <text>{{item.display_author}}</text>
+                <text>{{item.author_label}}</text>
               </view>
               <view class="like">♡ {{item.display_count}}</view>
             </view>
@@ -63,7 +65,9 @@
             <view>{{item.content}}</view>
           </view>
           <view class="note-body">
-            <view wx:if="{{item.is_official || item.is_featured}}" class="flag-row">
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">深汕e仔</text>
               <text wx:if="{{item.is_official}}">官方</text>
               <text wx:if="{{item.is_featured}}">精选</text>
             </view>
@@ -72,7 +76,7 @@
               <view class="author">
                 <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
                 <view wx:else class="avatar avatar-placeholder">同</view>
-                <text>{{item.display_author}}</text>
+                <text>{{item.author_label}}</text>
               </view>
               <view class="like">♡ {{item.display_count}}</view>
             </view>

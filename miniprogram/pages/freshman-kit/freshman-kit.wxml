@@ -2,7 +2,7 @@
   <view class="guide-hero">
     <view class="guide-eyebrow">{{countdownText}}</view>
     <view class="guide-title">新生指引</view>
-    <view class="guide-desc">报到、宿舍、交通、官网入口先放这里，待学校正式通知后持续更新。</view>
+    <view class="guide-desc">把开学前真正要做的事放在这里：材料、宿舍、到校路线和官方入口。信息能确认就直接给清单，不能确认就标明等待学校通知。</view>
   </view>
 
   <view class="guide-grid">
@@ -27,8 +27,17 @@
         data-category="{{item}}"
         bindtap="changeCategory"
       >{{item}}</view>
+      <view
+        class="category-pill favorite-filter {{favoriteOnly ? 'active' : ''}}"
+        bindtap="toggleFavoriteOnly"
+      >只看收藏</view>
     </view>
   </scroll-view>
+
+  <view wx:if="{{favoriteOnly && !visibleItems.length}}" class="empty panel">
+    <view class="empty-title">还没有收藏</view>
+    <view class="empty-desc">看到重要的清单，可以点右侧“收藏”，之后从这里快速找回。</view>
+  </view>
 
   <block wx:for="{{visibleItems}}" wx:key="id">
     <view class="tool panel">
@@ -37,6 +46,7 @@
           <view class="tool-top">
             <text class="badge">{{item.category}}</text>
             <text class="status">{{item.status}}</text>
+            <text wx:if="{{item.progressText}}" class="progress">{{item.progressText}}</text>
           </view>
           <view class="tool-title">{{item.title}}</view>
           <view class="tool-summary">{{item.summary}}</view>
@@ -46,12 +56,33 @@
 
       <view wx:if="{{expandedId === item.id}}" class="tool-detail">
         <view class="body">{{item.body}}</view>
+        <view wx:if="{{item.source}}" class="source">{{item.source}}</view>
+
+        <view wx:if="{{item.checklist && item.checklist.length}}" class="checklist">
+          <view
+            wx:for="{{item.checklist}}"
+            wx:for-item="check"
+            wx:for-index="checkIndex"
+            wx:key="text"
+            class="check-row {{check.checked ? 'checked' : ''}}"
+            data-id="{{item.id}}"
+            data-index="{{checkIndex}}"
+            bindtap="toggleChecklist"
+          >
+            <view class="check-box">{{check.checked ? '✓' : ''}}</view>
+            <view class="check-text">{{check.text}}</view>
+          </view>
+        </view>
+
+        <view wx:if="{{item.tips && item.tips.length}}" class="tips">
+          <view wx:for="{{item.tips}}" wx:key="*this" class="tip-row">{{item}}</view>
+        </view>
+
         <view wx:if="{{item.tags && item.tags.length}}" class="tag-row">
           <text wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
         </view>
         <view class="action-row">
-          <button data-text="{{item.body}}" bindtap="copyText">复制内容</button>
-          <button wx:if="{{item.url}}" data-url="{{item.url}}" bindtap="copyLink">复制链接</button>
+          <button data-text="{{item.copyText || item.body}}" bindtap="copyText">复制清单</button>
         </view>
         <view wx:if="{{item.links && item.links.length}}" class="links">
           <view wx:for="{{item.links}}" wx:key="url" class="link-row">

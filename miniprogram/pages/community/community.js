@@ -1,18 +1,18 @@
 const { request, showError } = require('../../utils/request')
 
 const quickChannels = [
-  { label: '推荐', category: '', sort: 'new' },
-  { label: '攻略', category: 'guide', sort: 'hot' },
-  { label: '问答', category: 'qa', sort: 'new' },
-  { label: '失物', category: 'lost', sort: 'new' },
-  { label: '社团', category: 'club', sort: 'new' }
+  { label: '推荐', postType: '', sort: 'new' },
+  { label: '攻略', postType: 'guide', sort: 'hot' },
+  { label: '问答', postType: 'question', sort: 'hot' },
+  { label: '失物', postType: 'lost', sort: 'new' },
+  { label: '社团', postType: 'club', sort: 'new' }
 ]
 
 Page({
   data: {
     quickChannels,
     activeChannel: '推荐',
-    activeCategory: '',
+    activePostType: '',
     sort: 'new',
     keyword: '',
     posts: [],
@@ -51,7 +51,7 @@ Page({
           page,
           size: this.data.size,
           sort: this.data.sort,
-          category_code: this.data.activeCategory,
+          post_type: this.data.activePostType,
           keyword: this.data.keyword
         }
       })
@@ -81,7 +81,7 @@ Page({
     const channel = quickChannels.find(item => item.label === label) || quickChannels[0]
     this.setData({
       activeChannel: channel.label,
-      activeCategory: channel.category,
+      activePostType: channel.postType,
       sort: channel.sort || 'new'
     })
     this.loadPosts(true)
@@ -131,9 +131,11 @@ function normalizePost(post) {
     type_label: postTypeLabel(post.post_type),
     display_cover: cover,
     display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学',
+    author_label: post.is_official ? '深汕e仔' : (post.author ? (post.author.name || post.author.nickname || '同学') : '同学'),
     display_count: formatCount(post.like_count || 0),
     is_official: !!post.is_official,
-    is_featured: !!post.is_featured
+    is_featured: !!post.is_featured,
+    is_pinned: !!post.is_pinned
   }
 }
 

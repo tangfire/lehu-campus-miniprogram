@@ -108,10 +108,6 @@ Page({
     wx.navigateTo({ url: '/pages/my-posts/my-posts' })
   },
 
-  goFreshmanKit() {
-    wx.navigateTo({ url: '/pages/freshman-kit/freshman-kit' })
-  },
-
   goAboutUs() {
     wx.navigateTo({ url: '/pages/about-us/about-us' })
   },
@@ -137,6 +133,6 @@ function syncTabBar(page, selected) {
   if (typeof page.getTabBar !== 'function') return
   const tabBar = page.getTabBar()
   if (tabBar) {
-    tabBar.setData({ selected: selected + 1 })
+    tabBar.setData({ selected })
   }
 }

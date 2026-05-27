@@ -10,20 +10,23 @@ Page({
     visibleItems: kit.items,
     expandedId: '',
     favoriteIds: [],
+    checkedMap: {},
+    favoriteOnly: false,
     countdownText: '',
     guideCards: [
-      { key: 'report', title: '报到清单', desc: '证件、档案、到校流程先核对' },
-      { key: 'dorm', title: '宿舍准备', desc: '床品、收纳、常用物品清单' },
-      { key: 'traffic', title: '到校路线', desc: '交通、接驳和官网入口' },
-      { key: 'official', title: '官网入口', desc: '学校、教务、招生信息' }
+      { key: 'before-school', title: '报到前', desc: '通知、材料、缴费、行程' },
+      { key: 'documents', title: '材料袋', desc: '证件、档案、照片备份' },
+      { key: 'dorm-essentials', title: '宿舍', desc: '只带第一周必需品' },
+      { key: 'official-links', title: '官网', desc: '教务、招生、学生入口' }
     ]
   },
 
   onLoad(query) {
     const favoriteIds = wx.getStorageSync('freshman_kit_favorites') || []
-    this.setData({ favoriteIds, expandedId: query.id || '' })
+    const checkedMap = wx.getStorageSync('freshman_kit_checked') || {}
+    this.setData({ favoriteIds, checkedMap, expandedId: query.id || '' })
     this.refreshCountdown()
-    this.refreshFavoriteFlags()
+    this.refreshVisibleItems()
   },
 
   onShow() {
@@ -32,15 +35,11 @@ Page({
 
   changeCategory(e) {
     const category = e.currentTarget.dataset.category
-    const visibleItems = category === '全部'
-      ? this.data.items
-      : this.data.items.filter(item => item.category === category)
     this.setData({
       activeCategory: category,
-      visibleItems,
       expandedId: ''
     })
-    this.refreshFavoriteFlags()
+    this.refreshVisibleItems()
   },
 
   toggleItem(e) {
@@ -54,10 +53,10 @@ Page({
     if (!target) return
     this.setData({
       activeCategory: target.category,
-      visibleItems: this.data.items.filter(item => item.category === target.category),
+      favoriteOnly: false,
       expandedId: id
     })
-    this.refreshFavoriteFlags()
+    this.refreshVisibleItems()
   },
 
   toggleFavorite(e) {
@@ -71,7 +70,25 @@ Page({
     const favoriteIds = Array.from(set)
     wx.setStorageSync('freshman_kit_favorites', favoriteIds)
     this.setData({ favoriteIds })
-    this.refreshFavoriteFlags()
+    this.refreshVisibleItems()
+  },
+
+  toggleFavoriteOnly() {
+    this.setData({
+      favoriteOnly: !this.data.favoriteOnly,
+      expandedId: ''
+    })
+    this.refreshVisibleItems()
+  },
+
+  toggleChecklist(e) {
+    const id = e.currentTarget.dataset.id
+    const index = e.currentTarget.dataset.index
+    const key = `${id}_${index}`
+    const checkedMap = { ...this.data.checkedMap, [key]: !this.data.checkedMap[key] }
+    wx.setStorageSync('freshman_kit_checked', checkedMap)
+    this.setData({ checkedMap })
+    this.refreshVisibleItems()
   },
 
   copyText(e) {
@@ -88,13 +105,28 @@ Page({
     })
   },
 
-  refreshFavoriteFlags() {
+  refreshVisibleItems() {
     const favoriteSet = new Set(this.data.favoriteIds)
+    const checkedMap = this.data.checkedMap || {}
+    const visibleItems = this.data.items
+      .filter(item => this.data.activeCategory === '全部' || item.category === this.data.activeCategory)
+      .filter(item => !this.data.favoriteOnly || favoriteSet.has(item.id))
+      .map(item => {
+        const checklist = (item.checklist || []).map((text, index) => ({
+          text,
+          checked: !!checkedMap[`${item.id}_${index}`]
+        }))
+        const checkedCount = checklist.filter(entry => entry.checked).length
+        const progressText = checklist.length ? `${checkedCount}/${checklist.length}` : ''
+        return {
+          ...item,
+          checklist,
+          progressText,
+          is_favorite: favoriteSet.has(item.id)
+        }
+      })
     this.setData({
-      visibleItems: this.data.visibleItems.map(item => ({
-        ...item,
-        is_favorite: favoriteSet.has(item.id)
-      }))
+      visibleItems
     })
   },
 
