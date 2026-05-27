@@ -1,8 +1,18 @@
 const { request, showError } = require('../../utils/request')
 
+const quickChannels = [
+  { label: '全部', category: '', postType: '' },
+  { label: '失物', category: 'lost', postType: 'lost' },
+  { label: '问答', category: 'qa', postType: 'question' },
+  { label: '攻略', category: 'guide', postType: 'guide' },
+  { label: '社团', category: 'club', postType: 'club' }
+]
+
 Page({
   data: {
     categories: [],
+    quickChannels,
+    activeChannel: '全部',
     activeCategory: '',
     sort: 'new',
     keyword: '',
@@ -77,7 +87,20 @@ Page({
   },
 
   changeCategory(e) {
-    this.setData({ activeCategory: e.currentTarget.dataset.code || '' })
+    this.setData({
+      activeCategory: e.currentTarget.dataset.code || '',
+      activeChannel: ''
+    })
+    this.loadPosts(true)
+  },
+
+  changeChannel(e) {
+    const label = e.currentTarget.dataset.label
+    const channel = quickChannels.find(item => item.label === label) || quickChannels[0]
+    this.setData({
+      activeChannel: channel.label,
+      activeCategory: channel.category
+    })
     this.loadPosts(true)
   },
 
@@ -120,9 +143,22 @@ function normalizePost(post) {
     ...post,
     images,
     media_type: post.media_type || (images.length ? 'image' : 'text'),
+    post_type: post.post_type || 'note',
+    type_label: postTypeLabel(post.post_type),
     display_cover: cover,
     display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学'
   }
+}
+
+function postTypeLabel(postType) {
+  const map = {
+    lost: '失物',
+    question: '问答',
+    guide: '攻略',
+    club: '社团',
+    note: '笔记'
+  }
+  return map[postType || 'note'] || '笔记'
 }
 
 function splitColumns(posts) {

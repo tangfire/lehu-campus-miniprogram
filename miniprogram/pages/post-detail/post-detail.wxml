@@ -14,11 +14,17 @@
       <view wx:else class="avatar avatar-placeholder">同</view>
       <view class="author-main">
         <view class="author-name">{{post.author ? post.author.name : '同学'}}</view>
-        <view class="post-meta">{{post.category_name}} · {{post.created_at}}</view>
+        <view class="post-meta">{{post.category_name}} · {{post.type_label}} · {{post.created_at}}</view>
       </view>
       <view class="more" bindtap="openPostMenu">···</view>
     </view>
     <view class="title">{{post.title}}</view>
+    <view wx:if="{{post.extra_items && post.extra_items.length}}" class="extra-box">
+      <view wx:for="{{post.extra_items}}" wx:key="label" class="extra-row">
+        <text>{{item.label}}</text>
+        <text>{{item.value}}</text>
+      </view>
+    </view>
     <view class="content">{{post.content}}</view>
     <view class="action-row">
       <button class="{{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">{{post.is_liked ? '已赞' : '点赞'}} {{post.like_count}}</button>

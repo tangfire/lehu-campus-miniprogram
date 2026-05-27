@@ -72,6 +72,10 @@ Page({
     wx.navigateTo({ url: '/pages/my-posts/my-posts' })
   },
 
+  goFreshmanKit() {
+    wx.navigateTo({ url: '/pages/freshman-kit/freshman-kit' })
+  },
+
   goMyCollections() {
     if (!this.data.token) {
       this.login()

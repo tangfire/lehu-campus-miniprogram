@@ -1,8 +1,18 @@
 const { request, uploadImage, uploadVideo, showError } = require('../../utils/request')
 
+const postTypes = [
+  { value: 'note', label: '普通笔记', category: 'life' },
+  { value: 'lost', label: '失物招领', category: 'lost' },
+  { value: 'question', label: '提问', category: 'qa' },
+  { value: 'guide', label: '攻略', category: 'guide' },
+  { value: 'club', label: '社团', category: 'club' }
+]
+
 Page({
   data: {
     categories: [],
+    postTypes,
+    postType: 'note',
     categoryCode: 'study',
     title: '',
     content: '',
@@ -10,6 +20,15 @@ Page({
     localImages: [],
     localVideo: '',
     coverImage: '',
+    extra: {
+      lost_kind: '丢失',
+      location: '',
+      event_time: '',
+      contact: '',
+      club_name: '',
+      activity_time: '',
+      activity_place: ''
+    },
     submitting: false
   },
 
@@ -34,12 +53,31 @@ Page({
     this.setData({ categoryCode: e.currentTarget.dataset.code })
   },
 
+  selectPostType(e) {
+    const postType = e.currentTarget.dataset.type
+    const matched = postTypes.find(item => item.value === postType)
+    const next = { postType }
+    if (matched && this.data.categories.some(category => category.code === matched.category)) {
+      next.categoryCode = matched.category
+    }
+    this.setData(next)
+  },
+
   onTitle(e) {
     this.setData({ title: e.detail.value })
   },
 
   onContent(e) {
     this.setData({ content: e.detail.value })
+  },
+
+  onExtraInput(e) {
+    const key = e.currentTarget.dataset.key
+    this.setData({ [`extra.${key}`]: e.detail.value })
+  },
+
+  changeLostKind(e) {
+    this.setData({ 'extra.lost_kind': e.currentTarget.dataset.kind })
   },
 
   changeMediaType(e) {
@@ -113,10 +151,34 @@ Page({
         title: this.data.title,
         content: this.data.content,
         media_type: 'text',
+        post_type: this.data.postType,
+        extra: buildExtra(this.data.postType, this.data.extra),
         images: [],
         cover_url: '',
         video_url: ''
-      }
+}
+
+function buildExtra(postType, extra) {
+  if (postType === 'lost') {
+    return pick(extra, ['lost_kind', 'location', 'event_time', 'contact'])
+  }
+  if (postType === 'club') {
+    return pick(extra, ['club_name', 'activity_time', 'activity_place', 'contact'])
+  }
+  if (postType === 'guide') {
+    return pick(extra, ['location'])
+  }
+  return {}
+}
+
+function pick(source, keys) {
+  const out = {}
+  keys.forEach(key => {
+    const value = String(source[key] || '').trim()
+    if (value) out[key] = value
+  })
+  return out
+}
 
       if (this.data.mediaType === 'video') {
         if (!this.data.localVideo) {

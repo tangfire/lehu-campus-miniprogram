@@ -16,6 +16,10 @@
       <text>编辑校园资料</text>
       <text>›</text>
     </view>
+    <view class="menu-row" bindtap="goFreshmanKit">
+      <text>新生工具包</text>
+      <text>›</text>
+    </view>
     <view class="menu-row" bindtap="goMyPosts">
       <text>我的帖子</text>
       <text>›</text>

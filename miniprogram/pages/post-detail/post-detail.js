@@ -206,6 +206,42 @@ function normalizePost(post) {
   return {
     ...post,
     images,
-    media_type: post.media_type || (images.length ? 'image' : 'text')
+    media_type: post.media_type || (images.length ? 'image' : 'text'),
+    post_type: post.post_type || 'note',
+    type_label: postTypeLabel(post.post_type),
+    extra_items: extraItems(post.post_type, post.extra || {})
   }
+}
+
+function postTypeLabel(postType) {
+  const map = {
+    lost: '失物招领',
+    question: '问答互助',
+    guide: '校园攻略',
+    club: '社团招新',
+    note: '校园笔记'
+  }
+  return map[postType || 'note'] || '校园笔记'
+}
+
+function extraItems(postType, extra) {
+  const rows = []
+  if (postType === 'lost') {
+    push(rows, '类型', extra.lost_kind)
+    push(rows, '地点', extra.location)
+    push(rows, '时间', extra.event_time)
+    push(rows, '联系', extra.contact)
+  } else if (postType === 'club') {
+    push(rows, '社团', extra.club_name)
+    push(rows, '时间', extra.activity_time)
+    push(rows, '地点', extra.activity_place)
+    push(rows, '联系', extra.contact)
+  } else if (postType === 'guide') {
+    push(rows, '地点', extra.location)
+  }
+  return rows
+}
+
+function push(rows, label, value) {
+  if (value) rows.push({ label, value })
 }

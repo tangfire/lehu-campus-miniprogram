@@ -24,7 +24,8 @@ Page({
     selectedWeekday: 1,
     loading: false,
     importing: false,
-    showImportForm: true
+    showImportForm: true,
+    shareSummary: ''
   },
 
   onLoad() {
@@ -66,6 +67,20 @@ Page({
 
   toggleImportForm() {
     this.setData({ showImportForm: !this.data.showImportForm })
+  },
+
+  goFreshmanKit() {
+    wx.navigateTo({ url: '/pages/freshman-kit/freshman-kit' })
+  },
+
+  shareToday() {
+    const text = buildShareText(`${this.data.term} 今日课表`, this.data.todayCourses)
+    copyShareText(text)
+  },
+
+  shareWeek() {
+    const text = buildShareText(`${this.data.term} 本周课表`, this.data.courses)
+    copyShareText(text)
   },
 
   selectWeekday(e) {
@@ -139,8 +154,16 @@ Page({
       todayCourses: coursesForWeekday(courses, toCampusWeekday(new Date().getDay())),
       selectedCourses: coursesForWeekday(courses, selectedWeekday),
       weekdayTabs: buildWeekdayTabs(courses),
+      shareSummary: courses.length ? `${courses.length} 门课 · ${countBusyDays(courses)} 天有课` : '',
       showImportForm: courses.length === 0
     })
+  },
+
+  onShareAppMessage() {
+    return {
+      title: this.data.courses.length ? `我的课表：${this.data.shareSummary}` : '深职校园通课表',
+      path: '/pages/timetable/timetable'
+    }
   }
 })
 
@@ -171,6 +194,33 @@ function buildWeekdayTabs(courses) {
     ...day,
     count: coursesForWeekday(courses, day.value).length
   }))
+}
+
+function countBusyDays(courses) {
+  const days = {}
+  ;(courses || []).forEach(course => {
+    days[course.weekday] = true
+  })
+  return Object.keys(days).length
+}
+
+function buildShareText(title, courses) {
+  if (!courses || courses.length === 0) {
+    return `${title}\n暂无课程`
+  }
+  const lines = courses.map(course => {
+    const day = weekdays.find(item => item.value === course.weekday)
+    const weekday = day ? day.label : ''
+    return `${weekday} ${course.time_label} ${course.course_name} ${course.classroom || ''}`.trim()
+  })
+  return `${title}\n${lines.join('\n')}`
+}
+
+function copyShareText(text) {
+  wx.setClipboardData({
+    data: text,
+    success: () => wx.showToast({ title: '课表已复制', icon: 'none' })
+  })
 }
 
 function formatWeekLabel(course) {

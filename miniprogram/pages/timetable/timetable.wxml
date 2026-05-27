@@ -11,8 +11,13 @@
         <view>
           <view class="eyebrow">{{term}}</view>
           <view class="title">今日课表</view>
+          <view wx:if="{{shareSummary}}" class="summary">{{shareSummary}}</view>
         </view>
-        <button class="mini-btn" bindtap="toggleImportForm">{{showImportForm ? '收起' : '导入'}}</button>
+        <view class="top-actions">
+          <button class="mini-btn" bindtap="toggleImportForm">{{showImportForm ? '收起' : '导入'}}</button>
+          <button class="mini-btn" bindtap="shareToday">今日</button>
+          <button class="mini-btn" bindtap="shareWeek">本周</button>
+        </view>
       </view>
 
       <view wx:if="{{todayCourses.length}}" class="today-list">
@@ -25,6 +30,14 @@
         </view>
       </view>
       <view wx:else class="empty-inline">{{courses.length ? '今天没有课程' : '还没有导入课表'}}</view>
+    </view>
+
+    <view class="tool-entry panel" bindtap="goFreshmanKit">
+      <view>
+        <view class="panel-title compact">深汕校区新生工具包</view>
+        <view class="muted">报到、宿舍、交通、官网入口和常用事项</view>
+      </view>
+      <text>›</text>
     </view>
 
     <view wx:if="{{showImportForm}}" class="panel import-panel">

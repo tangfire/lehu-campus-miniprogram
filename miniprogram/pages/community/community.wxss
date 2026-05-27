@@ -60,7 +60,11 @@
 
 .category-scroll {
   white-space: nowrap;
-  margin: 0 -24rpx 18rpx;
+  margin: 0 -24rpx 14rpx;
+}
+
+.category-scroll.secondary {
+  margin-bottom: 18rpx;
 }
 
 .category-row {
@@ -83,6 +87,10 @@
   background: #0f766e;
   color: #ffffff;
   border-color: #0f766e;
+}
+
+.category-pill.channel {
+  font-weight: 800;
 }
 
 .sort-row {
@@ -146,6 +154,18 @@
   font-size: 22rpx;
 }
 
+.type-badge {
+  position: absolute;
+  right: 12rpx;
+  top: 12rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+  background: rgba(15, 23, 42, 0.72);
+  color: #ffffff;
+  font-size: 20rpx;
+  font-weight: 800;
+}
+
 .text-cover {
   min-height: 180rpx;
   padding: 20rpx;
@@ -158,6 +178,17 @@
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.text-type {
+  display: inline-block;
+  margin-bottom: 10rpx;
+  padding: 5rpx 10rpx;
+  border-radius: 999rpx;
+  background: #eef7f5;
+  color: #0f766e;
+  font-size: 21rpx;
+  font-weight: 800;
 }
 
 .note-body {

@@ -14,7 +14,18 @@
 
   <scroll-view class="category-scroll" scroll-x>
     <view class="category-row">
-      <view class="category-pill {{activeCategory === '' ? 'active' : ''}}" data-code="" bindtap="changeCategory">全部</view>
+      <view
+        wx:for="{{quickChannels}}"
+        wx:key="label"
+        class="category-pill channel {{activeChannel === item.label ? 'active' : ''}}"
+        data-label="{{item.label}}"
+        bindtap="changeChannel"
+      >{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="category-scroll secondary" scroll-x>
+    <view class="category-row">
       <block wx:for="{{categories}}" wx:key="code">
         <view class="category-pill {{activeCategory === item.code ? 'active' : ''}}" data-code="{{item.code}}" bindtap="changeCategory">{{item.name}}</view>
       </block>
@@ -35,8 +46,12 @@
           <view wx:if="{{item.display_cover}}" class="cover-wrap">
             <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
             <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
+            <view class="type-badge">{{item.type_label}}</view>
           </view>
-          <view wx:else class="text-cover">{{item.content}}</view>
+          <view wx:else class="text-cover">
+            <view class="text-type">{{item.type_label}}</view>
+            <view>{{item.content}}</view>
+          </view>
           <view class="note-body">
             <view class="note-title">{{item.title}}</view>
             <view class="note-meta">
@@ -57,8 +72,12 @@
           <view wx:if="{{item.display_cover}}" class="cover-wrap">
             <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
             <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
+            <view class="type-badge">{{item.type_label}}</view>
           </view>
-          <view wx:else class="text-cover">{{item.content}}</view>
+          <view wx:else class="text-cover">
+            <view class="text-type">{{item.type_label}}</view>
+            <view>{{item.content}}</view>
+          </view>
           <view class="note-body">
             <view class="note-title">{{item.title}}</view>
             <view class="note-meta">

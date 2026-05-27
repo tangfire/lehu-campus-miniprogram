@@ -1,0 +1,53 @@
+<view class="page freshman">
+  <view class="header panel">
+    <view class="school">深圳职业技术大学（深汕校区）</view>
+    <view class="title">新生工具包</view>
+    <view class="muted">报到、宿舍、交通、官网入口先放这里，待学校正式通知后持续更新。</view>
+  </view>
+
+  <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="category-row">
+      <view
+        wx:for="{{categories}}"
+        wx:key="*this"
+        class="category-pill {{activeCategory === item ? 'active' : ''}}"
+        data-category="{{item}}"
+        bindtap="changeCategory"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <block wx:for="{{visibleItems}}" wx:key="id">
+    <view class="tool panel">
+      <view class="tool-head" data-id="{{item.id}}" bindtap="toggleItem">
+        <view class="tool-main">
+          <view class="tool-top">
+            <text class="badge">{{item.category}}</text>
+            <text class="status">{{item.status}}</text>
+          </view>
+          <view class="tool-title">{{item.title}}</view>
+          <view class="tool-summary">{{item.summary}}</view>
+        </view>
+        <button class="favorite {{item.is_favorite ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">{{item.is_favorite ? '已藏' : '收藏'}}</button>
+      </view>
+
+      <view wx:if="{{expandedId === item.id}}" class="tool-detail">
+        <view class="body">{{item.body}}</view>
+        <view wx:if="{{item.tags && item.tags.length}}" class="tag-row">
+          <text wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="action-row">
+          <button data-text="{{item.body}}" bindtap="copyText">复制内容</button>
+          <button wx:if="{{item.url}}" data-url="{{item.url}}" bindtap="copyLink">复制链接</button>
+        </view>
+        <view wx:if="{{item.links && item.links.length}}" class="links">
+          <view wx:for="{{item.links}}" wx:key="url" class="link-row">
+            <text>{{item.label}}</text>
+            <button data-url="{{item.url}}" bindtap="copyLink">复制</button>
+          </view>
+        </view>
+        <view class="updated">更新：{{item.updatedAt}}</view>
+      </view>
+    </view>
+  </block>
+</view>

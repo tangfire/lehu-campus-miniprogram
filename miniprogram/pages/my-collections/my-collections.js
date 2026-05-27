@@ -74,6 +74,12 @@ function normalizePost(post) {
     ...post,
     images,
     media_type: post.media_type || (images.length ? 'image' : 'text'),
+    type_label: postTypeLabel(post.post_type),
     display_cover: post.cover_url || images[0] || ''
   }
+}
+
+function postTypeLabel(postType) {
+  const map = { lost: '失物', question: '问答', guide: '攻略', club: '社团', note: '笔记' }
+  return map[postType || 'note'] || '笔记'
 }

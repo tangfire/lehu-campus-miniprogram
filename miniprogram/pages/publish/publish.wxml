@@ -1,4 +1,15 @@
 <view class="page publish">
+  <view class="section-title">笔记类型</view>
+  <view class="type-row">
+    <view
+      wx:for="{{postTypes}}"
+      wx:key="value"
+      class="type-pill {{postType === item.value ? 'active' : ''}}"
+      data-type="{{item.value}}"
+      bindtap="selectPostType"
+    >{{item.label}}</view>
+  </view>
+
   <view class="section-title">选择版块</view>
   <view class="category-row">
     <block wx:for="{{categories}}" wx:key="code">
@@ -9,6 +20,27 @@
   <view class="form panel">
     <input value="{{title}}" bindinput="onTitle" maxlength="60" placeholder="标题" />
     <textarea value="{{content}}" bindinput="onContent" maxlength="2000" placeholder="正文" />
+
+    <view wx:if="{{postType === 'lost'}}" class="extra-panel">
+      <view class="lost-kind">
+        <view class="{{extra.lost_kind === '丢失' ? 'active' : ''}}" data-kind="丢失" bindtap="changeLostKind">丢失</view>
+        <view class="{{extra.lost_kind === '捡到' ? 'active' : ''}}" data-kind="捡到" bindtap="changeLostKind">捡到</view>
+      </view>
+      <input value="{{extra.location}}" data-key="location" bindinput="onExtraInput" placeholder="地点，例如 宿舍楼下/教学楼" />
+      <input value="{{extra.event_time}}" data-key="event_time" bindinput="onExtraInput" placeholder="时间，例如 今天中午" />
+      <input value="{{extra.contact}}" data-key="contact" bindinput="onExtraInput" placeholder="联系方式，可选" />
+    </view>
+
+    <view wx:if="{{postType === 'club'}}" class="extra-panel">
+      <input value="{{extra.club_name}}" data-key="club_name" bindinput="onExtraInput" placeholder="社团名称" />
+      <input value="{{extra.activity_time}}" data-key="activity_time" bindinput="onExtraInput" placeholder="活动/招新时间" />
+      <input value="{{extra.activity_place}}" data-key="activity_place" bindinput="onExtraInput" placeholder="活动/招新地点" />
+      <input value="{{extra.contact}}" data-key="contact" bindinput="onExtraInput" placeholder="联系方式，可选" />
+    </view>
+
+    <view wx:if="{{postType === 'guide'}}" class="extra-panel">
+      <input value="{{extra.location}}" data-key="location" bindinput="onExtraInput" placeholder="相关地点，可选" />
+    </view>
 
     <view class="media-tabs">
       <view class="media-tab {{mediaType === 'image' ? 'active' : ''}}" data-type="image" bindtap="changeMediaType">图文</view>
