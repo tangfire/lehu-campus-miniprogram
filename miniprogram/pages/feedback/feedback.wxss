@@ -1,0 +1,158 @@
+.feedback-page {
+  min-height: 100vh;
+  padding: 28rpx 24rpx 70rpx;
+  background: #fbfbfa;
+  box-sizing: border-box;
+}
+
+.feedback-hero {
+  padding: 12rpx 6rpx 28rpx;
+}
+
+.hero-title {
+  color: #172033;
+  font-size: 44rpx;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.hero-subtitle {
+  margin-top: 14rpx;
+  color: #64748b;
+  font-size: 26rpx;
+  line-height: 1.55;
+}
+
+.panel {
+  margin-bottom: 18rpx;
+  padding: 26rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.035);
+}
+
+.section-title,
+.image-head {
+  color: #172033;
+  font-size: 28rpx;
+  font-weight: 900;
+}
+
+.section-title {
+  margin-bottom: 18rpx;
+}
+
+.type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.type-pill {
+  padding: 14rpx 22rpx;
+  border-radius: 999rpx;
+  background: #f6f7f9;
+  color: #475569;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.type-pill.active {
+  background: #fff1f3;
+  color: #ff4d5f;
+}
+
+.content-input {
+  width: 100%;
+  min-height: 270rpx;
+  color: #172033;
+  font-size: 29rpx;
+  line-height: 1.55;
+}
+
+.counter {
+  margin-top: 12rpx;
+  color: #94a3b8;
+  font-size: 23rpx;
+  text-align: right;
+}
+
+.contact-input {
+  height: 72rpx;
+  color: #172033;
+  font-size: 28rpx;
+}
+
+.image-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.image-head text:last-child {
+  color: #94a3b8;
+  font-size: 23rpx;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+}
+
+.image-wrap,
+.add-image,
+.picked-image {
+  width: 100%;
+  height: 200rpx;
+}
+
+.image-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18rpx;
+  background: #f3f4f6;
+}
+
+.picked-image {
+  display: block;
+}
+
+.remove-image {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 38rpx;
+  height: 38rpx;
+  line-height: 36rpx;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.7);
+  color: #ffffff;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.add-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx dashed #cbd5e1;
+  border-radius: 18rpx;
+  background: #faf9f7;
+  color: #64748b;
+  font-size: 52rpx;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  height: 88rpx;
+  margin-top: 20rpx;
+  border-radius: 999rpx;
+  background: #ff4d5f;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 88rpx;
+  box-shadow: 0 12rpx 26rpx rgba(255, 77, 95, 0.18);
+}

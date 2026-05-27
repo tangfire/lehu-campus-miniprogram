@@ -10,6 +10,7 @@ const postTypes = [
 
 const MAX_VIDEO_SIZE = 20 * 1024 * 1024
 const MAX_VIDEO_DURATION = 30
+const DRAFT_KEY = 'campus_publish_draft_v1'
 
 Page({
   data: {
@@ -37,6 +38,7 @@ Page({
       activity_time: '',
       activity_place: ''
     },
+    hasDraft: false,
     submitting: false
   },
 
@@ -53,6 +55,7 @@ Page({
     } else if (mode === 'camera') {
       setTimeout(() => this.takePhoto(), 250)
     }
+    this.checkDraft()
   },
 
   async loadCategories() {
@@ -70,6 +73,7 @@ Page({
 
   selectCategory(e) {
     this.setData({ categoryCode: e.currentTarget.dataset.code })
+    this.saveDraftSoon()
   },
 
   selectPostType(e) {
@@ -80,23 +84,28 @@ Page({
       next.categoryCode = matched.category
     }
     this.setData(next)
+    this.saveDraftSoon()
   },
 
   onTitle(e) {
     this.setData({ title: e.detail.value })
+    this.saveDraftSoon()
   },
 
   onContent(e) {
     this.setData({ content: e.detail.value })
+    this.saveDraftSoon()
   },
 
   onExtraInput(e) {
     const key = e.currentTarget.dataset.key
     this.setData({ [`extra.${key}`]: e.detail.value })
+    this.saveDraftSoon()
   },
 
   changeLostKind(e) {
     this.setData({ 'extra.lost_kind': e.currentTarget.dataset.kind })
+    this.saveDraftSoon()
   },
 
   changeMediaType(e) {
@@ -111,6 +120,7 @@ Page({
       videoProcessLabel: '',
       coverImage: ''
     })
+    this.saveDraftSoon()
   },
 
   chooseFromAlbum() {
@@ -132,6 +142,7 @@ Page({
       coverImage: '',
       showMediaChooser: false
     })
+    this.saveDraftSoon()
   },
 
   chooseMedia(sourceType) {
@@ -147,6 +158,7 @@ Page({
           showMediaChooser: false,
           localImages: this.data.localImages.concat(res.tempFilePaths || [])
         })
+        this.saveDraftSoon()
       }
     })
   },
@@ -186,6 +198,7 @@ Page({
               videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
               videoProcessLabel: video.compressed ? '已自动压缩' : ''
             })
+            this.saveDraftSoon()
           } catch (err) {
             wx.showModal({
               title: '视频太大',
@@ -209,6 +222,7 @@ Page({
           videoProcessLabel: '',
           localImages: this.data.localImages.concat(images).slice(0, 9)
         })
+        this.saveDraftSoon()
       }
     })
   },
@@ -222,6 +236,7 @@ Page({
     const next = this.data.localImages.slice()
     next.splice(index, 1)
     this.setData({ localImages: next })
+    this.saveDraftSoon()
   },
 
   editImage(e) {
@@ -238,6 +253,7 @@ Page({
         const next = this.data.localImages.slice()
         next[index] = res.tempFilePath
         this.setData({ localImages: next })
+        this.saveDraftSoon()
       }
     })
   },
@@ -265,6 +281,7 @@ Page({
             videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
             videoProcessLabel: video.compressed ? '已自动压缩' : ''
           })
+          this.saveDraftSoon()
         } catch (err) {
           wx.showModal({
             title: '视频太大',
@@ -278,6 +295,7 @@ Page({
 
   removeVideo() {
     this.setData({ localVideo: '', videoSizeLabel: '', videoDurationLabel: '', videoProcessLabel: '' })
+    this.saveDraftSoon()
   },
 
   chooseCover() {
@@ -288,12 +306,114 @@ Page({
       success: res => {
         const files = res.tempFilePaths || []
         this.setData({ coverImage: files[0] || '' })
+        this.saveDraftSoon()
       }
     })
   },
 
   removeCover() {
     this.setData({ coverImage: '' })
+    this.saveDraftSoon()
+  },
+
+  checkDraft() {
+    const draft = wx.getStorageSync(DRAFT_KEY)
+    if (!draft || !draft.updated_at) return
+    this.setData({ hasDraft: true })
+    wx.showModal({
+      title: '恢复草稿？',
+      content: '检测到上次未发布的内容，要继续编辑吗？',
+      confirmText: '恢复',
+      cancelText: '不用',
+      success: res => {
+        if (res.confirm) {
+          this.restoreDraft(draft)
+        }
+      }
+    })
+  },
+
+  restoreDraft(draft) {
+    this.setData({
+      postType: draft.postType || 'note',
+      categoryCode: draft.categoryCode || this.data.categoryCode,
+      title: draft.title || '',
+      content: draft.content || '',
+      mediaType: draft.mediaType || 'text',
+      localImages: draft.localImages || [],
+      localVideo: draft.localVideo || '',
+      videoSizeLabel: draft.videoSizeLabel || '',
+      videoDurationLabel: draft.videoDurationLabel || '',
+      videoProcessLabel: draft.videoProcessLabel || '',
+      coverImage: draft.coverImage || '',
+      showMediaChooser: false,
+      extra: {
+        ...this.data.extra,
+        ...(draft.extra || {})
+      },
+      hasDraft: true
+    })
+  },
+
+  clearDraft() {
+    wx.showModal({
+      title: '清空草稿？',
+      content: '清空后无法恢复。',
+      confirmText: '清空',
+      confirmColor: '#ff4d5f',
+      success: res => {
+        if (!res.confirm) return
+        wx.removeStorageSync(DRAFT_KEY)
+        this.setData({
+          title: '',
+          content: '',
+          localImages: [],
+          localVideo: '',
+          coverImage: '',
+          videoSizeLabel: '',
+          videoDurationLabel: '',
+          videoProcessLabel: '',
+          hasDraft: false,
+          showMediaChooser: true
+        })
+      }
+    })
+  },
+
+  saveDraftSoon() {
+    if (this._draftTimer) clearTimeout(this._draftTimer)
+    this._draftTimer = setTimeout(() => this.saveDraft(), 300)
+  },
+
+  saveDraft() {
+    const hasContent = Boolean(
+      this.data.title.trim() ||
+      this.data.content.trim() ||
+      this.data.localImages.length ||
+      this.data.localVideo ||
+      this.data.coverImage
+    )
+    if (!hasContent) {
+      wx.removeStorageSync(DRAFT_KEY)
+      this.setData({ hasDraft: false })
+      return
+    }
+    wx.setStorageSync(DRAFT_KEY, {
+      postType: this.data.postType,
+      categoryCode: this.data.categoryCode,
+      title: this.data.title,
+      content: this.data.content,
+      mediaType: this.data.mediaType,
+      localImages: this.data.localImages,
+      localVideo: this.data.localVideo,
+      videoSizeLabel: this.data.videoSizeLabel,
+      videoDurationLabel: this.data.videoDurationLabel,
+      videoProcessLabel: this.data.videoProcessLabel,
+      coverImage: this.data.coverImage,
+      extra: this.data.extra,
+      updated_at: Date.now()
+    })
+    if (!this.data.hasDraft) this.setData({ hasDraft: true })
   },
 
   async submit() {
@@ -345,6 +465,8 @@ Page({
         method: 'POST',
         data: payload
       })
+      wx.removeStorageSync(DRAFT_KEY)
+      this.setData({ hasDraft: false })
       wx.showToast({ title: '已发布' })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]

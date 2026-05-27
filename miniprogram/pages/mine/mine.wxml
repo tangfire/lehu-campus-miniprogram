@@ -74,6 +74,13 @@
       </view>
       <text class="menu-arrow">›</text>
     </view>
+    <view class="menu-row" bindtap="goFeedback">
+      <view class="menu-left">
+        <view class="menu-icon feedback-icon"></view>
+        <text>意见反馈 / 联系我们</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
     <view class="menu-row" wx:if="{{token}}" bindtap="logout">
       <view class="menu-left">
         <view class="menu-icon logout-icon"></view>

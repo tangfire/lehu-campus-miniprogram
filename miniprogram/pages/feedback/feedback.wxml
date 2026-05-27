@@ -1,0 +1,52 @@
+<view class="page feedback-page">
+  <view class="feedback-hero">
+    <view class="hero-title">意见反馈</view>
+    <view class="hero-subtitle">功能不好用、信息不准确、想合作或想联系深汕e仔，都可以告诉我们。</view>
+  </view>
+
+  <view class="panel">
+    <view class="section-title">反馈类型</view>
+    <view class="type-grid">
+      <view
+        wx:for="{{types}}"
+        wx:key="value"
+        class="type-pill {{feedbackType === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="selectType"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <textarea
+      class="content-input"
+      value="{{content}}"
+      maxlength="800"
+      bindinput="onContent"
+      placeholder="请描述你遇到的问题、建议或想联系我们的事情..."
+    />
+    <view class="counter">{{content.length}}/800</view>
+  </view>
+
+  <view class="panel">
+    <input class="contact-input" value="{{contact}}" maxlength="80" bindinput="onContact" placeholder="联系方式，可选（微信/手机号/邮箱）" />
+  </view>
+
+  <view class="panel">
+    <view class="image-head">
+      <text>截图，可选</text>
+      <text>{{localImages.length}}/3</text>
+    </view>
+    <view class="image-grid">
+      <block wx:for="{{localImages}}" wx:key="*this">
+        <view class="image-wrap">
+          <image class="picked-image" src="{{item}}" mode="aspectFill" />
+          <view class="remove-image" data-index="{{index}}" bindtap="removeImage">×</view>
+        </view>
+      </block>
+      <view wx:if="{{localImages.length < 3}}" class="add-image" bindtap="chooseImages">+</view>
+    </view>
+  </view>
+
+  <button class="submit-btn" loading="{{submitting}}" bindtap="submit">提交反馈</button>
+</view>

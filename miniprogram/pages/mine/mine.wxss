@@ -433,6 +433,33 @@
   text-align: center;
 }
 
+.feedback-icon {
+  background: linear-gradient(135deg, #ff9aa7, #ff4d5f);
+}
+
+.feedback-icon::before {
+  content: "";
+  position: absolute;
+  left: 10rpx;
+  top: 11rpx;
+  width: 22rpx;
+  height: 16rpx;
+  border: 4rpx solid #ffffff;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+}
+
+.feedback-icon::after {
+  content: "";
+  position: absolute;
+  left: 16rpx;
+  bottom: 8rpx;
+  width: 10rpx;
+  height: 10rpx;
+  background: #ffffff;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
 .logout-icon {
   background: linear-gradient(135deg, #ffe1e7, #ff8ca0);
 }

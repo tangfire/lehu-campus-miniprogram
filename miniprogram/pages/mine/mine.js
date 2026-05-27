@@ -119,6 +119,14 @@ Page({
     wx.navigateTo({ url: '/pages/about-us/about-us' })
   },
 
+  goFeedback() {
+    if (!this.data.token) {
+      this.login()
+      return
+    }
+    wx.navigateTo({ url: '/pages/feedback/feedback' })
+  },
+
   goMyCollections() {
     if (!this.data.token) {
       this.login()
