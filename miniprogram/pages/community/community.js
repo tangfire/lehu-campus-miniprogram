@@ -105,6 +105,49 @@ Page({
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
   },
 
+  async toggleLike(e) {
+    const id = String(e.currentTarget.dataset.id || '')
+    if (!id) return
+    const token = wx.getStorageSync('token')
+    if (!token) {
+      wx.switchTab({ url: '/pages/mine/mine' })
+      return
+    }
+    const post = this.data.posts.find(item => String(item.id) === id)
+    if (!post || post._likeLoading) return
+    const nextLiked = !post.is_liked
+    const nextCount = Math.max(Number(post.like_count || 0) + (nextLiked ? 1 : -1), 0)
+    this.updatePostLike(id, nextLiked, nextCount, true)
+    try {
+      await request({
+        url: `/campus/forum/posts/${id}/like`,
+        method: nextLiked ? 'POST' : 'DELETE'
+      })
+      if (nextLiked) trackEvent('like', { page: 'community', targetType: 'post', targetId: Number(id) })
+      this.updatePostLike(id, nextLiked, nextCount, false)
+    } catch (err) {
+      this.updatePostLike(id, post.is_liked, Number(post.like_count || 0), false)
+      showError(err)
+    }
+  },
+
+  updatePostLike(id, isLiked, likeCount, loading) {
+    const posts = this.data.posts.map(item => {
+      if (String(item.id) !== String(id)) return item
+      return {
+        ...item,
+        is_liked: isLiked,
+        like_count: likeCount,
+        display_count: formatCount(likeCount),
+        _likeLoading: loading
+      }
+    })
+    this.setData({
+      posts,
+      ...splitColumns(posts)
+    })
+  },
+
   onShareAppMessage() {
     trackEvent('share', { page: 'community', channel: 'app_message' })
     return {
@@ -142,6 +185,7 @@ function normalizePost(post) {
     poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
     poster_title: cleanText(post.title || teaser),
     display_count: formatCount(post.like_count || 0),
+    is_liked: !!post.is_liked,
     is_official: !!post.is_official,
     is_featured: !!post.is_featured,
     is_pinned: !!post.is_pinned

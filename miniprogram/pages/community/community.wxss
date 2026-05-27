@@ -307,6 +307,14 @@
 
 .like {
   flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
   color: #6b7280;
   font-size: 23rpx;
+}
+
+.like.active {
+  color: #ff4d5f;
+  font-weight: 800;
 }

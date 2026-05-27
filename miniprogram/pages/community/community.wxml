@@ -53,7 +53,10 @@
                 <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
                 <text>{{item.author_label}}</text>
               </view>
-              <view class="like">♡ {{item.display_count}}</view>
+              <view class="like {{item.is_liked ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
+                <text>{{item.is_liked ? '♥' : '♡'}}</text>
+                <text>{{item.display_count}}</text>
+              </view>
             </view>
           </view>
         </view>
@@ -87,7 +90,10 @@
                 <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
                 <text>{{item.author_label}}</text>
               </view>
-              <view class="like">♡ {{item.display_count}}</view>
+              <view class="like {{item.is_liked ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
+                <text>{{item.is_liked ? '♥' : '♡'}}</text>
+                <text>{{item.display_count}}</text>
+              </view>
             </view>
           </view>
         </view>
