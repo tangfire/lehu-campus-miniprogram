@@ -191,7 +191,9 @@
 .poster-cover {
   position: relative;
   min-height: 306rpx;
-  padding: 28rpx 24rpx;
+  display: flex;
+  align-items: center;
+  padding: 34rpx 26rpx;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -214,22 +216,6 @@
 
 .poster-paper {
   background: #f8f1e8;
-}
-
-.poster-kicker {
-  position: relative;
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 22rpx;
-  padding: 7rpx 13rpx;
-  border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.72);
-  color: #ef4056;
-  font-size: 21rpx;
-  font-weight: 800;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .poster-title {

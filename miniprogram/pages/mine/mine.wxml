@@ -21,7 +21,6 @@
       <view class="avatar-wrap" bindtap="changeAvatar">
         <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
         <image wx:else class="avatar logo-avatar" src="/assets/logo-192.png" mode="aspectFit" />
-        <view wx:if="{{token}}" class="avatar-edit">{{uploadingAvatar ? '...' : '换'}}</view>
       </view>
       <view class="profile-main">
         <view class="name">{{user ? (user.nickname || user.name || '深汕同学') : '深汕校园e站'}}</view>
@@ -29,8 +28,11 @@
       </view>
     </view>
     <button wx:if="{{!token}}" class="login-btn" loading="{{loggingIn}}" bindtap="login">
-      <text class="wechat-mark">●●</text>
-      微信登录
+      <view class="wechat-icon">
+        <view class="wechat-bubble main"></view>
+        <view class="wechat-bubble sub"></view>
+      </view>
+      <text>微信登录</text>
     </button>
     <view wx:else class="profile-status">
       <text>{{profile && profile.auth_status === 1 ? '已认证' : '待校园认证'}}</text>

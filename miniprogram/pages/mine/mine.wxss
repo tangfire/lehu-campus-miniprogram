@@ -77,23 +77,6 @@
   box-shadow: 0 10rpx 24rpx rgba(15, 23, 42, 0.08);
 }
 
-.avatar-edit {
-  position: absolute;
-  right: -4rpx;
-  bottom: -2rpx;
-  width: 42rpx;
-  height: 42rpx;
-  line-height: 42rpx;
-  border: 4rpx solid #ffffff;
-  border-radius: 50%;
-  background: #ff4d5f;
-  color: #ffffff;
-  font-size: 20rpx;
-  font-weight: 900;
-  text-align: center;
-  box-sizing: border-box;
-}
-
 .name {
   color: #172033;
   font-size: 40rpx;
@@ -111,22 +94,86 @@
 .login-btn {
   position: relative;
   z-index: 2;
-  width: 380rpx;
-  height: 82rpx;
-  margin: 40rpx 0 0 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14rpx;
+  width: 332rpx;
+  height: 78rpx;
+  margin: 38rpx 0 0 8rpx;
+  padding: 0;
   border-radius: 999rpx;
-  background: linear-gradient(135deg, #33d965, #20c653);
+  background: #1fce66;
   color: #ffffff;
-  font-size: 30rpx;
+  font-size: 29rpx;
   font-weight: 900;
-  line-height: 82rpx;
-  box-shadow: 0 12rpx 24rpx rgba(35, 200, 85, 0.22);
+  line-height: 78rpx;
+  box-shadow: 0 14rpx 28rpx rgba(31, 206, 102, 0.22);
 }
 
-.wechat-mark {
-  margin-right: 14rpx;
-  font-size: 23rpx;
-  letter-spacing: -3rpx;
+.login-btn::after {
+  border: 0;
+}
+
+.login-btn[loading] {
+  opacity: 0.78;
+}
+
+.wechat-icon {
+  position: relative;
+  width: 44rpx;
+  height: 38rpx;
+  flex: none;
+}
+
+.wechat-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.wechat-bubble::before,
+.wechat-bubble::after {
+  content: "";
+  position: absolute;
+  top: 14rpx;
+  width: 5rpx;
+  height: 5rpx;
+  border-radius: 50%;
+  background: #1fce66;
+}
+
+.wechat-bubble.main {
+  left: 0;
+  top: 2rpx;
+  width: 31rpx;
+  height: 25rpx;
+}
+
+.wechat-bubble.main::before {
+  left: 9rpx;
+}
+
+.wechat-bubble.main::after {
+  right: 9rpx;
+}
+
+.wechat-bubble.sub {
+  right: 0;
+  bottom: 0;
+  width: 26rpx;
+  height: 21rpx;
+  opacity: 0.9;
+}
+
+.wechat-bubble.sub::before {
+  left: 8rpx;
+  top: 11rpx;
+}
+
+.wechat-bubble.sub::after {
+  right: 7rpx;
+  top: 11rpx;
 }
 
 .profile-status {

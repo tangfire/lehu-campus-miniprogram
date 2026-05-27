@@ -18,7 +18,6 @@
       </block>
     </swiper>
     <view wx:else class="poster-hero {{post.poster_class}}">
-      <view class="poster-kicker">{{post.poster_kicker}}</view>
       <view class="poster-title">{{post.poster_title}}</view>
     </view>
 

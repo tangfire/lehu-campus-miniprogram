@@ -84,6 +84,8 @@
 .poster-hero {
   position: relative;
   min-height: 560rpx;
+  display: flex;
+  align-items: center;
   padding: 92rpx 58rpx 72rpx;
   box-sizing: border-box;
   overflow: hidden;
@@ -107,22 +109,6 @@
 
 .poster-paper {
   background: #f8f1e8;
-}
-
-.poster-kicker {
-  position: relative;
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 34rpx;
-  padding: 9rpx 18rpx;
-  border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.72);
-  color: #ff4d5f;
-  font-size: 25rpx;
-  font-weight: 800;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .poster-title {

@@ -38,7 +38,6 @@
             </view>
           </view>
           <view wx:else class="poster-cover {{item.poster_class}}">
-            <view class="poster-kicker">{{item.poster_kicker}}</view>
             <view class="poster-title">{{item.poster_title}}</view>
           </view>
           <view class="note-body">
@@ -73,7 +72,6 @@
             </view>
           </view>
           <view wx:else class="poster-cover {{item.poster_class}}">
-            <view class="poster-kicker">{{item.poster_kicker}}</view>
             <view class="poster-title">{{item.poster_title}}</view>
           </view>
           <view class="note-body">
