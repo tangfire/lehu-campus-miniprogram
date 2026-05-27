@@ -65,6 +65,12 @@
       <view wx:else class="add-video" bindtap="chooseVideo">
         <view class="add-video-icon">▶</view>
         <view>选择视频</view>
+        <text>最长30秒，会自动压缩</text>
+      </view>
+      <view wx:if="{{localVideo && (videoSizeLabel || videoDurationLabel || videoProcessLabel)}}" class="video-meta">
+        <text wx:if="{{videoDurationLabel}}">{{videoDurationLabel}}</text>
+        <text wx:if="{{videoSizeLabel}}">{{videoSizeLabel}}</text>
+        <text wx:if="{{videoProcessLabel}}">{{videoProcessLabel}}</text>
       </view>
 
       <view class="cover-row">

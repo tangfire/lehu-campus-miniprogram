@@ -8,6 +8,9 @@ const postTypes = [
   { value: 'club', label: '社团', category: 'club' }
 ]
 
+const MAX_VIDEO_SIZE = 20 * 1024 * 1024
+const MAX_VIDEO_DURATION = 30
+
 Page({
   data: {
     categories: [],
@@ -19,6 +22,9 @@ Page({
     mediaType: 'image',
     localImages: [],
     localVideo: '',
+    videoSizeLabel: '',
+    videoDurationLabel: '',
+    videoProcessLabel: '',
     coverImage: '',
     extra: {
       lost_kind: '丢失',
@@ -87,6 +93,9 @@ Page({
       mediaType,
       localImages: [],
       localVideo: '',
+      videoSizeLabel: '',
+      videoDurationLabel: '',
+      videoProcessLabel: '',
       coverImage: ''
     })
   },
@@ -114,16 +123,36 @@ Page({
   chooseVideo() {
     wx.chooseVideo({
       sourceType: ['album', 'camera'],
-      maxDuration: 60,
+      maxDuration: MAX_VIDEO_DURATION,
       compressed: true,
-      success: res => {
-        this.setData({ localVideo: res.tempFilePath || '' })
+      success: async res => {
+        const size = Number(res.size || 0)
+        const duration = Number(res.duration || 0)
+        if (duration > MAX_VIDEO_DURATION + 1) {
+          wx.showToast({ title: `视频不能超过 ${MAX_VIDEO_DURATION} 秒`, icon: 'none' })
+          return
+        }
+        try {
+          const video = await prepareVideoForUpload(res.tempFilePath || '', size, duration)
+          this.setData({
+            localVideo: video.filePath,
+            videoSizeLabel: video.size ? formatFileSize(video.size) : '',
+            videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
+            videoProcessLabel: video.compressed ? '已自动压缩' : ''
+          })
+        } catch (err) {
+          wx.showModal({
+            title: '视频太大',
+            content: err.message || '这个视频压缩后还是偏大，建议裁剪到30秒以内或换一个更短的视频。',
+            showCancel: false
+          })
+        }
       }
     })
   },
 
   removeVideo() {
-    this.setData({ localVideo: '' })
+    this.setData({ localVideo: '', videoSizeLabel: '', videoDurationLabel: '', videoProcessLabel: '' })
   },
 
   chooseCover() {
@@ -166,6 +195,7 @@ Page({
           wx.showToast({ title: '请选择视频封面', icon: 'none' })
           return
         }
+        await ensureVideoFileAllowed(this.data.localVideo)
         const uploadedVideo = await uploadVideo(this.data.localVideo)
         const uploadedCover = await uploadImage(this.data.coverImage)
         payload.media_type = 'video'
@@ -201,6 +231,49 @@ Page({
   }
 })
 
+async function prepareVideoForUpload(filePath, size, duration) {
+  if (!filePath) {
+    throw new Error('请选择视频')
+  }
+  if (size > 0 && size <= MAX_VIDEO_SIZE) {
+    return { filePath, size, compressed: false }
+  }
+  if (!wx.compressVideo) {
+    throw new Error('当前微信版本暂不支持自动压缩，请选择更短的视频。')
+  }
+  wx.showLoading({ title: '正在压缩视频', mask: true })
+  try {
+    const compressed = await compressVideo(filePath)
+    const compressedSize = Number(compressed.size || 0)
+    const checkedSize = compressedSize || await getFileSize(compressed.tempFilePath)
+    if (checkedSize > MAX_VIDEO_SIZE) {
+      throw new Error('这个视频压缩后还是偏大，建议裁剪到30秒以内或换一个更短的视频。')
+    }
+    return {
+      filePath: compressed.tempFilePath,
+      size: checkedSize,
+      duration,
+      compressed: true
+    }
+  } finally {
+    wx.hideLoading()
+  }
+}
+
+function compressVideo(filePath) {
+  return new Promise((resolve, reject) => {
+    wx.compressVideo({
+      src: filePath,
+      quality: 'medium',
+      bitrate: 900,
+      fps: 24,
+      resolution: 0.75,
+      success: resolve,
+      fail: () => reject(new Error('视频压缩失败，请换一个更短的视频。'))
+    })
+  })
+}
+
 function buildExtra(postType, extra) {
   if (postType === 'lost') {
     return pick(extra, ['lost_kind', 'location', 'event_time', 'contact'])
@@ -212,6 +285,40 @@ function buildExtra(postType, extra) {
     return pick(extra, ['location'])
   }
   return {}
+}
+
+function ensureVideoFileAllowed(filePath) {
+  return new Promise((resolve, reject) => {
+    wx.getFileInfo({
+      filePath,
+      success: res => {
+        if (Number(res.size || 0) > MAX_VIDEO_SIZE) {
+          reject(new Error('视频压缩后不能超过 20MB'))
+          return
+        }
+        resolve()
+      },
+      fail: () => resolve()
+    })
+  })
+}
+
+function getFileSize(filePath) {
+  return new Promise(resolve => {
+    wx.getFileInfo({
+      filePath,
+      success: res => resolve(Number(res.size || 0)),
+      fail: () => resolve(0)
+    })
+  })
+}
+
+function formatFileSize(size) {
+  if (!size) return ''
+  if (size >= 1024 * 1024) {
+    return `${(size / 1024 / 1024).toFixed(1)}MB`
+  }
+  return `${Math.ceil(size / 1024)}KB`
 }
 
 function pick(source, keys) {

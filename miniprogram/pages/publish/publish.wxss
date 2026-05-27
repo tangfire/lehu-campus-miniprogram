@@ -200,6 +200,11 @@
   font-size: 28rpx;
 }
 
+.add-video text {
+  color: #94a3b8;
+  font-size: 23rpx;
+}
+
 .add-video-icon {
   width: 72rpx;
   height: 72rpx;
@@ -208,6 +213,21 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.16);
   font-size: 32rpx;
+}
+
+.video-meta {
+  display: flex;
+  gap: 10rpx;
+  flex-wrap: wrap;
+  margin-top: 12rpx;
+}
+
+.video-meta text {
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+  background: #eef6f6;
+  color: #64748b;
+  font-size: 23rpx;
 }
 
 .cover-row {
