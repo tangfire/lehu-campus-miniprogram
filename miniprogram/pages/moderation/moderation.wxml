@@ -1,2 +1,32 @@
-<!--pages/moderation/moderation.wxml-->
-<text>pages/moderation/moderation.wxml</text>
+<view class="page moderation">
+  <view class="tabs">
+    <view class="tab {{tab === 'posts' ? 'active' : ''}}" data-tab="posts" bindtap="changeTab">帖子</view>
+    <view class="tab {{tab === 'comments' ? 'active' : ''}}" data-tab="comments" bindtap="changeTab">评论</view>
+  </view>
+
+  <empty-state wx:if="{{!loading && tab === 'posts' && posts.length === 0}}" title="暂无待审核帖子" desc="命中人工审核的内容会出现在这里。" />
+  <empty-state wx:if="{{!loading && tab === 'comments' && comments.length === 0}}" title="暂无待审核评论" desc="命中人工审核的评论会出现在这里。" />
+
+  <block wx:if="{{tab === 'posts'}}">
+    <view wx:for="{{posts}}" wx:key="id" class="item panel">
+      <view class="title">{{item.title}}</view>
+      <view class="content">{{item.content}}</view>
+      <view class="meta">{{item.author ? item.author.name : '同学'}} · {{item.created_at}}</view>
+      <view class="actions">
+        <button data-type="posts" data-id="{{item.id}}" data-action="approve" bindtap="review">通过</button>
+        <button class="danger" data-type="posts" data-id="{{item.id}}" data-action="reject" bindtap="review">拒绝</button>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:for="{{comments}}" wx:key="id" class="item panel">
+      <view class="content">{{item.content}}</view>
+      <view class="meta">{{item.author ? item.author.name : '同学'}} · {{item.created_at}}</view>
+      <view class="actions">
+        <button data-type="comments" data-id="{{item.id}}" data-action="approve" bindtap="review">通过</button>
+        <button class="danger" data-type="comments" data-id="{{item.id}}" data-action="reject" bindtap="review">拒绝</button>
+      </view>
+    </view>
+  </block>
+</view>

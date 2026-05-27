@@ -1,1 +1,70 @@
-/* pages/my-posts/my-posts.wxss */
+.my-posts {
+  padding-bottom: 48rpx;
+}
+
+.post {
+  display: flex;
+  gap: 18rpx;
+  padding: 24rpx;
+  margin-bottom: 18rpx;
+}
+
+.post-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-title {
+  font-size: 31rpx;
+  font-weight: 800;
+}
+
+.post-meta {
+  margin-top: 8rpx;
+  color: #64748b;
+  font-size: 24rpx;
+}
+
+.post-content {
+  margin-top: 12rpx;
+  color: #334155;
+  font-size: 27rpx;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.status {
+  display: inline-flex;
+  margin-top: 14rpx;
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  background: #eef7f5;
+  color: #0f766e;
+  font-size: 23rpx;
+}
+
+.status-0 {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.status-2,
+.status-3 {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.delete-btn {
+  align-self: flex-start;
+  margin: 0;
+  width: 100rpx;
+  height: 58rpx;
+  line-height: 58rpx;
+  border-radius: 8rpx;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 24rpx;
+}

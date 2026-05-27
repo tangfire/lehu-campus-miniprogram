@@ -1,2 +1,17 @@
-<!--pages/my-posts/my-posts.wxml-->
-<text>pages/my-posts/my-posts.wxml</text>
+<view class="page my-posts">
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有发布" desc="去社区发一条学习、生活或社团动态。" />
+
+  <block wx:for="{{posts}}" wx:key="id">
+    <view class="post panel">
+      <view class="post-main" data-id="{{item.id}}" bindtap="openPost">
+        <view class="post-title">{{item.title}}</view>
+        <view class="post-meta">{{item.category_name}} · {{item.created_at}}</view>
+        <view class="post-content">{{item.content}}</view>
+        <view class="status status-{{item.status}}">
+          {{item.status === 1 ? '已公开' : (item.status === 0 ? '待审核' : (item.status === 2 ? '未通过' : '已删除'))}}
+        </view>
+      </view>
+      <button class="delete-btn" data-id="{{item.id}}" catchtap="deletePost">删除</button>
+    </view>
+  </block>
+</view>

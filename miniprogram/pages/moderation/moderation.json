@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "内容审核",
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state"
+  }
 }
