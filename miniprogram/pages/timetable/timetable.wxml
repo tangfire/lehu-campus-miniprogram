@@ -1,8 +1,79 @@
-<view class="page">
-  <view class="hero panel">
-    <view class="eyebrow">深职校园通</view>
-    <view class="title">今日课表</view>
-    <view class="desc">等待学校 OAuth 接入后，这里会自动显示当天课程、教室和课前提醒。</view>
+<view class="page timetable">
+  <view wx:if="{{!token}}" class="panel login-panel">
+    <view class="panel-title">今日课表</view>
+    <view class="muted">登录后导入你的个人课表。</view>
+    <button class="primary-btn" bindtap="login">去登录</button>
   </view>
-  <empty-state title="课表即将接入" desc="当前阶段先把校园社区跑稳，课表后续对接学校信息中心只读接口。" />
+
+  <block wx:else>
+    <view class="today panel">
+      <view class="top-line">
+        <view>
+          <view class="eyebrow">{{term}}</view>
+          <view class="title">今日课表</view>
+        </view>
+        <button class="mini-btn" bindtap="toggleImportForm">{{showImportForm ? '收起' : '导入'}}</button>
+      </view>
+
+      <view wx:if="{{todayCourses.length}}" class="today-list">
+        <view wx:for="{{todayCourses}}" wx:key="id" class="today-course">
+          <view class="section">{{item.time_label}}</view>
+          <view class="course-main">
+            <view class="course-name">{{item.course_name}}</view>
+            <view class="course-meta">{{item.classroom || '教室待定'}} · {{item.teacher || '教师待定'}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty-inline">{{courses.length ? '今天没有课程' : '还没有导入课表'}}</view>
+    </view>
+
+    <view wx:if="{{showImportForm}}" class="panel import-panel">
+      <view class="panel-title">教务导入</view>
+      <view class="field">
+        <text>学期</text>
+        <input value="{{term}}" placeholder="例如 2026-2027-1" bindinput="onTermInput" />
+      </view>
+      <view class="field">
+        <text>学号</text>
+        <input value="{{studentNo}}" placeholder="请输入学号" bindinput="onStudentNoInput" />
+      </view>
+      <view class="field">
+        <text>密码</text>
+        <input value="{{password}}" password placeholder="仅用于本次导入" bindinput="onPasswordInput" />
+      </view>
+      <button class="primary-btn" loading="{{importing}}" bindtap="importTimetable">导入课表</button>
+    </view>
+
+    <view class="week panel">
+      <scroll-view class="weekday-tabs" scroll-x enhanced show-scrollbar="{{false}}">
+        <view class="weekday-row">
+          <view
+            wx:for="{{weekdayTabs}}"
+            wx:key="value"
+            class="weekday {{selectedWeekday === item.value ? 'active' : ''}}"
+            data-weekday="{{item.value}}"
+            bindtap="selectWeekday"
+          >
+            <view>{{item.short}}</view>
+            <text>{{item.count || 0}}</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view wx:if="{{selectedCourses.length}}" class="course-list">
+        <view wx:for="{{selectedCourses}}" wx:key="id" class="course-card">
+          <view class="course-time">
+            <text>{{item.time_label}}</text>
+            <text>{{item.week_label}}</text>
+          </view>
+          <view class="course-body">
+            <view class="course-name">{{item.course_name}}</view>
+            <view class="course-meta">{{item.classroom || '教室待定'}}</view>
+            <view class="course-meta">{{item.teacher || '教师待定'}}</view>
+          </view>
+        </view>
+      </view>
+      <empty-state wx:else title="这天没课" desc="切换其他日期查看课程安排。" />
+    </view>
+  </block>
 </view>
