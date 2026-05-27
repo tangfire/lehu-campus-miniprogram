@@ -27,24 +27,31 @@
         <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
           <view wx:if="{{item.display_cover}}" class="cover-wrap">
             <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
-            <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
-          </view>
-          <view wx:else class="text-cover">
-            <view class="text-type">{{item.type_label}}</view>
-            <view>{{item.content}}</view>
-          </view>
-          <view class="note-body">
-            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+            <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="cover-flags">
               <text wx:if="{{item.is_pinned}}">置顶</text>
-              <text wx:if="{{item.is_official}}">深汕e仔</text>
               <text wx:if="{{item.is_official}}">官方</text>
               <text wx:if="{{item.is_featured}}">精选</text>
             </view>
+          </view>
+          <view wx:else class="poster-cover {{item.poster_class}}">
+            <view class="poster-orbit one"></view>
+            <view class="poster-orbit two"></view>
+            <view class="poster-kicker">{{item.poster_kicker}}</view>
+            <view class="poster-title">{{item.poster_title}}</view>
+            <view class="poster-teaser">{{item.poster_teaser}}</view>
+          </view>
+          <view class="note-body">
             <view class="note-title">{{item.title}}</view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
             <view class="note-meta">
               <view class="author">
                 <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
-                <view wx:else class="avatar avatar-placeholder">同</view>
+                <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
                 <text>{{item.author_label}}</text>
               </view>
               <view class="like">♡ {{item.display_count}}</view>
@@ -58,24 +65,31 @@
         <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
           <view wx:if="{{item.display_cover}}" class="cover-wrap">
             <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
-            <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
-          </view>
-          <view wx:else class="text-cover">
-            <view class="text-type">{{item.type_label}}</view>
-            <view>{{item.content}}</view>
-          </view>
-          <view class="note-body">
-            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+            <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="cover-flags">
               <text wx:if="{{item.is_pinned}}">置顶</text>
-              <text wx:if="{{item.is_official}}">深汕e仔</text>
               <text wx:if="{{item.is_official}}">官方</text>
               <text wx:if="{{item.is_featured}}">精选</text>
             </view>
+          </view>
+          <view wx:else class="poster-cover {{item.poster_class}}">
+            <view class="poster-orbit one"></view>
+            <view class="poster-orbit two"></view>
+            <view class="poster-kicker">{{item.poster_kicker}}</view>
+            <view class="poster-title">{{item.poster_title}}</view>
+            <view class="poster-teaser">{{item.poster_teaser}}</view>
+          </view>
+          <view class="note-body">
             <view class="note-title">{{item.title}}</view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
             <view class="note-meta">
               <view class="author">
                 <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
-                <view wx:else class="avatar avatar-placeholder">同</view>
+                <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
                 <text>{{item.author_label}}</text>
               </view>
               <view class="like">♡ {{item.display_count}}</view>

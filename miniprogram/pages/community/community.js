@@ -123,15 +123,23 @@ function syncTabBar(page, selected) {
 function normalizePost(post) {
   const images = post.images || []
   const cover = post.cover_url || images[0] || ''
+  const postType = post.post_type || 'note'
+  const typeLabel = postTypeLabel(postType)
+  const teaser = cleanText(post.content || '')
   return {
     ...post,
     images,
     media_type: post.media_type || (images.length ? 'image' : 'text'),
-    post_type: post.post_type || 'note',
-    type_label: postTypeLabel(post.post_type),
+    post_type: postType,
+    type_label: typeLabel,
     display_cover: cover,
     display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学',
     author_label: post.is_official ? '深汕e仔' : (post.author ? (post.author.name || post.author.nickname || '同学') : '同学'),
+    avatar_text: post.is_official ? 'e' : '同',
+    poster_class: `poster-${posterVariant(postType, post.id)}`,
+    poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
+    poster_title: cleanText(post.title || teaser),
+    poster_teaser: teaser,
     display_count: formatCount(post.like_count || 0),
     is_official: !!post.is_official,
     is_featured: !!post.is_featured,
@@ -155,6 +163,24 @@ function postTypeLabel(postType) {
     note: '笔记'
   }
   return map[postType || 'note'] || '笔记'
+}
+
+function posterVariant(postType, id) {
+  const fixed = {
+    guide: 'mint',
+    question: 'lemon',
+    lost: 'rose',
+    club: 'sky'
+  }
+  if (fixed[postType]) return fixed[postType]
+  const variants = ['mint', 'lemon', 'rose', 'sky', 'paper']
+  const text = String(id || '')
+  const last = Number(text.slice(-1)) || 0
+  return variants[last % variants.length]
+}
+
+function cleanText(text) {
+  return String(text || '').replace(/\s+/g, ' ').trim()
 }
 
 function splitColumns(posts) {
