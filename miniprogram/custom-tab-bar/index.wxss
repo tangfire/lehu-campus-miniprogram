@@ -5,39 +5,28 @@
   bottom: 0;
   z-index: 99;
   padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(255, 255, 255, 0.96);
-  border-top: 1rpx solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 -10rpx 30rpx rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.98);
+  border-top: 1rpx solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 -8rpx 24rpx rgba(15, 23, 42, 0.04);
 }
 
 .tab-bar {
-  position: relative;
-  height: 112rpx;
+  height: 118rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  padding: 6rpx 18rpx 0;
+  box-sizing: border-box;
 }
 
 .tab-item {
-  position: absolute;
-  top: 14rpx;
-  width: 132rpx;
-  height: 86rpx;
+  height: 100rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7rpx;
+  gap: 8rpx;
   color: #64748b;
-}
-
-.tab-home {
-  left: 34rpx;
-}
-
-.tab-timetable {
-  right: 166rpx;
-}
-
-.tab-mine {
-  right: 24rpx;
 }
 
 .tab-item.active {
@@ -47,90 +36,104 @@
 
 .tab-icon {
   position: relative;
-  width: 40rpx;
-  height: 40rpx;
+  width: 46rpx;
+  height: 46rpx;
   box-sizing: border-box;
 }
 
-.icon-home {
+.home-roof {
+  position: absolute;
+  left: 9rpx;
+  top: 4rpx;
+  width: 26rpx;
+  height: 26rpx;
+  border-left: 4rpx solid currentColor;
+  border-top: 4rpx solid currentColor;
+  border-radius: 4rpx 0 0 0;
+  transform: rotate(45deg);
+}
+
+.home-body {
+  position: absolute;
+  left: 8rpx;
+  right: 8rpx;
+  bottom: 4rpx;
+  height: 26rpx;
   border: 4rpx solid currentColor;
   border-top: 0;
   border-radius: 5rpx;
-  transform: translateY(8rpx);
-}
-
-.icon-home::before {
-  content: "";
-  position: absolute;
-  left: 4rpx;
-  top: -14rpx;
-  width: 24rpx;
-  height: 24rpx;
-  border-left: 4rpx solid currentColor;
-  border-top: 4rpx solid currentColor;
-  transform: rotate(45deg);
-  border-radius: 3rpx;
 }
 
 .icon-calendar {
   border: 4rpx solid currentColor;
-  border-radius: 8rpx;
+  border-radius: 9rpx;
 }
 
-.icon-calendar::before {
-  content: "";
+.calendar-line {
   position: absolute;
   left: -4rpx;
   right: -4rpx;
-  top: 9rpx;
+  top: 13rpx;
   height: 4rpx;
   background: currentColor;
 }
 
-.icon-calendar::after {
-  content: "";
+.calendar-ring {
   position: absolute;
-  left: 8rpx;
   top: -9rpx;
-  width: 18rpx;
-  height: 10rpx;
-  border-left: 4rpx solid currentColor;
-  border-right: 4rpx solid currentColor;
+  width: 4rpx;
+  height: 16rpx;
+  border-radius: 999rpx;
+  background: currentColor;
 }
 
-.icon-user {
+.calendar-ring.left {
+  left: 11rpx;
+}
+
+.calendar-ring.right {
+  right: 11rpx;
+}
+
+.user-head {
+  position: absolute;
+  left: 11rpx;
+  top: 4rpx;
+  width: 24rpx;
+  height: 24rpx;
   border: 4rpx solid currentColor;
   border-radius: 50%;
+  box-sizing: border-box;
 }
 
-.icon-user::after {
-  content: "";
+.user-body {
   position: absolute;
-  left: -8rpx;
-  right: -8rpx;
-  bottom: -15rpx;
-  height: 18rpx;
+  left: 5rpx;
+  right: 5rpx;
+  bottom: 2rpx;
+  height: 20rpx;
   border: 4rpx solid currentColor;
-  border-top: 0;
-  border-radius: 0 0 20rpx 20rpx;
+  border-radius: 22rpx 22rpx 10rpx 10rpx;
+  box-sizing: border-box;
 }
 
 .tab-text {
-  font-size: 22rpx;
+  font-size: 23rpx;
   line-height: 1;
 }
 
+.publish-slot {
+  color: #078894;
+}
+
 .publish-button {
-  position: absolute;
-  left: 50%;
-  top: -22rpx;
-  width: 116rpx;
-  height: 116rpx;
+  position: relative;
+  width: 78rpx;
+  height: 78rpx;
   border-radius: 50%;
   background: #078894;
   color: #ffffff;
-  transform: translateX(-50%);
-  box-shadow: 0 16rpx 34rpx rgba(7, 136, 148, 0.28);
+  box-shadow: 0 10rpx 24rpx rgba(7, 136, 148, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,16 +142,28 @@
 .publish-button::after {
   content: "";
   position: absolute;
-  inset: 8rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.34);
+  inset: 6rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
 }
 
-.publish-plus {
-  position: relative;
-  z-index: 1;
-  margin-top: -4rpx;
-  font-size: 66rpx;
-  font-weight: 300;
-  line-height: 1;
+.publish-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34rpx;
+  height: 4rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+.publish-line.vertical {
+  width: 4rpx;
+  height: 34rpx;
+}
+
+.publish-text {
+  color: #078894;
+  font-weight: 800;
 }
