@@ -1,5 +1,15 @@
 <view class="page detail">
   <view wx:if="{{post}}" class="post">
+    <view class="detail-nav" style="height: {{navBarHeight}}px; padding-top: {{statusBarHeight}}px;">
+      <view class="back" bindtap="goBack"></view>
+      <view class="nav-author">
+        <image wx:if="{{post.author && post.author.avatar}}" class="nav-avatar" src="{{post.author.avatar}}" mode="aspectFill" />
+        <view wx:else class="nav-avatar avatar-placeholder">{{post.avatar_text}}</view>
+        <text>{{post.display_author}}</text>
+      </view>
+      <button class="share-btn" open-type="share"></button>
+    </view>
+
     <video wx:if="{{post.media_type === 'video'}}" class="media-video" src="{{post.video_url}}" poster="{{post.cover_url}}" controls></video>
     <swiper wx:elif="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
       <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
@@ -8,22 +18,33 @@
         </swiper-item>
       </block>
     </swiper>
+    <view wx:else class="poster-hero {{post.poster_class}}">
+      <view class="poster-quote">“</view>
+      <view class="poster-orbit one"></view>
+      <view class="poster-orbit two"></view>
+      <view class="poster-kicker">{{post.poster_kicker}}</view>
+      <view class="poster-title">{{post.poster_title}}</view>
+      <view class="poster-mark"></view>
+    </view>
 
     <view class="post-main-card">
       <view class="post-head">
         <image wx:if="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
-        <view wx:else class="avatar avatar-placeholder">同</view>
+        <view wx:else class="avatar avatar-placeholder">{{post.avatar_text}}</view>
         <view class="author-main">
           <view class="author-name">{{post.display_author}}</view>
-          <view class="post-meta">{{post.category_name}} · {{post.created_at}}</view>
+          <view class="post-meta">{{post.category_name}} · {{post.display_time}}</view>
         </view>
-        <view wx:if="{{post.is_official}}" class="type-tag official">官方</view>
-        <view wx:if="{{post.is_featured}}" class="type-tag featured">精选</view>
-        <view class="type-tag">{{post.short_type_label}}</view>
+        <view wx:if="{{post.is_official}}" class="follow-pill">官方</view>
         <view class="more" bindtap="openPostMenu">···</view>
       </view>
 
       <view class="title">{{post.title}}</view>
+      <view class="tag-row">
+        <text>{{post.short_type_label}}</text>
+        <text wx:if="{{post.is_pinned}}">置顶</text>
+        <text wx:if="{{post.is_featured}}">精选</text>
+      </view>
       <view wx:if="{{post.extra_items && post.extra_items.length}}" class="extra-box">
         <view wx:for="{{post.extra_items}}" wx:key="label" class="extra-row">
           <text>{{item.label}}</text>
@@ -31,34 +52,24 @@
         </view>
       </view>
       <view class="content">{{post.content}}</view>
-
-      <view class="action-row">
-        <view class="action {{post.is_liked ? 'liked' : ''}}" bindtap="toggleLike">
-          <text>{{post.is_liked ? '♥' : '♡'}}</text>
-          <text>{{post.like_count || 0}}</text>
-        </view>
-        <view class="action {{post.is_collected ? 'collected' : ''}}" bindtap="toggleCollection">
-          <text>{{post.is_collected ? '★' : '☆'}}</text>
-          <text>{{post.collected_count || 0}}</text>
-        </view>
-        <view class="action plain">
-          <text>评</text>
-          <text>{{post.comment_count || 0}}</text>
-        </view>
-      </view>
     </view>
   </view>
 
-  <view class="comment-title">评论 {{post ? (post.comment_count || 0) : ''}}</view>
+  <view class="comment-title">共 {{post ? (post.comment_count || 0) : 0}} 条评论</view>
   <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" />
+  <view wx:if="{{comments.length}}" class="comment-compose">
+    <view class="comment-smile">☺</view>
+    <input value="{{commentText}}" bindinput="onInput" placeholder="爱评论的人运气都不差" confirm-type="send" bindconfirm="submitComment" maxlength="500" />
+    <button bindtap="submitComment">发</button>
+  </view>
   <block wx:for="{{comments}}" wx:key="id">
     <view class="comment">
       <view class="post-head">
         <image wx:if="{{item.author && item.author.avatar}}" class="avatar small" src="{{item.author.avatar}}" mode="aspectFill" />
-        <view wx:else class="avatar small avatar-placeholder">同</view>
+        <view wx:else class="avatar small avatar-placeholder">{{item.avatar_text}}</view>
         <view class="author-main">
           <view class="author-name">{{item.display_author}}</view>
-          <view class="post-meta">{{item.created_at}}</view>
+          <view class="post-meta">{{item.display_time}}</view>
         </view>
         <button wx:if="{{item.author && item.author.user_id === currentUserId}}" class="mini-action danger" data-id="{{item.id}}" bindtap="deleteComment">删除</button>
         <button wx:else class="mini-action" data-id="{{item.id}}" bindtap="reportComment">举报</button>
@@ -68,8 +79,22 @@
   </block>
 
   <view class="comment-safe"></view>
-  <view class="comment-bar">
-    <input value="{{commentText}}" bindinput="onInput" placeholder="友善地说点什么" confirm-type="send" bindconfirm="submitComment" maxlength="500" />
-    <button bindtap="submitComment">发送</button>
+  <view wx:if="{{post}}" class="comment-bar">
+    <view class="bottom-input">
+      <view class="pen-icon"></view>
+      <input value="{{commentText}}" bindinput="onInput" placeholder="说点什么..." confirm-type="send" bindconfirm="submitComment" maxlength="500" />
+    </view>
+    <view class="bottom-action {{post.is_liked ? 'active' : ''}}" bindtap="toggleLike">
+      <view class="heart-icon"></view>
+      <text>{{post.like_count || 0}}</text>
+    </view>
+    <view class="bottom-action {{post.is_collected ? 'active star' : ''}}" bindtap="toggleCollection">
+      <view class="star-icon"></view>
+      <text>{{post.collected_count || 0}}</text>
+    </view>
+    <view class="bottom-action">
+      <view class="bubble-icon"></view>
+      <text>{{post.comment_count || 0}}</text>
+    </view>
   </view>
 </view>

@@ -7,10 +7,13 @@ Page({
     comments: [],
     commentText: '',
     currentUserId: '',
+    statusBarHeight: 0,
+    navBarHeight: 52,
     loading: false
   },
 
   onLoad(query) {
+    this.setupNavBar()
     this.setData({ id: query.id })
     this.loadPost()
     this.loadComments()
@@ -19,6 +22,28 @@ Page({
   onShow() {
     const user = wx.getStorageSync('user') || {}
     this.setData({ currentUserId: user.id || '' })
+  },
+
+  setupNavBar() {
+    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+    const statusBarHeight = info.statusBarHeight || 0
+    let navBarHeight = statusBarHeight + 52
+    if (wx.getMenuButtonBoundingClientRect) {
+      const menu = wx.getMenuButtonBoundingClientRect()
+      if (menu && menu.bottom) {
+        navBarHeight = menu.bottom + (menu.top - statusBarHeight)
+      }
+    }
+    this.setData({ statusBarHeight, navBarHeight })
+  },
+
+  goBack() {
+    const pages = getCurrentPages()
+    if (pages.length > 1) {
+      wx.navigateBack()
+      return
+    }
+    wx.switchTab({ url: '/pages/community/community' })
   },
 
   async loadPost() {
@@ -211,24 +236,35 @@ Page({
 function normalizePost(post) {
   if (!post) return post
   const images = post.images || []
+  const postType = post.post_type || 'note'
+  const typeLabel = postTypeLabel(postType)
+  const teaser = cleanText(post.content || '')
   return {
     ...post,
     images,
     media_type: post.media_type || (images.length ? 'image' : 'text'),
-    post_type: post.post_type || 'note',
-    type_label: postTypeLabel(post.post_type),
-    short_type_label: shortPostTypeLabel(post.post_type),
+    post_type: postType,
+    type_label: typeLabel,
+    short_type_label: shortPostTypeLabel(postType),
     display_author: displayAuthor(post.author),
-    extra_items: extraItems(post.post_type, post.extra || {}),
+    avatar_text: post.is_official ? 'e' : '同',
+    poster_class: `poster-${posterVariant(postType, post.id)}`,
+    poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
+    poster_title: cleanText(post.title || teaser),
+    display_time: formatDate(post.created_at),
+    extra_items: extraItems(postType, post.extra || {}),
     is_official: !!post.is_official,
-    is_featured: !!post.is_featured
+    is_featured: !!post.is_featured,
+    is_pinned: !!post.is_pinned
   }
 }
 
 function normalizeComment(comment) {
   return {
     ...comment,
-    display_author: displayAuthor(comment.author)
+    display_author: displayAuthor(comment.author),
+    avatar_text: comment.author && (comment.author.nickname || comment.author.name) ? String(comment.author.nickname || comment.author.name).slice(0, 1) : '同',
+    display_time: formatDate(comment.created_at)
   }
 }
 
@@ -246,6 +282,31 @@ function postTypeLabel(postType) {
 function shortPostTypeLabel(postType) {
   const map = { lost: '失物', question: '问答', guide: '攻略', club: '社团', note: '笔记' }
   return map[postType || 'note'] || '笔记'
+}
+
+function posterVariant(postType, id) {
+  const fixed = {
+    guide: 'mint',
+    question: 'lemon',
+    lost: 'rose',
+    club: 'sky'
+  }
+  if (fixed[postType]) return fixed[postType]
+  const variants = ['mint', 'lemon', 'rose', 'sky', 'paper']
+  const text = String(id || '')
+  const last = Number(text.slice(-1)) || 0
+  return variants[last % variants.length]
+}
+
+function cleanText(text) {
+  return String(text || '').replace(/\s+/g, ' ').trim()
+}
+
+function formatDate(value) {
+  const text = String(value || '')
+  const matched = text.match(/(\d{4})-(\d{2})-(\d{2})/)
+  if (!matched) return text
+  return `${matched[2]}-${matched[3]}`
 }
 
 function displayAuthor(author) {
