@@ -139,7 +139,6 @@ function normalizePost(post) {
     poster_class: `poster-${posterVariant(postType, post.id)}`,
     poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
     poster_title: cleanText(post.title || teaser),
-    poster_teaser: teaser,
     display_count: formatCount(post.like_count || 0),
     is_official: !!post.is_official,
     is_featured: !!post.is_featured,

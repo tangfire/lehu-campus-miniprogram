@@ -1,17 +1,17 @@
 .community {
   min-height: 100vh;
-  padding: 0 12rpx 170rpx;
-  background: #fafafa;
+  padding: 0 14rpx 170rpx;
+  background: #f7f8fa;
 }
 
 .feed-sticky {
   position: sticky;
   top: 0;
   z-index: 8;
-  margin: 0 -12rpx 12rpx;
-  padding: 18rpx 12rpx 0;
-  background: rgba(250, 250, 250, 0.96);
-  backdrop-filter: blur(18rpx);
+  margin: 0 -14rpx 14rpx;
+  padding: 16rpx 14rpx 0;
+  background: rgba(247, 248, 250, 0.98);
+  border-bottom: 1rpx solid rgba(15, 23, 42, 0.04);
 }
 
 .topbar {
@@ -24,7 +24,7 @@
 .brand-title {
   flex: none;
   color: #111827;
-  font-size: 44rpx;
+  font-size: 40rpx;
   font-weight: 900;
 }
 
@@ -33,10 +33,10 @@
   align-items: center;
   flex: 1;
   min-width: 0;
-  height: 64rpx;
-  padding: 0 22rpx;
+  height: 62rpx;
+  padding: 0 20rpx;
   border-radius: 999rpx;
-  background: #f2f3f5;
+  background: #ffffff;
   box-sizing: border-box;
 }
 
@@ -64,7 +64,7 @@
 
 .search-pill input {
   flex: 1;
-  height: 64rpx;
+  height: 62rpx;
   color: #111827;
   font-size: 26rpx;
 }
@@ -78,21 +78,21 @@
 
 .channel-scroll {
   white-space: nowrap;
-  margin: 0 -12rpx;
+  margin: 0 -14rpx;
 }
 
 .channel-row {
   display: flex;
-  gap: 42rpx;
-  padding: 0 12rpx;
+  gap: 36rpx;
+  padding: 0 14rpx;
 }
 
 .channel {
   position: relative;
   flex: none;
-  padding: 13rpx 0 20rpx;
+  padding: 12rpx 0 17rpx;
   color: #64748b;
-  font-size: 30rpx;
+  font-size: 29rpx;
   font-weight: 700;
 }
 
@@ -106,8 +106,8 @@
   position: absolute;
   left: 50%;
   bottom: 4rpx;
-  width: 34rpx;
-  height: 7rpx;
+  width: 30rpx;
+  height: 6rpx;
   border-radius: 999rpx;
   background: #ef4056;
   transform: translateX(-50%);
@@ -116,7 +116,7 @@
 .waterfall {
   display: flex;
   align-items: flex-start;
-  gap: 10rpx;
+  gap: 12rpx;
 }
 
 .waterfall-col {
@@ -125,16 +125,16 @@
 }
 
 .note-card {
-  margin-bottom: 10rpx;
+  margin-bottom: 12rpx;
   overflow: hidden;
-  border-radius: 10rpx;
+  border-radius: 12rpx;
   background: #ffffff;
-  box-shadow: 0 1rpx 0 rgba(15, 23, 42, 0.035);
+  box-shadow: none;
 }
 
 .cover-wrap {
   position: relative;
-  min-height: 250rpx;
+  min-height: 230rpx;
   background: #f1f5f9;
 }
 
@@ -188,74 +188,40 @@
 
 .poster-cover {
   position: relative;
-  min-height: 352rpx;
-  padding: 30rpx 24rpx 24rpx;
+  min-height: 318rpx;
+  padding: 28rpx 24rpx;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 .poster-mint {
-  background: linear-gradient(160deg, #f7fff6 0%, #e5fff4 48%, #d6f3f0 100%);
+  background: #effcf5;
 }
 
 .poster-lemon {
-  background: linear-gradient(160deg, #ffffe9 0%, #fff8bd 54%, #fffdf1 100%);
+  background: #fff9d7;
 }
 
 .poster-rose {
-  background: linear-gradient(160deg, #fff5f6 0%, #ffdbe3 54%, #fff8fa 100%);
+  background: #fff0f4;
 }
 
 .poster-sky {
-  background: linear-gradient(160deg, #f4f9ff 0%, #d7e9ff 54%, #f9fcff 100%);
+  background: #eff6ff;
 }
 
 .poster-paper {
-  background: linear-gradient(160deg, #fffaf2 0%, #f2e7d6 54%, #fffdf8 100%);
-}
-
-.poster-quote {
-  position: absolute;
-  left: 20rpx;
-  top: 18rpx;
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 122rpx;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.poster-orbit {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.46;
-  pointer-events: none;
-}
-
-.poster-orbit.one {
-  right: -42rpx;
-  top: -38rpx;
-  width: 136rpx;
-  height: 136rpx;
-  background: rgba(255, 255, 255, 0.64);
-}
-
-.poster-orbit.two {
-  left: -32rpx;
-  bottom: -34rpx;
-  width: 112rpx;
-  height: 112rpx;
-  background: rgba(255, 255, 255, 0.5);
+  background: #f8f1e8;
 }
 
 .poster-kicker {
   position: relative;
   display: inline-block;
   max-width: 100%;
-  margin-top: 38rpx;
-  margin-bottom: 18rpx;
-  padding: 7rpx 14rpx;
+  margin-bottom: 22rpx;
+  padding: 7rpx 13rpx;
   border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.72);
   color: #0f766e;
   font-size: 21rpx;
   font-weight: 800;
@@ -266,25 +232,15 @@
 
 .poster-title {
   position: relative;
-  color: #333333;
-  font-size: 40rpx;
+  color: #222222;
+  font-size: 38rpx;
   font-weight: 900;
-  line-height: 1.24;
+  line-height: 1.28;
   letter-spacing: 0;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.poster-mark {
-  position: absolute;
-  right: 22rpx;
-  bottom: 28rpx;
-  width: 48rpx;
-  height: 8rpx;
-  border-radius: 999rpx;
-  background: rgba(239, 64, 86, 0.42);
 }
 
 .note-body {
@@ -311,7 +267,7 @@
 
 .note-title {
   color: #111827;
-  font-size: 29rpx;
+  font-size: 28rpx;
   font-weight: 700;
   line-height: 1.36;
   display: -webkit-box;
@@ -325,9 +281,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 8rpx;
-  margin-top: 16rpx;
+  margin-top: 14rpx;
   color: #7b8494;
-  font-size: 23rpx;
+  font-size: 22rpx;
 }
 
 .author {
@@ -345,8 +301,8 @@
 }
 
 .avatar {
-  width: 38rpx;
-  height: 38rpx;
+  width: 36rpx;
+  height: 36rpx;
   border-radius: 50%;
   background: #e0f2fe;
   flex: none;
@@ -364,5 +320,5 @@
 .like {
   flex: none;
   color: #6b7280;
-  font-size: 24rpx;
+  font-size: 23rpx;
 }

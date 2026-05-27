@@ -1,7 +1,7 @@
 <view class="page community">
   <view class="feed-sticky">
     <view class="topbar">
-      <view class="brand-title">发现</view>
+      <view class="brand-title">首页</view>
       <view class="search-pill">
         <view class="search-icon"></view>
         <input value="{{keyword}}" bindinput="onSearch" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索深汕攻略、问答" />
@@ -38,12 +38,8 @@
             </view>
           </view>
           <view wx:else class="poster-cover {{item.poster_class}}">
-            <view class="poster-quote">“</view>
-            <view class="poster-orbit one"></view>
-            <view class="poster-orbit two"></view>
             <view class="poster-kicker">{{item.poster_kicker}}</view>
             <view class="poster-title">{{item.poster_title}}</view>
-            <view class="poster-mark"></view>
           </view>
           <view class="note-body">
             <view class="note-title">{{item.title}}</view>
@@ -77,12 +73,8 @@
             </view>
           </view>
           <view wx:else class="poster-cover {{item.poster_class}}">
-            <view class="poster-quote">“</view>
-            <view class="poster-orbit one"></view>
-            <view class="poster-orbit two"></view>
             <view class="poster-kicker">{{item.poster_kicker}}</view>
             <view class="poster-title">{{item.poster_title}}</view>
-            <view class="poster-mark"></view>
           </view>
           <view class="note-body">
             <view class="note-title">{{item.title}}</view>
