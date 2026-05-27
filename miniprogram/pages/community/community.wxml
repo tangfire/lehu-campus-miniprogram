@@ -19,7 +19,7 @@
     </view>
   </scroll-view>
 
-  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有内容" desc="发一条校园攻略、提问或失物招领。" />
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有内容" desc="先看看新生工具包，也可以发一条攻略或提问。" />
 
   <view class="waterfall" wx:if="{{posts.length}}">
     <view class="waterfall-col">
@@ -34,6 +34,10 @@
             <view>{{item.content}}</view>
           </view>
           <view class="note-body">
+            <view wx:if="{{item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
             <view class="note-title">{{item.title}}</view>
             <view class="note-meta">
               <view class="author">
@@ -59,6 +63,10 @@
             <view>{{item.content}}</view>
           </view>
           <view class="note-body">
+            <view wx:if="{{item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
             <view class="note-title">{{item.title}}</view>
             <view class="note-meta">
               <view class="author">

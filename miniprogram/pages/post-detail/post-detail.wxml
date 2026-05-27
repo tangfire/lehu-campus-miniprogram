@@ -17,6 +17,8 @@
           <view class="author-name">{{post.display_author}}</view>
           <view class="post-meta">{{post.category_name}} · {{post.created_at}}</view>
         </view>
+        <view wx:if="{{post.is_official}}" class="type-tag official">官方</view>
+        <view wx:if="{{post.is_featured}}" class="type-tag featured">精选</view>
         <view class="type-tag">{{post.short_type_label}}</view>
         <view class="more" bindtap="openPostMenu">···</view>
       </view>

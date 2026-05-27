@@ -102,6 +102,13 @@ Page({
 
   openPost(e) {
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '深汕校园e站：新生攻略、问答和校园笔记',
+      path: '/pages/community/community'
+    }
   }
 })
 
@@ -124,7 +131,9 @@ function normalizePost(post) {
     type_label: postTypeLabel(post.post_type),
     display_cover: cover,
     display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学',
-    display_count: formatCount(post.like_count || 0)
+    display_count: formatCount(post.like_count || 0),
+    is_official: !!post.is_official,
+    is_featured: !!post.is_featured
   }
 }
 

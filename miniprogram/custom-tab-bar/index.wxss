@@ -13,9 +13,9 @@
 .tab-bar {
   height: 118rpx;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
-  padding: 6rpx 18rpx 0;
+  padding: 6rpx 10rpx 0;
   box-sizing: border-box;
 }
 
@@ -27,6 +27,7 @@
   justify-content: center;
   gap: 8rpx;
   color: #64748b;
+  min-width: 0;
 }
 
 .tab-item.active {
@@ -95,6 +96,38 @@
   right: 11rpx;
 }
 
+.icon-guide {
+  border: 4rpx solid currentColor;
+  border-radius: 8rpx;
+}
+
+.guide-pin {
+  position: absolute;
+  left: 8rpx;
+  top: 8rpx;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.guide-line {
+  position: absolute;
+  left: 22rpx;
+  right: 7rpx;
+  height: 4rpx;
+  border-radius: 999rpx;
+  background: currentColor;
+}
+
+.guide-line.one {
+  top: 11rpx;
+}
+
+.guide-line.two {
+  top: 25rpx;
+}
+
 .user-head {
   position: absolute;
   left: 11rpx;
@@ -118,8 +151,10 @@
 }
 
 .tab-text {
-  font-size: 23rpx;
+  max-width: 100%;
+  font-size: 22rpx;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .publish-slot {

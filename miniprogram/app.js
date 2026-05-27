@@ -1,6 +1,9 @@
+const { getApiBase, getEnvVersion } = require('./utils/config')
+
 App({
   globalData: {
-    apiBase: 'http://localhost:18080/v1'
+    apiBase: getApiBase(),
+    envVersion: getEnvVersion()
   },
 
   onLaunch() {

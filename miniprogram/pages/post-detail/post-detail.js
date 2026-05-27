@@ -197,6 +197,14 @@ Page({
         }
       }
     })
+  },
+
+  onShareAppMessage() {
+    const post = this.data.post
+    return {
+      title: post ? post.title : '深汕校园e站校园笔记',
+      path: `/pages/post-detail/post-detail?id=${this.data.id}`
+    }
   }
 })
 
@@ -211,7 +219,9 @@ function normalizePost(post) {
     type_label: postTypeLabel(post.post_type),
     short_type_label: shortPostTypeLabel(post.post_type),
     display_author: displayAuthor(post.author),
-    extra_items: extraItems(post.post_type, post.extra || {})
+    extra_items: extraItems(post.post_type, post.extra || {}),
+    is_official: !!post.is_official,
+    is_featured: !!post.is_featured
   }
 }
 

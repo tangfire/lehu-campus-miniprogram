@@ -1,43 +1,62 @@
 .freshman {
-  padding-bottom: 44rpx;
+  padding-bottom: 170rpx;
 }
 
-.header {
+.guide-hero {
   padding: 30rpx;
-  margin-bottom: 22rpx;
-}
-
-.brand-logo {
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+  border: 1rpx solid #dbe7e5;
+  border-radius: 16rpx;
   background: #ffffff;
-  flex: none;
 }
 
-.header-main {
-  display: flex;
-  align-items: center;
-  gap: 18rpx;
-}
-
-.school {
+.guide-eyebrow {
   color: #078894;
   font-size: 24rpx;
   font-weight: 800;
 }
 
-.title {
+.guide-title {
   margin-top: 10rpx;
   color: #10201d;
   font-size: 42rpx;
   font-weight: 900;
 }
 
-.header .muted {
-  margin-top: 12rpx;
+.guide-desc {
+  margin-top: 10rpx;
+  color: #64748b;
   font-size: 26rpx;
   line-height: 1.55;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.guide-card {
+  min-height: 122rpx;
+  padding: 20rpx;
+  border: 1rpx solid #dbe7e5;
+  border-radius: 14rpx;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.guide-card-title {
+  color: #10201d;
+  font-size: 28rpx;
+  font-weight: 900;
+}
+
+.guide-card-desc {
+  margin-top: 8rpx;
+  color: #64748b;
+  font-size: 22rpx;
+  line-height: 1.35;
 }
 
 .category-scroll {

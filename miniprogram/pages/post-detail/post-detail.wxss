@@ -94,6 +94,16 @@
   font-weight: 800;
 }
 
+.type-tag.official {
+  background: #10201d;
+  color: #ffffff;
+}
+
+.type-tag.featured {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
 .title {
   margin-top: 30rpx;
   color: #10201d;

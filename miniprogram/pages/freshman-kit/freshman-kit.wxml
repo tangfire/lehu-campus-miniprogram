@@ -1,13 +1,21 @@
 <view class="page freshman">
-  <view class="header panel">
-    <view class="header-main">
-      <image class="brand-logo" src="/assets/logo-192.png" mode="aspectFit" />
-      <view>
-        <view class="school">深圳职业技术大学（深汕校区）</view>
-        <view class="title">新生工具包</view>
-      </view>
+  <view class="guide-hero">
+    <view class="guide-eyebrow">{{countdownText}}</view>
+    <view class="guide-title">新生指引</view>
+    <view class="guide-desc">报到、宿舍、交通、官网入口先放这里，待学校正式通知后持续更新。</view>
+  </view>
+
+  <view class="guide-grid">
+    <view
+      wx:for="{{guideCards}}"
+      wx:key="key"
+      class="guide-card"
+      data-id="{{item.key}}"
+      bindtap="openGuideCard"
+    >
+      <view class="guide-card-title">{{item.title}}</view>
+      <view class="guide-card-desc">{{item.desc}}</view>
     </view>
-    <view class="muted">报到、宿舍、交通、官网入口先放这里，待学校正式通知后持续更新。</view>
   </view>
 
   <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
