@@ -5,8 +5,14 @@ Page({
     token: '',
     user: null,
     profile: null,
+    statusBarHeight: 0,
     loggingIn: false,
     uploadingAvatar: false
+  },
+
+  onLoad() {
+    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+    this.setData({ statusBarHeight: info.statusBarHeight || 0 })
   },
 
   onShow() {

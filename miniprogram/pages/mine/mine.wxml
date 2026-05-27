@@ -1,5 +1,22 @@
 <view class="page mine">
+  <view class="status-spacer" style="height: {{statusBarHeight}}px"></view>
+  <view class="mine-header">
+    <view>
+      <view class="page-title">我的</view>
+      <view class="title-wave"></view>
+    </view>
+  </view>
+
   <view class="profile-card">
+    <view class="sky-art">
+      <view class="cloud cloud-one"></view>
+      <view class="cloud cloud-two"></view>
+      <view class="orb orb-one"></view>
+      <view class="orb orb-two"></view>
+      <view class="campus-gate"></view>
+      <view class="tree tree-one"></view>
+      <view class="tree tree-two"></view>
+    </view>
     <view class="profile-top">
       <view class="avatar-wrap" bindtap="changeAvatar">
         <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
@@ -11,7 +28,10 @@
         <view class="bio">{{profile ? profile.school_name : '深汕校园生活入口'}}</view>
       </view>
     </view>
-    <button wx:if="{{!token}}" class="login-btn" loading="{{loggingIn}}" bindtap="login">微信登录</button>
+    <button wx:if="{{!token}}" class="login-btn" loading="{{loggingIn}}" bindtap="login">
+      <text class="wechat-mark">●●</text>
+      微信登录
+    </button>
     <view wx:else class="profile-status">
       <text>{{profile && profile.auth_status === 1 ? '已认证' : '待校园认证'}}</text>
       <text>{{profile && profile.class_name ? profile.class_name : '完善资料后更好用'}}</text>
@@ -19,21 +39,51 @@
   </view>
 
   <view class="quick-grid">
-    <view class="quick-card" bindtap="goMyPosts">
+    <view class="quick-card publish-card" bindtap="goMyPosts">
+      <view class="quick-icon plane-icon"></view>
       <view class="quick-title">我的发布</view>
       <view class="quick-desc">笔记和动态</view>
+      <view class="quick-arrow">›</view>
     </view>
-    <view class="quick-card" bindtap="goMyCollections">
+    <view class="quick-card collect-card" bindtap="goMyCollections">
+      <view class="quick-icon star-icon">★</view>
       <view class="quick-title">我的收藏</view>
       <view class="quick-desc">攻略和问答</view>
+      <view class="quick-arrow">›</view>
     </view>
-    <view class="quick-card" bindtap="goMyComments">
+    <view class="quick-card comment-card" bindtap="goMyComments">
+      <view class="quick-icon comment-icon"></view>
       <view class="quick-title">我的评论</view>
       <view class="quick-desc">看过的讨论</view>
+      <view class="quick-arrow">›</view>
     </view>
   </view>
 
-  <view class="panel info" wx:if="{{profile}}">
+  <view class="panel menu">
+    <view class="menu-row" bindtap="editProfile">
+      <view class="menu-left">
+        <view class="menu-icon profile-icon"></view>
+        <text>编辑校园资料</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" bindtap="goAboutUs">
+      <view class="menu-left">
+        <view class="menu-icon about-icon">i</view>
+        <text>关于我们</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-row" wx:if="{{token}}" bindtap="logout">
+      <view class="menu-left">
+        <view class="menu-icon logout-icon"></view>
+        <text>退出登录</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="panel info" wx:if="{{profile && (profile.dorm_building || profile.class_name)}}">
     <view class="info-head">校园资料</view>
     <view class="row">
       <text>宿舍</text>
@@ -42,21 +92,6 @@
     <view class="row">
       <text>班级</text>
       <text>{{profile.class_name || '未填写'}}</text>
-    </view>
-  </view>
-
-  <view class="panel menu">
-    <view class="menu-row" bindtap="editProfile">
-      <text>编辑校园资料</text>
-      <text>›</text>
-    </view>
-    <view class="menu-row" bindtap="goAboutUs">
-      <text>关于我们</text>
-      <text>›</text>
-    </view>
-    <view class="menu-row" wx:if="{{token}}" bindtap="logout">
-      <text>退出登录</text>
-      <text>›</text>
     </view>
   </view>
 </view>
