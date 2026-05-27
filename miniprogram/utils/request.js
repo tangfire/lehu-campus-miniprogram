@@ -102,9 +102,25 @@ function showError(err) {
   })
 }
 
+function trackEvent(eventType, options = {}) {
+  return request({
+    url: '/campus/analytics/track',
+    method: 'POST',
+    data: {
+      event_type: eventType,
+      page: options.page || '',
+      target_type: options.targetType || '',
+      target_id: options.targetId || 0,
+      channel: options.channel || '',
+      extra: options.extra || {}
+    }
+  }).catch(() => {})
+}
+
 module.exports = {
   request,
   uploadImage,
   uploadVideo,
+  trackEvent,
   showError
 }

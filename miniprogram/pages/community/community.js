@@ -1,4 +1,4 @@
-const { request, showError } = require('../../utils/request')
+const { request, trackEvent, showError } = require('../../utils/request')
 
 const quickChannels = [
   { label: '推荐', postType: '', sort: 'new' },
@@ -30,6 +30,7 @@ Page({
 
   onShow() {
     syncTabBar(this, 0)
+    trackEvent('visit', { page: 'community' })
     if (this._needsRefresh) {
       this._needsRefresh = false
       this.loadPosts(true)
@@ -105,6 +106,7 @@ Page({
   },
 
   onShareAppMessage() {
+    trackEvent('share', { page: 'community', channel: 'app_message' })
     return {
       title: '深汕校园e站：新生攻略、问答和校园笔记',
       path: '/pages/community/community'

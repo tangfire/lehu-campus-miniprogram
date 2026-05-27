@@ -1,4 +1,4 @@
-const { request, showError } = require('../../utils/request')
+const { request, trackEvent, showError } = require('../../utils/request')
 
 const weekdays = [
   { value: 1, label: '周一', short: '一' },
@@ -39,6 +39,7 @@ Page({
 
   onShow() {
     syncTabBar(this, 1)
+    trackEvent('visit', { page: 'timetable' })
     const token = wx.getStorageSync('token') || ''
     this.setData({ token })
     if (token) {
@@ -72,11 +73,13 @@ Page({
 
   shareToday() {
     const text = buildShareText(`${this.data.term} 今日课表`, this.data.todayCourses)
+    trackEvent('share', { page: 'timetable', channel: 'copy_today' })
     copyShareText(text)
   },
 
   shareWeek() {
     const text = buildShareText(`${this.data.term} 本周课表`, this.data.courses)
+    trackEvent('share', { page: 'timetable', channel: 'copy_week' })
     copyShareText(text)
   },
 
@@ -157,6 +160,7 @@ Page({
   },
 
   onShareAppMessage() {
+    trackEvent('share', { page: 'timetable', channel: 'app_message' })
     return {
       title: this.data.courses.length ? `我的课表：${this.data.shareSummary}` : '深汕校园e站课表',
       path: '/pages/timetable/timetable'

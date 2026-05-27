@@ -1,4 +1,4 @@
-const { request, uploadImage, showError } = require('../../utils/request')
+const { request, uploadImage, trackEvent, showError } = require('../../utils/request')
 
 Page({
   data: {
@@ -11,6 +11,7 @@ Page({
 
   onShow() {
     syncTabBar(this, 2)
+    trackEvent('visit', { page: 'mine' })
     this.setData({
       token: wx.getStorageSync('token') || '',
       user: wx.getStorageSync('user') || null,

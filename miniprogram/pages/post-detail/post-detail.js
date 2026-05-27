@@ -1,4 +1,4 @@
-const { request, showError } = require('../../utils/request')
+const { request, trackEvent, showError } = require('../../utils/request')
 
 Page({
   data: {
@@ -15,6 +15,7 @@ Page({
   onLoad(query) {
     this.setupNavBar()
     this.setData({ id: query.id })
+    trackEvent('visit', { page: 'post-detail', targetType: 'post', targetId: query.id })
     this.loadPost()
     this.loadComments()
   },
@@ -225,6 +226,7 @@ Page({
   },
 
   onShareAppMessage() {
+    trackEvent('share', { page: 'post-detail', targetType: 'post', targetId: this.data.id, channel: 'app_message' })
     const post = this.data.post
     return {
       title: post ? post.title : '深汕校园e站校园笔记',
