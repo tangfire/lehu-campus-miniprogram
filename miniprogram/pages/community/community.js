@@ -1,18 +1,17 @@
 const { request, showError } = require('../../utils/request')
 
 const quickChannels = [
-  { label: '全部', category: '', postType: '' },
-  { label: '失物', category: 'lost', postType: 'lost' },
-  { label: '问答', category: 'qa', postType: 'question' },
-  { label: '攻略', category: 'guide', postType: 'guide' },
-  { label: '社团', category: 'club', postType: 'club' }
+  { label: '推荐', category: '', sort: 'new' },
+  { label: '攻略', category: 'guide', sort: 'hot' },
+  { label: '问答', category: 'qa', sort: 'new' },
+  { label: '失物', category: 'lost', sort: 'new' },
+  { label: '社团', category: 'club', sort: 'new' }
 ]
 
 Page({
   data: {
-    categories: [],
     quickChannels,
-    activeChannel: '全部',
+    activeChannel: '推荐',
     activeCategory: '',
     sort: 'new',
     keyword: '',
@@ -26,7 +25,6 @@ Page({
   },
 
   onLoad() {
-    this.loadCategories()
     this.loadPosts(true)
   },
 
@@ -39,15 +37,6 @@ Page({
 
   onPullDownRefresh() {
     this.loadPosts(true).finally(() => wx.stopPullDownRefresh())
-  },
-
-  async loadCategories() {
-    try {
-      const data = await request({ url: '/campus/forum/categories' })
-      this.setData({ categories: data.categories || [] })
-    } catch (err) {
-      showError(err)
-    }
   },
 
   async loadPosts(reset = false) {
@@ -86,26 +75,14 @@ Page({
     }
   },
 
-  changeCategory(e) {
-    this.setData({
-      activeCategory: e.currentTarget.dataset.code || '',
-      activeChannel: ''
-    })
-    this.loadPosts(true)
-  },
-
   changeChannel(e) {
     const label = e.currentTarget.dataset.label
     const channel = quickChannels.find(item => item.label === label) || quickChannels[0]
     this.setData({
       activeChannel: channel.label,
-      activeCategory: channel.category
+      activeCategory: channel.category,
+      sort: channel.sort || 'new'
     })
-    this.loadPosts(true)
-  },
-
-  changeSort(e) {
-    this.setData({ sort: e.currentTarget.dataset.sort })
     this.loadPosts(true)
   },
 
@@ -146,8 +123,16 @@ function normalizePost(post) {
     post_type: post.post_type || 'note',
     type_label: postTypeLabel(post.post_type),
     display_cover: cover,
-    display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学'
+    display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学',
+    display_count: formatCount(post.like_count || 0)
   }
+}
+
+function formatCount(count) {
+  const n = Number(count || 0)
+  if (n >= 10000) return `${(n / 10000).toFixed(1)}w`
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`
+  return String(n)
 }
 
 function postTypeLabel(postType) {

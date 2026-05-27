@@ -2,7 +2,6 @@
   "pages": [
     "pages/community/community",
     "pages/timetable/timetable",
-    "pages/canteen/canteen",
     "pages/mine/mine",
     "pages/freshman-kit/freshman-kit",
     "pages/post-detail/post-detail",
@@ -29,12 +28,8 @@
         "text": "课表"
       },
       {
-        "pagePath": "pages/canteen/canteen",
-        "text": "开饭"
-      },
-      {
         "pagePath": "pages/community/community",
-        "text": "社区"
+        "text": "同学圈"
       },
       {
         "pagePath": "pages/mine/mine",
