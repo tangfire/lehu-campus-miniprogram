@@ -10,6 +10,39 @@
   margin-bottom: 24rpx;
 }
 
+.brand-row,
+.brand-strip {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.brand-row {
+  margin-bottom: 28rpx;
+}
+
+.brand-strip {
+  padding-bottom: 24rpx;
+  margin-bottom: 24rpx;
+  border-bottom: 1rpx solid #d9ecee;
+}
+
+.brand-logo.small {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+}
+
+.brand-name {
+  color: #10201d;
+  font-size: 36rpx;
+  font-weight: 900;
+}
+
+.brand-name.small {
+  font-size: 30rpx;
+}
+
 .login-panel .primary-btn {
   margin-top: 28rpx;
 }
@@ -22,7 +55,7 @@
 }
 
 .eyebrow {
-  color: #0f766e;
+  color: #078894;
   font-size: 24rpx;
   font-weight: 700;
 }
@@ -67,8 +100,8 @@
   margin: 0;
   padding: 0;
   border-radius: 10rpx;
-  background: #eef7f5;
-  color: #0f766e;
+  background: #e8f8f8;
+  color: #078894;
   font-size: 26rpx;
   line-height: 64rpx;
 }
@@ -100,12 +133,12 @@
   display: flex;
   gap: 20rpx;
   padding: 22rpx 0;
-  border-top: 1rpx solid #e2e8f0;
+  border-top: 1rpx solid #d9ecee;
 }
 
 .section {
   width: 150rpx;
-  color: #0f766e;
+  color: #078894;
   font-size: 26rpx;
   font-weight: 800;
 }
@@ -144,7 +177,7 @@
   display: flex;
   align-items: center;
   min-height: 88rpx;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
 }
 
 .field text {
@@ -188,9 +221,9 @@
 }
 
 .weekday.active {
-  border-color: #0f766e;
-  background: #eef7f5;
-  color: #0f766e;
+  border-color: #078894;
+  background: #e8f8f8;
+  color: #078894;
 }
 
 .weekday view {
@@ -212,7 +245,7 @@
   display: flex;
   gap: 20rpx;
   padding: 24rpx 0;
-  border-top: 1rpx solid #e2e8f0;
+  border-top: 1rpx solid #d9ecee;
 }
 
 .course-time {
@@ -221,7 +254,7 @@
 
 .course-time text {
   display: block;
-  color: #0f766e;
+  color: #078894;
   font-size: 24rpx;
   font-weight: 800;
   line-height: 1.55;

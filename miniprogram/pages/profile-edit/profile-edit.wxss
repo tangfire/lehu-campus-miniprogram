@@ -7,7 +7,7 @@
   align-items: center;
   gap: 24rpx;
   min-height: 92rpx;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
 }
 
 .field:last-child {

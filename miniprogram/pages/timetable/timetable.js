@@ -161,7 +161,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: this.data.courses.length ? `我的课表：${this.data.shareSummary}` : '深职校园通课表',
+      title: this.data.courses.length ? `我的课表：${this.data.shareSummary}` : '深汕 e站课表',
       path: '/pages/timetable/timetable'
     }
   }

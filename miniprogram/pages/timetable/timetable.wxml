@@ -1,12 +1,24 @@
 <view class="page timetable">
   <view wx:if="{{!token}}" class="panel login-panel">
-    <view class="panel-title">今日课表</view>
-    <view class="muted">登录后导入你的个人课表。</view>
+    <view class="brand-row">
+      <image class="brand-logo" src="/assets/logo-192.png" mode="aspectFit" />
+      <view>
+        <view class="brand-name">深汕 e站</view>
+        <view class="muted">深汕校区同学的课表与校园入口</view>
+      </view>
+    </view>
     <button class="primary-btn" bindtap="login">去登录</button>
   </view>
 
   <block wx:else>
     <view class="today panel">
+      <view class="brand-strip">
+        <image class="brand-logo small" src="/assets/logo-192.png" mode="aspectFit" />
+        <view>
+          <view class="brand-name small">深汕 e站</view>
+          <view class="muted">深圳职业技术大学（深汕校区）</view>
+        </view>
+      </view>
       <view class="top-line">
         <view>
           <view class="eyebrow">{{term}}</view>

@@ -7,8 +7,22 @@
   margin-bottom: 22rpx;
 }
 
+.brand-logo {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 20rpx;
+  background: #ffffff;
+  flex: none;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
 .school {
-  color: #0f766e;
+  color: #078894;
   font-size: 24rpx;
   font-weight: 800;
 }
@@ -43,14 +57,14 @@
   border-radius: 999rpx;
   background: #ffffff;
   color: #475569;
-  border: 1rpx solid #e2e8f0;
+  border: 1rpx solid #d9ecee;
   font-size: 26rpx;
 }
 
 .category-pill.active {
-  background: #0f766e;
+  background: #078894;
   color: #ffffff;
-  border-color: #0f766e;
+  border-color: #078894;
 }
 
 .tool {
@@ -84,8 +98,8 @@
 }
 
 .badge {
-  background: #eef7f5;
-  color: #0f766e;
+  background: #e8f8f8;
+  color: #078894;
   font-weight: 800;
 }
 
@@ -120,13 +134,13 @@
 }
 
 .favorite.active {
-  background: #0f766e;
+  background: #078894;
   color: #ffffff;
 }
 
 .tool-detail {
   padding: 0 24rpx 24rpx;
-  border-top: 1rpx solid #e2e8f0;
+  border-top: 1rpx solid #d9ecee;
 }
 
 .body {
@@ -163,8 +177,8 @@
   height: 58rpx;
   line-height: 58rpx;
   border-radius: 8rpx;
-  background: #eef7f5;
-  color: #0f766e;
+  background: #e8f8f8;
+  color: #078894;
   font-size: 24rpx;
 }
 
@@ -174,7 +188,7 @@
 
 .links {
   margin-top: 18rpx;
-  border-top: 1rpx solid #e2e8f0;
+  border-top: 1rpx solid #d9ecee;
 }
 
 .link-row {
@@ -183,7 +197,7 @@
   justify-content: space-between;
   gap: 18rpx;
   padding: 18rpx 0;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
 }
 
 .link-row text {

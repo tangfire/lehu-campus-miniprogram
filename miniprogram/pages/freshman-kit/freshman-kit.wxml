@@ -1,7 +1,12 @@
 <view class="page freshman">
   <view class="header panel">
-    <view class="school">深圳职业技术大学（深汕校区）</view>
-    <view class="title">新生工具包</view>
+    <view class="header-main">
+      <image class="brand-logo" src="/assets/logo-192.png" mode="aspectFit" />
+      <view>
+        <view class="school">深圳职业技术大学（深汕校区）</view>
+        <view class="title">新生工具包</view>
+      </view>
+    </view>
     <view class="muted">报到、宿舍、交通、官网入口先放这里，待学校正式通知后持续更新。</view>
   </view>
 

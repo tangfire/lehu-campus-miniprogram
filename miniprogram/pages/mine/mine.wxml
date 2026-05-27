@@ -1,10 +1,10 @@
 <view class="page mine">
   <view class="profile panel">
     <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
-    <view wx:else class="avatar avatar-placeholder">同</view>
+    <image wx:else class="avatar logo-avatar" src="/assets/logo-192.png" mode="aspectFit" />
     <view class="profile-main">
-      <view class="name">{{user ? (user.nickname || user.name || '深职同学') : '未登录'}}</view>
-      <view class="muted">{{profile ? profile.school_name : '登录后使用校园社区'}}</view>
+      <view class="name">{{user ? (user.nickname || user.name || '深汕同学') : '深汕 e站'}}</view>
+      <view class="muted">{{profile ? profile.school_name : '登录后同步课表、收藏攻略、参与同学圈'}}</view>
     </view>
   </view>
 
@@ -37,7 +37,7 @@
   <view class="panel info" wx:if="{{profile}}">
     <view class="row">
       <text>认证状态</text>
-      <text>{{profile.auth_status === 1 ? '已认证' : '待学校 OAuth 接入'}}</text>
+      <text>{{profile.auth_status === 1 ? '已认证' : '待校园认证'}}</text>
     </view>
     <view class="row">
       <text>宿舍</text>

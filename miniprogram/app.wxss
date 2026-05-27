@@ -1,5 +1,5 @@
 page {
-  background: #f5f7f8;
+  background: #f4fafa;
   color: #10201d;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 }
@@ -12,22 +12,40 @@ page {
 
 .panel {
   background: #ffffff;
-  border: 1rpx solid #e2e8f0;
+  border: 1rpx solid #d9ecee;
   border-radius: 12rpx;
 }
 
 .primary-btn {
-  background: #0f766e;
+  background: #078894;
   color: #ffffff;
   border-radius: 10rpx;
 }
 
 .ghost-btn {
-  background: #eef7f5;
-  color: #0f766e;
+  background: #e8f8f8;
+  color: #078894;
   border-radius: 10rpx;
 }
 
 .muted {
   color: #64748b;
+}
+
+button::after {
+  border: 0;
+}
+
+.brand-logo {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 20rpx;
+  background: #ffffff;
+  flex: none;
+}
+
+.brand-card {
+  background: #ffffff;
+  border: 1rpx solid #d9ecee;
+  border-radius: 14rpx;
 }

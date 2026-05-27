@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 22rpx;
-  padding: 28rpx;
+  padding: 30rpx;
   margin-bottom: 28rpx;
 }
 
@@ -17,9 +17,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0f766e;
+  color: #078894;
   font-size: 38rpx;
   font-weight: 900;
+}
+
+.logo-avatar {
+  border-radius: 24rpx;
+  background: #ffffff;
 }
 
 .name {
@@ -46,7 +51,7 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 28rpx 0;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
   font-size: 29rpx;
 }
 
@@ -64,7 +69,7 @@ button {
   justify-content: space-between;
   gap: 24rpx;
   padding: 26rpx 0;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
   font-size: 28rpx;
 }
 

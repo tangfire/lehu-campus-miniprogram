@@ -28,7 +28,7 @@ Page({
             method: 'POST',
             data: {
               code,
-              nickname: '深职同学'
+              nickname: '深汕同学'
             }
           })
           wx.setStorageSync('token', data.token)

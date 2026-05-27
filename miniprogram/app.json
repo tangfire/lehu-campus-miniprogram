@@ -13,14 +13,14 @@
     "pages/moderation/moderation"
   ],
   "window": {
-    "navigationBarTitleText": "深职校园通",
-    "navigationBarBackgroundColor": "#0F766E",
+    "navigationBarTitleText": "深汕 e站",
+    "navigationBarBackgroundColor": "#078894",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#F5F7F8"
+    "backgroundColor": "#F4FAFA"
   },
   "tabBar": {
     "color": "#64748B",
-    "selectedColor": "#0F766E",
+    "selectedColor": "#078894",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [

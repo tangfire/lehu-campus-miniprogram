@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0f766e;
+  color: #078894;
   font-size: 28rpx;
   font-weight: 800;
 }
@@ -94,7 +94,7 @@
   justify-content: space-between;
   gap: 24rpx;
   padding: 16rpx 0;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
   font-size: 26rpx;
 }
 
@@ -134,13 +134,13 @@
   height: 60rpx;
   line-height: 60rpx;
   border-radius: 10rpx;
-  background: #eef7f5;
-  color: #0f766e;
+  background: #e8f8f8;
+  color: #078894;
   font-size: 26rpx;
 }
 
 .action-row button.liked {
-  background: #0f766e;
+  background: #078894;
   color: #ffffff;
 }
 

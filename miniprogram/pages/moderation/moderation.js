@@ -44,7 +44,7 @@ Page({
       editable: action !== 'approve',
       placeholderText: '填写原因，可选',
       confirmText: label,
-      confirmColor: action === 'approve' ? '#0f766e' : '#dc2626',
+      confirmColor: action === 'approve' ? '#078894' : '#dc2626',
       success: async res => {
         if (!res.confirm) return
         try {

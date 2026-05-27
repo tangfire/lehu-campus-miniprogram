@@ -24,15 +24,15 @@
   border-radius: 999rpx;
   background: #ffffff;
   color: #475569;
-  border: 1rpx solid #e2e8f0;
+  border: 1rpx solid #d9ecee;
   font-size: 26rpx;
 }
 
 .category-pill.active,
 .type-pill.active {
-  background: #0f766e;
+  background: #078894;
   color: #ffffff;
-  border-color: #0f766e;
+  border-color: #078894;
 }
 
 .form {
@@ -43,7 +43,7 @@
   height: 76rpx;
   font-size: 32rpx;
   font-weight: 700;
-  border-bottom: 1rpx solid #e2e8f0;
+  border-bottom: 1rpx solid #d9ecee;
 }
 
 .form textarea {
@@ -57,7 +57,7 @@
 
 .extra-panel {
   padding: 18rpx 0 8rpx;
-  border-top: 1rpx solid #e2e8f0;
+  border-top: 1rpx solid #d9ecee;
 }
 
 .extra-panel input {
@@ -80,14 +80,14 @@
   border-radius: 8rpx;
   background: #f8fafc;
   color: #64748b;
-  border: 1rpx solid #e2e8f0;
+  border: 1rpx solid #d9ecee;
   font-size: 26rpx;
 }
 
 .lost-kind view.active {
-  background: #0f766e;
+  background: #078894;
   color: #ffffff;
-  border-color: #0f766e;
+  border-color: #078894;
   font-weight: 700;
 }
 
@@ -96,7 +96,7 @@
   gap: 12rpx;
   padding-top: 22rpx;
   margin-top: 10rpx;
-  border-top: 1rpx solid #e2e8f0;
+  border-top: 1rpx solid #d9ecee;
 }
 
 .media-tab {
@@ -107,13 +107,13 @@
   border-radius: 8rpx;
   background: #f8fafc;
   color: #64748b;
-  border: 1rpx solid #e2e8f0;
+  border: 1rpx solid #d9ecee;
   font-size: 26rpx;
 }
 
 .media-tab.active {
-  background: #0f766e;
-  border-color: #0f766e;
+  background: #078894;
+  border-color: #078894;
   color: #ffffff;
   font-weight: 700;
 }
@@ -196,7 +196,7 @@
   align-items: center;
   justify-content: center;
   gap: 12rpx;
-  color: #e2e8f0;
+  color: #d9ecee;
   font-size: 28rpx;
 }
 

@@ -1,9 +1,19 @@
 .hero {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
   padding: 32rpx;
 }
 
+.brand-logo {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 22rpx;
+  flex: none;
+}
+
 .eyebrow {
-  color: #0f766e;
+  color: #078894;
   font-size: 24rpx;
   font-weight: 700;
 }
