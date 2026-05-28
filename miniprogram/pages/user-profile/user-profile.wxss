@@ -267,17 +267,6 @@
   overflow: hidden;
 }
 
-.poster-cover::after {
-  content: "";
-  position: absolute;
-  right: -26rpx;
-  bottom: -22rpx;
-  width: 156rpx;
-  height: 120rpx;
-  border-radius: 42rpx;
-  background: rgba(255, 255, 255, 0.42);
-}
-
 .poster-mint {
   background: #effcf5;
 }
