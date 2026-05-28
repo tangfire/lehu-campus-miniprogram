@@ -1,4 +1,5 @@
 <view class="page timetable">
+  <view class="status-spacer" style="height: {{navSafeHeight}}px"></view>
   <view wx:if="{{!token}}" class="panel login-panel">
     <view class="brand-row">
       <image class="brand-logo" src="/assets/brand/logo-ezai.png" mode="aspectFill" />

@@ -24,17 +24,23 @@ Page({
     selectedWeekday: 1,
     loading: false,
     importing: false,
+    navSafeHeight: 0,
     showImportForm: true,
     shareSummary: '',
     importButtonText: '导入演示课表'
   },
 
   onLoad() {
+    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+    const menu = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
+    const statusBarHeight = info.statusBarHeight || 0
+    const navSafeHeight = menu && menu.bottom ? menu.bottom + Math.max(menu.top - statusBarHeight, 0) : statusBarHeight + 52
     const today = toCampusWeekday(new Date().getDay())
     this.setData({
       token: wx.getStorageSync('token') || '',
       term: defaultTerm(),
-      selectedWeekday: today
+      selectedWeekday: today,
+      navSafeHeight
     })
   },
 

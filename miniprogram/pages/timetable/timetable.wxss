@@ -3,6 +3,10 @@
   background: #f8f7f5;
 }
 
+.status-spacer {
+  height: 0;
+}
+
 .login-panel,
 .today,
 .import-panel,

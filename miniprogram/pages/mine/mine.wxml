@@ -1,12 +1,5 @@
 <view class="page mine">
-  <view class="status-spacer" style="height: {{statusBarHeight}}px"></view>
-  <view class="mine-header">
-    <view>
-      <view class="page-title">我的</view>
-      <view class="title-wave"></view>
-    </view>
-  </view>
-
+  <view class="status-spacer" style="height: {{navSafeHeight}}px"></view>
   <view class="profile-card">
     <image class="profile-ip" src="/assets/brand/stickers/welcome.png" mode="aspectFit" />
     <view class="profile-top">

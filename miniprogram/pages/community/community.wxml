@@ -1,7 +1,7 @@
 <view class="page community">
   <view class="feed-sticky">
-    <view class="topbar">
-      <view class="brand-title">首页</view>
+    <view class="status-spacer" style="height: {{statusBarHeight}}px"></view>
+    <view class="topbar" style="padding-right: {{menuButtonRightSpace}}px">
       <view class="search-pill">
         <view class="search-icon"></view>
         <input value="{{keyword}}" bindfocus="focusSearch" bindinput="onSearch" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索深汕攻略、问答" />

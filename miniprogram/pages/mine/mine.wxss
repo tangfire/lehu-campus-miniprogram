@@ -1,5 +1,5 @@
 .mine {
-  padding: 22rpx 26rpx 170rpx;
+  padding: 0 26rpx 170rpx;
   background: #fbfbfa;
 }
 
@@ -7,32 +7,11 @@
   height: 0;
 }
 
-.mine-header {
-  display: flex;
-  align-items: flex-start;
-  margin: 30rpx 10rpx 34rpx;
-}
-
-.page-title {
-  color: #172033;
-  font-size: 48rpx;
-  font-weight: 900;
-  line-height: 1.05;
-}
-
-.title-wave {
-  width: 64rpx;
-  height: 10rpx;
-  margin-top: 14rpx;
-  border-radius: 999rpx;
-  background: linear-gradient(90deg, #ff5d6f, #ff9aa7);
-}
-
 .profile-card {
   position: relative;
   min-height: 344rpx;
   padding: 44rpx 36rpx 34rpx;
-  margin-bottom: 28rpx;
+  margin: 18rpx 0 28rpx;
   border: 1rpx solid rgba(15, 23, 42, 0.05);
   border-radius: 30rpx;
   background: linear-gradient(135deg, #fffafa 0%, #ffffff 48%, #effaff 100%);

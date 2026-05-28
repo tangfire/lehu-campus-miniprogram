@@ -20,6 +20,8 @@ Page({
     searchedKeyword: '',
     recentSearches: [],
     showSearchPanel: false,
+    statusBarHeight: 0,
+    menuButtonRightSpace: 0,
     emptyTitle: '还没有内容',
     emptyDesc: '可以发一条攻略、提问、失物招领或校园瞬间。',
     posts: [],
@@ -32,6 +34,14 @@ Page({
   },
 
   onLoad() {
+    const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+    const menu = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
+    const windowWidth = info.windowWidth || 375
+    const menuButtonRightSpace = menu && menu.left ? Math.max(windowWidth - menu.left + 10, 0) : 0
+    this.setData({
+      statusBarHeight: info.statusBarHeight || 0,
+      menuButtonRightSpace
+    })
     this.loadRecentSearches()
     this.loadPosts(true)
   },

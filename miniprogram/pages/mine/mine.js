@@ -7,7 +7,7 @@ Page({
     token: '',
     user: null,
     profile: null,
-    statusBarHeight: 0,
+    navSafeHeight: 0,
     loggingIn: false,
     uploadingAvatar: false,
     hasDraft: false,
@@ -17,7 +17,10 @@ Page({
 
   onLoad() {
     const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: info.statusBarHeight || 0 })
+    const menu = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
+    const statusBarHeight = info.statusBarHeight || 0
+    const navSafeHeight = menu && menu.bottom ? menu.bottom + Math.max(menu.top - statusBarHeight, 0) : statusBarHeight + 52
+    this.setData({ navSafeHeight })
   },
 
   onShow() {
