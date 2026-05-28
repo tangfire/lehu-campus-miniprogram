@@ -73,7 +73,7 @@
     <view class="menu-row" bindtap="goAboutUs">
       <view class="menu-left">
         <view class="menu-icon about-icon">i</view>
-        <text>关于我们与规则</text>
+        <text>关于深汕校园e站</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>

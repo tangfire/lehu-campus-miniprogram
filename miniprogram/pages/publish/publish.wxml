@@ -26,11 +26,11 @@
     <view class="starter-grid">
       <view class="starter-item" bindtap="chooseFromAlbum">
         <view class="starter-icon image-icon"></view>
-        <view>从相册选择</view>
+        <view>发图文</view>
       </view>
       <view class="starter-item" bindtap="takePhoto">
         <view class="starter-icon camera-icon"></view>
-        <view>相机</view>
+        <view>拍摄</view>
       </view>
       <view class="starter-item" bindtap="writeText">
         <view class="starter-icon text-icon">Aa</view>

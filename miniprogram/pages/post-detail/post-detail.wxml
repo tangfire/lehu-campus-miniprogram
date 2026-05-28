@@ -53,11 +53,6 @@
 
   <view class="comment-title">共 {{post ? (post.comment_count || 0) : 0}} 条评论</view>
   <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" image="/assets/brand/empty/message.png" />
-  <view wx:if="{{comments.length}}" class="comment-compose">
-    <view class="comment-smile">☺</view>
-    <input value="{{commentText}}" bindinput="onInput" placeholder="{{replyTarget ? '回复 ' + replyTarget.name : '爱评论的人运气都不差'}}" confirm-type="send" bindconfirm="submitComment" maxlength="500" />
-    <button bindtap="submitComment">发</button>
-  </view>
   <block wx:for="{{comments}}" wx:key="id">
     <view class="comment" data-id="{{item.id}}" bindlongpress="openCommentMenu">
       <view class="comment-avatar-wrap" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">
@@ -120,6 +115,7 @@
     <view class="bottom-input">
       <input value="{{commentText}}" bindinput="onInput" placeholder="{{replyTarget ? '回复 ' + replyTarget.name : '说点什么...'}}" confirm-type="send" bindconfirm="submitComment" maxlength="500" />
     </view>
+    <button class="send-action" bindtap="submitComment">发送</button>
     <view class="bottom-action {{post.is_liked ? 'active' : ''}}" bindtap="toggleLike">
       <text>{{post.is_liked ? '已赞' : '赞'}}</text>
       <text>{{post.like_count || 0}}</text>
