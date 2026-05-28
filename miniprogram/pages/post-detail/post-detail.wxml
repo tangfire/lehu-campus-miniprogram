@@ -3,7 +3,8 @@
     <view class="detail-nav" style="height: {{navBarHeight}}px; padding-top: {{statusBarHeight}}px;">
       <view class="back" bindtap="goBack"></view>
       <view class="nav-author">
-        <image wx:if="{{post.author && post.author.avatar}}" class="nav-avatar" src="{{post.author.avatar}}" mode="aspectFill" />
+        <image wx:if="{{post.is_official}}" class="nav-avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
+        <image wx:elif="{{post.author && post.author.avatar}}" class="nav-avatar" src="{{post.author.avatar}}" mode="aspectFill" />
         <view wx:else class="nav-avatar avatar-placeholder">{{post.avatar_text}}</view>
         <text>{{post.display_author}}</text>
       </view>
@@ -23,7 +24,8 @@
 
     <view class="post-main-card">
       <view class="post-head">
-        <image wx:if="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
+        <image wx:if="{{post.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
+        <image wx:elif="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
         <view wx:else class="avatar avatar-placeholder">{{post.avatar_text}}</view>
         <view class="author-main">
           <view class="author-name">{{post.display_author}}</view>
@@ -50,7 +52,7 @@
   </view>
 
   <view class="comment-title">共 {{post ? (post.comment_count || 0) : 0}} 条评论</view>
-  <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" />
+  <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" image="/assets/brand/empty/message.png" />
   <view wx:if="{{comments.length}}" class="comment-compose">
     <view class="comment-smile">☺</view>
     <input value="{{commentText}}" bindinput="onInput" placeholder="{{replyTarget ? '回复 ' + replyTarget.name : '爱评论的人运气都不差'}}" confirm-type="send" bindconfirm="submitComment" maxlength="500" />

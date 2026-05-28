@@ -280,6 +280,17 @@
   overflow: hidden;
 }
 
+.poster-cover::after {
+  content: "";
+  position: absolute;
+  right: -26rpx;
+  bottom: -22rpx;
+  width: 156rpx;
+  height: 120rpx;
+  border-radius: 42rpx;
+  background: rgba(255, 255, 255, 0.42);
+}
+
 .poster-mint {
   background: #effcf5;
 }
@@ -376,6 +387,11 @@
   border-radius: 50%;
   background: #fff1f3;
   flex: none;
+}
+
+.official-avatar {
+  background: #fff7f8;
+  box-shadow: 0 2rpx 8rpx rgba(255, 77, 95, 0.12);
 }
 
 .avatar-placeholder {

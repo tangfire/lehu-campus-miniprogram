@@ -1,4 +1,5 @@
 <view class="empty">
+  <image class="empty-art" src="{{image}}" mode="aspectFit" />
   <view class="empty-title">{{title}}</view>
   <view class="empty-desc">{{desc}}</view>
 </view>

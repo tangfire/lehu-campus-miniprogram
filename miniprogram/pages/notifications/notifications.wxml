@@ -22,7 +22,7 @@
     </view>
   </scroll-view>
 
-  <empty-state wx:if="{{!loading && notifications.length === 0}}" title="暂无消息" desc="{{emptyDesc}}" />
+  <empty-state wx:if="{{!loading && notifications.length === 0}}" title="暂无消息" desc="{{emptyDesc}}" image="/assets/brand/empty/message.png" />
 
   <view class="list" wx:if="{{notifications.length}}">
     <view

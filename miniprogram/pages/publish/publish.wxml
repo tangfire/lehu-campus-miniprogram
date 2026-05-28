@@ -1,9 +1,10 @@
 <view class="page publish">
   <view class="composer-head">
-    <view>
+    <view class="composer-copy">
       <view class="composer-title">发布笔记</view>
       <view class="composer-subtitle">分享攻略、提问、失物招领或校园瞬间</view>
     </view>
+    <image class="composer-mascot" src="/assets/brand/stickers/photo.png" mode="aspectFit" />
     <view class="head-actions">
       <button wx:if="{{hasDraft}}" class="draft-btn" bindtap="clearDraft">清草稿</button>
       <button class="publish-btn" loading="{{submitting}}" bindtap="submit">发布</button>

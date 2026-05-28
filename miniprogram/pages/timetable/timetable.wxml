@@ -1,7 +1,7 @@
 <view class="page timetable">
   <view wx:if="{{!token}}" class="panel login-panel">
     <view class="brand-row">
-      <image class="brand-logo" src="/assets/logo-192.png" mode="aspectFit" />
+      <image class="brand-logo" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
       <view>
         <view class="brand-name">深汕校园e站</view>
         <view class="muted">深汕同学的课表与校园入口</view>
@@ -94,7 +94,7 @@
           </view>
         </view>
       </view>
-      <empty-state wx:else title="这天没课" desc="切换其他日期查看课程安排。" />
+      <empty-state wx:else title="这天没课" desc="切换其他日期查看课程安排。" image="/assets/brand/empty/timetable.png" />
     </view>
   </block>
 </view>

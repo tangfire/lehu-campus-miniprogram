@@ -4,8 +4,8 @@
     <view class="tab {{tab === 'comments' ? 'active' : ''}}" data-tab="comments" bindtap="changeTab">评论</view>
   </view>
 
-  <empty-state wx:if="{{!loading && tab === 'posts' && posts.length === 0}}" title="暂无待审核帖子" desc="命中人工审核的内容会出现在这里。" />
-  <empty-state wx:if="{{!loading && tab === 'comments' && comments.length === 0}}" title="暂无待审核评论" desc="命中人工审核的评论会出现在这里。" />
+  <empty-state wx:if="{{!loading && tab === 'posts' && posts.length === 0}}" title="暂无待审核帖子" desc="命中人工审核的内容会出现在这里。" image="/assets/brand/empty/note.png" />
+  <empty-state wx:if="{{!loading && tab === 'comments' && comments.length === 0}}" title="暂无待审核评论" desc="命中人工审核的评论会出现在这里。" image="/assets/brand/empty/message.png" />
 
   <block wx:if="{{tab === 'posts'}}">
     <view wx:for="{{posts}}" wx:key="id" class="item panel">

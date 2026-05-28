@@ -38,7 +38,7 @@
   </view>
 
   <view wx:if="{{!loading && posts.length === 0}}" class="community-empty">
-    <empty-state title="{{emptyTitle}}" desc="{{emptyDesc}}" />
+    <empty-state title="{{emptyTitle}}" desc="{{emptyDesc}}" image="{{emptyImage}}" />
     <button wx:if="{{searchedKeyword}}" class="ask-btn" bindtap="createQuestionFromSearch">发个提问</button>
   </view>
 
@@ -67,7 +67,8 @@
             </view>
             <view class="note-meta">
               <view class="author">
-                <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+                <image wx:if="{{item.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
+                <image wx:elif="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
                 <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
                 <text>{{item.author_label}}</text>
               </view>
@@ -104,7 +105,8 @@
             </view>
             <view class="note-meta">
               <view class="author">
-                <image wx:if="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+                <image wx:if="{{item.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
+                <image wx:elif="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
                 <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
                 <text>{{item.author_label}}</text>
               </view>

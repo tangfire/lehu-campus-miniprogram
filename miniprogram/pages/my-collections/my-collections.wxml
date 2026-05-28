@@ -1,5 +1,5 @@
 <view class="page my-collections">
-  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有收藏" desc="看到有用的校园攻略、资料或活动，可以先收藏起来。" />
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有收藏" desc="看到有用的校园攻略、资料或活动，可以先收藏起来。" image="/assets/brand/empty/box.png" />
 
   <block wx:for="{{posts}}" wx:key="id">
     <view class="post panel">

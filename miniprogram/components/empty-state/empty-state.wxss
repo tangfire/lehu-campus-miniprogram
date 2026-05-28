@@ -1,17 +1,26 @@
 .empty {
-  padding: 96rpx 32rpx;
+  padding: 76rpx 32rpx 86rpx;
   text-align: center;
   color: #64748b;
 }
 
+.empty-art {
+  width: 260rpx;
+  height: 210rpx;
+  margin: 0 auto 18rpx;
+  display: block;
+}
+
 .empty-title {
   color: #18181b;
-  font-size: 32rpx;
-  font-weight: 700;
+  font-size: 31rpx;
+  font-weight: 900;
   margin-bottom: 12rpx;
 }
 
 .empty-desc {
+  max-width: 500rpx;
+  margin: 0 auto;
   font-size: 26rpx;
   line-height: 1.7;
 }

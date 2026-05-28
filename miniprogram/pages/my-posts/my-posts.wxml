@@ -1,5 +1,5 @@
 <view class="page my-posts">
-  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有发布" desc="去社区发一条学习、生活或社团动态。" />
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有发布" desc="去社区发一条学习、生活或社团动态。" image="/assets/brand/empty/note.png" />
 
   <block wx:for="{{posts}}" wx:key="id">
     <view class="post panel">

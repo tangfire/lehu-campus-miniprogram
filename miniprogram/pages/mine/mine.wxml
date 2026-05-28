@@ -8,19 +8,11 @@
   </view>
 
   <view class="profile-card">
-    <view class="sky-art">
-      <view class="cloud cloud-one"></view>
-      <view class="cloud cloud-two"></view>
-      <view class="orb orb-one"></view>
-      <view class="orb orb-two"></view>
-      <view class="campus-gate"></view>
-      <view class="tree tree-one"></view>
-      <view class="tree tree-two"></view>
-    </view>
+    <image class="profile-ip" src="/assets/brand/stickers/welcome.png" mode="aspectFit" />
     <view class="profile-top">
       <view class="avatar-wrap" bindtap="changeAvatar">
         <image wx:if="{{user && user.avatar}}" class="avatar" src="{{user.avatar}}" mode="aspectFill" />
-        <image wx:else class="avatar logo-avatar" src="/assets/logo-192.png" mode="aspectFit" />
+        <image wx:else class="avatar logo-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
       </view>
       <view class="profile-main">
         <view class="name">{{user ? (user.nickname || user.name || '深汕同学') : '深汕校园e站'}}</view>
@@ -41,7 +33,7 @@
   </view>
 
   <view class="message-card" bindtap="goNotifications">
-    <view class="message-icon">信</view>
+    <image class="message-icon brand" src="/assets/brand/stickers/notice.png" mode="aspectFit" />
     <view class="message-main">
       <view class="message-title">消息中心</view>
       <view class="message-desc">{{unreadCount ? unreadCount + ' 条未读消息' : '回复、赞藏和系统通知'}}</view>

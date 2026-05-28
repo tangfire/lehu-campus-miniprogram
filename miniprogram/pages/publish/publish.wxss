@@ -18,6 +18,17 @@
   gap: 12rpx;
 }
 
+.composer-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.composer-mascot {
+  width: 76rpx;
+  height: 70rpx;
+  flex: none;
+}
+
 .composer-title {
   color: #18181b;
   font-size: 37rpx;

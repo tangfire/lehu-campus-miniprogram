@@ -1,11 +1,11 @@
 <view class="page">
   <view class="hero panel">
-    <image class="brand-logo" src="/assets/logo-192.png" mode="aspectFit" />
+    <image class="brand-logo" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
     <view>
       <view class="eyebrow">批次配送</view>
       <view class="title">开饭</view>
       <view class="desc">后续接入商家、菜品、配送批次和微信支付。首期先保留入口，不误导用户下单。</view>
     </view>
   </view>
-  <empty-state title="外卖功能筹备中" desc="等商家和配送流程确定后，再开放下单、支付和取餐通知。" />
+  <empty-state title="外卖功能筹备中" desc="等商家和配送流程确定后，再开放下单、支付和取餐通知。" image="/assets/brand/empty/box.png" />
 </view>

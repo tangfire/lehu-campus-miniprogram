@@ -153,6 +153,11 @@
   flex: none;
 }
 
+.official-avatar {
+  background: #fff7f8;
+  box-shadow: 0 4rpx 12rpx rgba(255, 77, 95, 0.12);
+}
+
 .avatar-placeholder {
   display: flex;
   align-items: center;

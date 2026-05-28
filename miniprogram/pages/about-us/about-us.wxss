@@ -17,9 +17,10 @@
 .logo {
   width: 108rpx;
   height: 108rpx;
-  border-radius: 24rpx;
-  background: #faf9f7;
+  border-radius: 28rpx;
+  background: #fff7f8;
   flex: none;
+  box-shadow: 0 8rpx 20rpx rgba(255, 77, 95, 0.1);
 }
 
 .name {
@@ -34,6 +35,46 @@
   color: #64748b;
   font-size: 25rpx;
   line-height: 1.45;
+}
+
+.ip-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 22rpx;
+  min-height: 212rpx;
+  padding: 22rpx 28rpx;
+  margin-bottom: 20rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #fff8f7, #effaff);
+  box-shadow: 0 10rpx 28rpx rgba(255, 77, 95, 0.06);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.ip-art {
+  align-self: flex-end;
+  width: 132rpx;
+  height: 188rpx;
+  flex: none;
+}
+
+.ip-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.ip-title {
+  color: #18181b;
+  font-size: 31rpx;
+  font-weight: 900;
+}
+
+.ip-desc {
+  margin-top: 8rpx;
+  color: #64748b;
+  font-size: 24rpx;
+  line-height: 1.55;
 }
 
 .section {

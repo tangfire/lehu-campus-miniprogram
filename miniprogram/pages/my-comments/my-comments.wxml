@@ -1,5 +1,5 @@
 <view class="page my-comments">
-  <empty-state wx:if="{{!loading && comments.length === 0}}" title="还没有评论" desc="你在校园社区里的回复会出现在这里。" />
+  <empty-state wx:if="{{!loading && comments.length === 0}}" title="还没有评论" desc="你在校园社区里的回复会出现在这里。" image="/assets/brand/empty/message.png" />
 
   <block wx:for="{{comments}}" wx:key="id">
     <view class="comment-card" data-id="{{item.post_id}}" bindtap="openPost">

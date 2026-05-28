@@ -1,9 +1,17 @@
 <view class="page about">
   <view class="intro">
-    <image class="logo" src="/assets/logo-192.png" mode="aspectFit" />
+    <image class="logo" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
     <view>
       <view class="name">深汕校园e站</view>
       <view class="tagline">深汕校区同学的课表工具与校园生活入口</view>
+    </view>
+  </view>
+
+  <view class="ip-card">
+    <image class="ip-art" src="/assets/brand/ip/full-body.png" mode="aspectFit" />
+    <view class="ip-copy">
+      <view class="ip-title">深汕e仔</view>
+      <view class="ip-desc">负责整理攻略、提醒事项和同学反馈，也会在首页发布官方笔记。</view>
     </view>
   </view>
 
