@@ -109,6 +109,14 @@
       <text>回复 {{replyTarget.name}}</text>
       <text bindtap="clearReply">取消</text>
     </view>
+    <view wx:if="{{showEzaiMention}}" class="mention-panel" catchtap="insertEzaiMention">
+      <image class="mention-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
+      <view class="mention-main">
+        <view>深汕e仔</view>
+        <view>深汕校园官方号</view>
+      </view>
+      <view class="mention-action">@TA</view>
+    </view>
     <view class="bottom-input">
       <input value="{{commentText}}" bindinput="onInput" placeholder="{{replyTarget ? '回复 ' + replyTarget.name : '说点什么...'}}" confirm-type="send" bindconfirm="submitComment" maxlength="500" />
     </view>

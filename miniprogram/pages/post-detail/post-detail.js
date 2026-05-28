@@ -8,6 +8,7 @@ Page({
     post: null,
     comments: [],
     commentText: '',
+    showEzaiMention: false,
     replyTarget: null,
     currentUserId: '',
     statusBarHeight: 0,
@@ -69,7 +70,11 @@ Page({
   },
 
   onInput(e) {
-    this.setData({ commentText: e.detail.value })
+    const value = e.detail.value || ''
+    this.setData({
+      commentText: value,
+      showEzaiMention: shouldShowEzaiMention(value)
+    })
   },
 
   async submitComment() {
@@ -96,12 +101,27 @@ Page({
         data: payload
       })
       trackEvent('comment_create', { page: 'post-detail', targetType: 'post', targetId: this.data.id })
-      this.setData({ commentText: '', replyTarget: null })
+      this.setData({ commentText: '', replyTarget: null, showEzaiMention: false })
+      if (containsEzaiMention(content)) {
+        setTimeout(() => this.loadComments(), 3000)
+        setTimeout(() => this.loadComments(), 8000)
+      }
       this.loadPost()
       this.loadComments()
     } catch (err) {
       showError(err)
     }
+  },
+
+  insertEzaiMention() {
+    const current = this.data.commentText || ''
+    const text = current.endsWith('@') || current.endsWith('＠')
+      ? `${current.slice(0, -1)}@深汕e仔 `
+      : `${current}${current.trim() ? ' ' : ''}@深汕e仔 `
+    this.setData({
+      commentText: text,
+      showEzaiMention: false
+    })
   },
 
   startReply(e) {
@@ -479,6 +499,16 @@ function formatDate(value) {
 function displayAuthor(author) {
   if (!author) return '深汕同学'
   return author.nickname || author.name || '深汕同学'
+}
+
+function shouldShowEzaiMention(value) {
+  const text = String(value || '')
+  return text.endsWith('@') || text.endsWith('＠')
+}
+
+function containsEzaiMention(value) {
+  const text = String(value || '').toLowerCase()
+  return text.includes('@深汕e仔') || text.includes('＠深汕e仔') || text.includes('@e仔') || text.includes('＠e仔')
 }
 
 function extraItems(postType, extra) {
