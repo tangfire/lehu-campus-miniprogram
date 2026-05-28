@@ -73,7 +73,7 @@
     <view class="menu-row" bindtap="goAboutUs">
       <view class="menu-left">
         <view class="menu-icon about-icon">i</view>
-        <text>关于我们</text>
+        <text>关于我们与规则</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>
@@ -83,17 +83,6 @@
         <text>意见反馈 / 联系我们</text>
       </view>
       <text class="menu-arrow">›</text>
-    </view>
-    <view class="menu-row" data-type="rules" bindtap="goPolicy">
-      <view class="menu-left">
-        <view class="menu-icon rules-icon"></view>
-        <text>社区规范</text>
-      </view>
-      <text class="menu-arrow">›</text>
-    </view>
-    <view class="menu-row compact-links">
-      <view class="policy-link" data-type="terms" bindtap="goPolicy">用户协议</view>
-      <view class="policy-link" data-type="privacy" bindtap="goPolicy">隐私政策</view>
     </view>
     <view class="menu-row" wx:if="{{token}}" bindtap="logout">
       <view class="menu-left">

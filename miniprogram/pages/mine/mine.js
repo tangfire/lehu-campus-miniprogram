@@ -186,10 +186,6 @@ Page({
     wx.navigateTo({ url: '/pages/publish/publish?restore=1' })
   },
 
-  goPolicy(e) {
-    const type = e.currentTarget.dataset.type || 'terms'
-    wx.navigateTo({ url: `/pages/policy/policy?type=${type}` })
-  }
 })
 
 function syncTabBar(page, selected) {
