@@ -96,6 +96,10 @@ Page({
       wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${params.id}` })
       return
     }
+    if (page === 'my-posts') {
+      wx.navigateTo({ url: '/pages/my-posts/my-posts' })
+      return
+    }
     if (page === 'timetable') {
       wx.switchTab({ url: '/pages/timetable/timetable' })
       return

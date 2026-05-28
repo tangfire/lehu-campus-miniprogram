@@ -10,7 +10,11 @@
       <view wx:else class="text-thumb" data-id="{{item.id}}" bindtap="openPost">文</view>
       <view class="post-main" data-id="{{item.id}}" bindtap="openPost">
         <view class="post-title">{{item.title}}</view>
-        <view class="post-meta">{{item.category_name}} · {{item.type_label}} · {{item.created_at}}</view>
+        <view class="post-meta">
+          <text class="status-pill {{item.status_class}}">{{item.status_label}}</text>
+          <text>{{item.category_name}} · {{item.type_label}} · {{item.created_at}}</text>
+        </view>
+        <view wx:if="{{item.status !== 1 && item.audit_reason}}" class="audit-reason">{{item.audit_reason}}</view>
         <view class="post-content">{{item.content}}</view>
       </view>
       <button class="delete-btn" data-id="{{item.id}}" catchtap="withdrawPost">撤回</button>

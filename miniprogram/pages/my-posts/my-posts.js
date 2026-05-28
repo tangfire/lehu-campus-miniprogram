@@ -53,7 +53,18 @@ Page({
   },
 
   openPost(e) {
-    wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
+    const id = String(e.currentTarget.dataset.id || '')
+    const post = this.data.posts.find(item => String(item.id) === id)
+    if (post && Number(post.status) !== 1) {
+      wx.showModal({
+        title: post.status_label || '内容状态',
+        content: post.audit_reason || '这条内容暂未公开展示，审核通过后同学才可以看到。',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+      return
+    }
+    wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${id}` })
   },
 
   withdrawPost(e) {
@@ -79,13 +90,28 @@ Page({
 
 function normalizePost(post) {
   const images = post.images || []
+  const status = Number(post.status == null ? 1 : post.status)
   return {
     ...post,
     images,
+    status,
+    status_label: statusLabel(status),
+    status_class: `status-${status}`,
+    audit_reason: post.audit_reason || '',
     media_type: post.media_type || (images.length ? 'image' : 'text'),
     type_label: postTypeLabel(post.post_type),
     display_cover: post.cover_url || images[0] || ''
   }
+}
+
+function statusLabel(status) {
+  const map = {
+    0: '待审核',
+    1: '正常展示',
+    2: '未通过',
+    3: '已撤回'
+  }
+  return map[Number(status)] || '未知'
 }
 
 function postTypeLabel(postType) {

@@ -503,7 +503,10 @@ Page({
         method: 'POST',
         data: payload
       })
-      const postID = created && created.post ? created.post.id : ''
+      const post = created && created.post ? created.post : null
+      const postID = post ? post.id : ''
+      const postStatus = Number(post ? post.status : 1)
+      const pendingReview = postStatus === 0
       trackEvent('publish_success', {
         page: 'publish',
         targetType: 'post',
@@ -512,17 +515,24 @@ Page({
         extra: { post_type: this.data.postType }
       })
       wx.removeStorageSync(DRAFT_KEY)
-      this.setData({ hasDraft: false, uploadProgress: 100, submitStatusText: '已发布' })
-      wx.showToast({ title: '已发布，去看看' })
+      this.setData({
+        hasDraft: false,
+        uploadProgress: 100,
+        submitStatusText: pendingReview ? '已提交审核' : '已发布'
+      })
+      wx.showToast({
+        title: pendingReview ? '已提交，审核通过后展示' : '已发布，去看看',
+        icon: 'none'
+      })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]
       if (prev) prev._needsRefresh = true
       setTimeout(() => {
-        if (postID) {
+        if (postID && !pendingReview) {
           wx.redirectTo({ url: `/pages/post-detail/post-detail?id=${postID}` })
           return
         }
-        wx.navigateBack()
+        wx.redirectTo({ url: '/pages/my-posts/my-posts' })
       }, 600)
     } catch (err) {
       this.saveDraft()
