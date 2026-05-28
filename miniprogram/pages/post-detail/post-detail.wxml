@@ -2,7 +2,7 @@
   <view wx:if="{{post}}" class="post">
     <view class="detail-nav" style="height: {{navBarHeight}}px; padding-top: {{statusBarHeight}}px;">
       <view class="back" bindtap="goBack"></view>
-      <view class="nav-author">
+      <view class="nav-author" data-user-id="{{post.author_user_id}}" catchtap="openUserProfile">
         <image wx:if="{{post.is_official}}" class="nav-avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
         <image wx:elif="{{post.author && post.author.avatar}}" class="nav-avatar" src="{{post.author.avatar}}" mode="aspectFill" />
         <view wx:else class="nav-avatar avatar-placeholder">{{post.avatar_text}}</view>
@@ -24,10 +24,10 @@
 
     <view class="post-main-card">
       <view class="post-head">
-        <image wx:if="{{post.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
-        <image wx:elif="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" />
-        <view wx:else class="avatar avatar-placeholder">{{post.avatar_text}}</view>
-        <view class="author-main">
+        <image wx:if="{{post.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" data-user-id="{{post.author_user_id}}" catchtap="openUserProfile" />
+        <image wx:elif="{{post.author && post.author.avatar}}" class="avatar" src="{{post.author.avatar}}" mode="aspectFill" data-user-id="{{post.author_user_id}}" catchtap="openUserProfile" />
+        <view wx:else class="avatar avatar-placeholder" data-user-id="{{post.author_user_id}}" catchtap="openUserProfile">{{post.avatar_text}}</view>
+        <view class="author-main" data-user-id="{{post.author_user_id}}" catchtap="openUserProfile">
           <view class="author-name">{{post.display_author}}</view>
           <view class="post-meta">{{post.category_name}} · {{post.display_time}}</view>
         </view>
@@ -60,14 +60,14 @@
   </view>
   <block wx:for="{{comments}}" wx:key="id">
     <view class="comment" data-id="{{item.id}}" bindlongpress="openCommentMenu">
-      <view class="comment-avatar-wrap">
+      <view class="comment-avatar-wrap" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">
         <image wx:if="{{item.author && item.author.avatar}}" class="avatar small" src="{{item.author.avatar}}" mode="aspectFill" />
         <view wx:else class="avatar small avatar-placeholder">{{item.avatar_text}}</view>
       </view>
       <view class="comment-main">
         <view class="comment-top">
           <view class="comment-body" data-id="{{item.id}}" catchtap="startReply">
-            <view class="comment-author">{{item.display_author}}</view>
+            <view class="comment-author" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">{{item.display_author}}</view>
             <view class="comment-content">{{item.content}}</view>
           </view>
           <view class="comment-like {{item.is_liked ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleCommentLike">
@@ -84,8 +84,8 @@
           <block wx:for="{{item.preview_replies}}" wx:for-item="reply" wx:key="id">
             <view class="reply-item" data-id="{{reply.id}}" catchlongpress="openCommentMenu">
               <view class="reply-body" data-id="{{reply.id}}" catchtap="startReply">
-                <text class="reply-author">{{reply.display_author}}</text>
-                <text wx:if="{{reply.reply_to_user && reply.reply_to_comment_id !== item.id}}" class="reply-prefix"> 回复 {{reply.reply_to_name}}</text>
+                <text class="reply-author" data-user-id="{{reply.author_user_id}}" catchtap="openUserProfile">{{reply.display_author}}</text>
+                <text wx:if="{{reply.reply_to_user && reply.reply_to_comment_id !== item.id}}" class="reply-prefix" data-user-id="{{reply.reply_to_user_id}}" catchtap="openUserProfile"> 回复 {{reply.reply_to_name}}</text>
                 <text class="reply-text">：{{reply.content}}</text>
               </view>
               <view class="reply-foot">

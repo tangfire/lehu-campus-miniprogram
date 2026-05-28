@@ -1,0 +1,72 @@
+<view class="page user-profile">
+  <view wx:if="{{user}}" class="profile-hero">
+    <view class="hero-top">
+      <image wx:if="{{user.is_official}}" class="profile-avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
+      <image wx:elif="{{user.avatar}}" class="profile-avatar" src="{{user.avatar}}" mode="aspectFill" />
+      <view wx:else class="profile-avatar avatar-placeholder">{{user.avatar_text}}</view>
+      <view class="profile-main">
+        <view class="name-row">
+          <text class="profile-name">{{user.display_name}}</text>
+          <text wx:if="{{user.auth_label}}" class="profile-badge {{user.is_official ? 'official' : ''}}">{{user.auth_label}}</text>
+        </view>
+        <view class="school-line">{{user.school_name}}</view>
+      </view>
+      <view class="menu-dot" bindtap="openMenu">···</view>
+    </view>
+
+    <view class="profile-bio">{{user.bio}}</view>
+
+    <view class="stats-row">
+      <view class="stat-item">
+        <text>{{user.stats.post_count}}</text>
+        <text>发布</text>
+      </view>
+      <view class="stat-item">
+        <text>{{user.stats.like_count}}</text>
+        <text>获赞</text>
+      </view>
+      <view class="stat-item">
+        <text>{{user.stats.collected_count}}</text>
+        <text>收藏</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="profile-skeleton panel">
+    <view class="skeleton-avatar"></view>
+    <view class="skeleton-lines">
+      <view></view>
+      <view></view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <text>TA 的公开发布</text>
+    <text>{{total}} 条</text>
+  </view>
+
+  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有公开内容" desc="这个同学暂时没有公开发布的校园笔记。" image="/assets/brand/empty/note.png" />
+
+  <view class="post-grid" wx:if="{{posts.length}}">
+    <block wx:for="{{posts}}" wx:key="id">
+      <view class="profile-post" data-id="{{item.id}}" bindtap="openPost">
+        <view wx:if="{{item.display_cover}}" class="post-cover-wrap">
+          <image class="post-cover" src="{{item.display_cover}}" mode="aspectFill" />
+          <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
+        </view>
+        <view wx:else class="poster-cover {{item.poster_class}}">
+          <view class="poster-title">{{item.poster_title}}</view>
+        </view>
+        <view class="post-info">
+          <view class="post-title">{{item.display_title}}</view>
+          <view class="post-meta">
+            <text>{{item.type_label}}</text>
+            <text>{{item.display_count}} 赞</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view wx:if="{{loading && posts.length}}" class="loading-more">加载中...</view>
+</view>

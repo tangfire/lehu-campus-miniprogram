@@ -146,6 +146,12 @@ Page({
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
   },
 
+  openUserProfile(e) {
+    const userId = String(e.currentTarget.dataset.userId || '')
+    if (!userId || userId === '0') return
+    wx.navigateTo({ url: `/pages/user-profile/user-profile?user_id=${userId}` })
+  },
+
   async toggleLike(e) {
     const id = String(e.currentTarget.dataset.id || '')
     if (!id) return
@@ -234,6 +240,7 @@ function normalizePost(post) {
     display_cover: cover,
     display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学',
     author_label: post.is_official ? '深汕e仔' : (post.author ? (post.author.name || post.author.nickname || '同学') : '同学'),
+    author_user_id: post.author ? post.author.user_id : '',
     avatar_text: post.is_official ? 'e' : '同',
     poster_class: `poster-${posterVariant(postType, post.id)}`,
     poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,

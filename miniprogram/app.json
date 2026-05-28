@@ -4,6 +4,7 @@
     "pages/timetable/timetable",
     "pages/mine/mine",
     "pages/post-detail/post-detail",
+    "pages/user-profile/user-profile",
     "pages/publish/publish",
     "pages/profile-edit/profile-edit",
     "pages/my-posts/my-posts",

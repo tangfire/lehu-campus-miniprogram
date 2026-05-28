@@ -18,7 +18,11 @@ Page({
     submitting: false
   },
 
-  onLoad() {
+  onLoad(query) {
+    const type = query && query.type
+    if (types.some(item => item.value === type)) {
+      this.setData({ feedbackType: type })
+    }
     trackEvent('visit', { page: 'feedback' })
   },
 

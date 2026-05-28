@@ -66,7 +66,7 @@
               <text wx:if="{{item.is_featured}}">精选</text>
             </view>
             <view class="note-meta">
-              <view class="author">
+              <view class="author" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">
                 <image wx:if="{{item.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
                 <image wx:elif="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
                 <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>
@@ -104,7 +104,7 @@
               <text wx:if="{{item.is_featured}}">精选</text>
             </view>
             <view class="note-meta">
-              <view class="author">
+              <view class="author" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">
                 <image wx:if="{{item.is_official}}" class="avatar official-avatar" src="/assets/brand/logo-ezai.png" mode="aspectFill" />
                 <image wx:elif="{{item.author && item.author.avatar}}" class="avatar" src="{{item.author.avatar}}" mode="aspectFill" />
                 <view wx:else class="avatar avatar-placeholder">{{item.avatar_text}}</view>

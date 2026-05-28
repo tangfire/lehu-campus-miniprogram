@@ -116,6 +116,12 @@ Page({
     })
   },
 
+  openUserProfile(e) {
+    const userId = String(e.currentTarget.dataset.userId || '')
+    if (!userId || userId === '0') return
+    wx.navigateTo({ url: `/pages/user-profile/user-profile?user_id=${userId}` })
+  },
+
   clearReply() {
     this.setData({ replyTarget: null })
   },
@@ -391,6 +397,7 @@ function normalizePost(post) {
     type_label: typeLabel,
     short_type_label: shortPostTypeLabel(postType),
     display_author: displayAuthor(post.author),
+    author_user_id: post.author ? post.author.user_id : '',
     avatar_text: post.is_official ? 'e' : '同',
     poster_class: `poster-${posterVariant(postType, post.id)}`,
     poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
@@ -416,7 +423,9 @@ function normalizeComment(comment) {
     preview_replies: (comment.preview_replies || []).map(normalizeComment),
     replies_expanded: false,
     display_author: displayAuthor(comment.author),
+    author_user_id: comment.author ? comment.author.user_id : '',
     reply_to_name: displayAuthor(comment.reply_to_user),
+    reply_to_user_id: comment.reply_to_user ? comment.reply_to_user.user_id : '',
     avatar_text: comment.author && (comment.author.nickname || comment.author.name) ? String(comment.author.nickname || comment.author.name).slice(0, 1) : '同',
     display_time: formatDate(comment.created_at)
   }
