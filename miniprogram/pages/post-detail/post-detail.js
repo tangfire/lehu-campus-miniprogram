@@ -8,6 +8,7 @@ Page({
     post: null,
     comments: [],
     commentText: '',
+    replyTarget: null,
     currentUserId: '',
     statusBarHeight: 0,
     navBarHeight: 52,
@@ -82,17 +83,87 @@ Page({
       wx.showToast({ title: '写点内容再发', icon: 'none' })
       return
     }
+    const replyTarget = this.data.replyTarget
+    const payload = { content }
+    if (replyTarget) {
+      payload.parent_id = replyTarget.rootId || replyTarget.id
+      payload.reply_to_comment_id = replyTarget.id
+    }
     try {
       await request({
         url: `/campus/forum/posts/${this.data.id}/comments`,
         method: 'POST',
-        data: { content }
+        data: payload
       })
       trackEvent('comment_create', { page: 'post-detail', targetType: 'post', targetId: this.data.id })
-      this.setData({ commentText: '' })
+      this.setData({ commentText: '', replyTarget: null })
       this.loadPost()
       this.loadComments()
     } catch (err) {
+      showError(err)
+    }
+  },
+
+  startReply(e) {
+    const comment = this.findComment(e.currentTarget.dataset.id)
+    if (!comment) return
+    this.setData({
+      replyTarget: {
+        id: comment.id,
+        rootId: comment.parent_id && comment.parent_id !== '0' ? comment.parent_id : comment.id,
+        name: comment.display_author || '同学'
+      }
+    })
+  },
+
+  clearReply() {
+    this.setData({ replyTarget: null })
+  },
+
+  async loadReplies(e) {
+    const rootId = String(e.currentTarget.dataset.id || '')
+    if (!rootId) return
+    try {
+      const data = await request({ url: `/campus/forum/comments/${rootId}/replies` })
+      const replies = (data.comments || []).map(normalizeComment)
+      const comments = this.data.comments.map(comment => {
+        if (String(comment.id) !== rootId) return comment
+        return {
+          ...comment,
+          preview_replies: replies,
+          replies_expanded: true
+        }
+      })
+      this.setData({ comments })
+    } catch (err) {
+      showError(err)
+    }
+  },
+
+  async toggleCommentLike(e) {
+    const token = wx.getStorageSync('token')
+    if (!token) {
+      wx.switchTab({ url: '/pages/mine/mine' })
+      return
+    }
+    const id = String(e.currentTarget.dataset.id || '')
+    const comment = this.findComment(id)
+    if (!comment) return
+    this.updateCommentLocal(id, {
+      is_liked: !comment.is_liked,
+      like_count: Math.max((Number(comment.like_count) || 0) + (comment.is_liked ? -1 : 1), 0)
+    })
+    try {
+      await request({
+        url: `/campus/forum/comments/${id}/like`,
+        method: comment.is_liked ? 'DELETE' : 'POST'
+      })
+      if (!comment.is_liked) trackEvent('comment_like', { page: 'post-detail', targetType: 'comment', targetId: id })
+    } catch (err) {
+      this.updateCommentLocal(id, {
+        is_liked: comment.is_liked,
+        like_count: Number(comment.like_count) || 0
+      })
       showError(err)
     }
   },
@@ -179,8 +250,37 @@ Page({
     this.reportContent(`/campus/forum/comments/${e.currentTarget.dataset.id}/report`)
   },
 
+  openCommentMenu(e) {
+    const comment = this.findComment(e.currentTarget.dataset.id)
+    if (!comment) return
+    const isOwner = comment.author && comment.author.user_id === this.data.currentUserId
+    const itemList = isOwner ? ['回复', '复制', '撤回'] : ['回复', '复制', '举报']
+    wx.showActionSheet({
+      itemList,
+      success: res => {
+        const index = res.tapIndex
+        if (index === 0) {
+          this.startReply({ currentTarget: { dataset: { id: comment.id } } })
+          return
+        }
+        if (index === 1) {
+          wx.setClipboardData({ data: comment.content || '' })
+          return
+        }
+        if (isOwner) {
+          this.withdrawCommentById(comment.id)
+        } else {
+          this.reportContent(`/campus/forum/comments/${comment.id}/report`)
+        }
+      }
+    })
+  },
+
   withdrawComment(e) {
-    const id = e.currentTarget.dataset.id
+    this.withdrawCommentById(e.currentTarget.dataset.id)
+  },
+
+  withdrawCommentById(id) {
     wx.showModal({
       title: '撤回评论',
       content: '撤回后，这条评论将不再展示给其他同学。',
@@ -198,6 +298,32 @@ Page({
         }
       }
     })
+  },
+
+  findComment(id) {
+    const target = String(id || '')
+    for (const comment of this.data.comments) {
+      if (String(comment.id) === target) return comment
+      const replies = comment.preview_replies || []
+      for (const reply of replies) {
+        if (String(reply.id) === target) return reply
+      }
+    }
+    return null
+  },
+
+  updateCommentLocal(id, patch) {
+    const target = String(id || '')
+    const comments = this.data.comments.map(comment => {
+      if (String(comment.id) === target) {
+        return { ...comment, ...patch }
+      }
+      const replies = (comment.preview_replies || []).map(reply => (
+        String(reply.id) === target ? { ...reply, ...patch } : reply
+      ))
+      return { ...comment, preview_replies: replies }
+    })
+    this.setData({ comments })
   },
 
   reportContent(url) {
@@ -278,12 +404,24 @@ function normalizePost(post) {
 }
 
 function normalizeComment(comment) {
-  return {
+  const normalized = {
     ...comment,
+    id: String(comment.id || ''),
+    post_id: String(comment.post_id || ''),
+    parent_id: String(comment.parent_id || '0'),
+    reply_to_comment_id: String(comment.reply_to_comment_id || '0'),
+    reply_count: Number(comment.reply_count) || 0,
+    like_count: Number(comment.like_count) || 0,
+    is_liked: !!comment.is_liked,
+    preview_replies: (comment.preview_replies || []).map(normalizeComment),
+    replies_expanded: false,
     display_author: displayAuthor(comment.author),
+    reply_to_name: displayAuthor(comment.reply_to_user),
     avatar_text: comment.author && (comment.author.nickname || comment.author.name) ? String(comment.author.nickname || comment.author.name).slice(0, 1) : '同',
     display_time: formatDate(comment.created_at)
   }
+  normalized.hidden_reply_count = Math.max(normalized.reply_count - (normalized.preview_replies || []).length, 0)
+  return normalized
 }
 
 function postTypeLabel(postType) {
