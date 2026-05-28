@@ -5,6 +5,8 @@ Page({
     userId: '',
     user: null,
     posts: [],
+    leftPosts: [],
+    rightPosts: [],
     page: 1,
     size: 20,
     total: 0,
@@ -61,8 +63,10 @@ Page({
         }
       })
       const nextPosts = (data.posts || []).map(normalizePost)
+      const posts = reset ? nextPosts : this.data.posts.concat(nextPosts)
       this.setData({
-        posts: reset ? nextPosts : this.data.posts.concat(nextPosts),
+        posts,
+        ...splitColumns(posts),
         total: data.page_stats ? data.page_stats.total : 0,
         page: page + 1
       })
@@ -143,10 +147,15 @@ function normalizePost(post) {
     display_cover: post.cover_url || images[0] || '',
     display_title: title,
     type_label: postTypeLabel(postType),
+    avatar_text: post.is_official ? 'e' : '同',
     poster_class: `poster-${posterVariant(postType, post.id)}`,
+    poster_kicker: post.is_official ? `深汕e仔 · ${postTypeLabel(postType)}` : postTypeLabel(postType),
     poster_title: title,
     display_time: formatDate(post.created_at),
-    display_count: formatCount(post.like_count || 0)
+    display_count: formatCount(post.like_count || 0),
+    is_official: !!post.is_official,
+    is_featured: !!post.is_featured,
+    is_pinned: !!post.is_pinned
   }
 }
 
@@ -185,4 +194,17 @@ function formatDate(value) {
 
 function cleanText(text) {
   return String(text || '').replace(/\s+/g, ' ').trim()
+}
+
+function splitColumns(posts) {
+  const leftPosts = []
+  const rightPosts = []
+  posts.forEach((post, index) => {
+    if (index % 2 === 0) {
+      leftPosts.push(post)
+    } else {
+      rightPosts.push(post)
+    }
+  })
+  return { leftPosts, rightPosts }
 }

@@ -47,25 +47,73 @@
 
   <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有公开内容" desc="这个同学暂时没有公开发布的校园笔记。" image="/assets/brand/empty/note.png" />
 
-  <view class="post-grid" wx:if="{{posts.length}}">
-    <block wx:for="{{posts}}" wx:key="id">
-      <view class="profile-post" data-id="{{item.id}}" bindtap="openPost">
-        <view wx:if="{{item.display_cover}}" class="post-cover-wrap">
-          <image class="post-cover" src="{{item.display_cover}}" mode="aspectFill" />
-          <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
-        </view>
-        <view wx:else class="poster-cover {{item.poster_class}}">
-          <view class="poster-title">{{item.poster_title}}</view>
-        </view>
-        <view class="post-info">
-          <view class="post-title">{{item.display_title}}</view>
-          <view class="post-meta">
-            <text>{{item.type_label}}</text>
-            <text>{{item.display_count}} 赞</text>
+  <view class="waterfall" wx:if="{{posts.length}}">
+    <view class="waterfall-col">
+      <block wx:for="{{leftPosts}}" wx:key="id">
+        <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
+          <view wx:if="{{item.display_cover}}" class="cover-wrap">
+            <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
+            <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="cover-flags">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
+          </view>
+          <view wx:else class="poster-cover {{item.poster_class}}">
+            <view class="poster-title">{{item.poster_title}}</view>
+          </view>
+          <view class="note-body">
+            <view class="note-title">{{item.display_title}}</view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
+            <view class="note-meta">
+              <text>{{item.type_label}}</text>
+              <view class="like {{item.is_liked ? 'active' : ''}}">
+                <text>{{item.is_liked ? '♥' : '♡'}}</text>
+                <text>{{item.display_count}}</text>
+              </view>
+            </view>
           </view>
         </view>
-      </view>
-    </block>
+      </block>
+    </view>
+    <view class="waterfall-col">
+      <block wx:for="{{rightPosts}}" wx:key="id">
+        <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
+          <view wx:if="{{item.display_cover}}" class="cover-wrap">
+            <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
+            <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="cover-flags">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
+          </view>
+          <view wx:else class="poster-cover {{item.poster_class}}">
+            <view class="poster-title">{{item.poster_title}}</view>
+          </view>
+          <view class="note-body">
+            <view class="note-title">{{item.display_title}}</view>
+            <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
+              <text wx:if="{{item.is_pinned}}">置顶</text>
+              <text wx:if="{{item.is_official}}">官方</text>
+              <text wx:if="{{item.is_featured}}">精选</text>
+            </view>
+            <view class="note-meta">
+              <text>{{item.type_label}}</text>
+              <view class="like {{item.is_liked ? 'active' : ''}}">
+                <text>{{item.is_liked ? '♥' : '♡'}}</text>
+                <text>{{item.display_count}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
   </view>
 
   <view wx:if="{{loading && posts.length}}" class="loading-more">加载中...</view>
