@@ -39,18 +39,26 @@ Page({
       activity_place: ''
     },
     hasDraft: false,
-    submitting: false
+    submitting: false,
+    uploadProgress: 0,
+    submitStatusText: ''
   },
 
   onLoad(options = {}) {
     this.loadCategories()
     const mode = options.mode || 'album'
     const restore = options.restore === '1'
+    const optionPostType = options.post_type || ''
+    const optionTitle = decodeURIComponent(options.title || '')
+    const matchedType = postTypes.find(item => item.value === optionPostType)
     trackEvent('publish_open', { page: 'publish', channel: restore ? 'draft' : mode })
     this.setData({
       createMode: mode,
       mediaType: mode === 'text' ? 'text' : 'image',
-      showMediaChooser: !restore && mode !== 'text'
+      showMediaChooser: !restore && mode !== 'text',
+      ...(optionPostType ? { postType: optionPostType } : {}),
+      ...(matchedType ? { categoryCode: matchedType.category } : {}),
+      ...(optionTitle ? { title: optionTitle } : {})
     })
     if (restore) {
       this.restoreSavedDraft()
@@ -66,9 +74,13 @@ Page({
     try {
       const data = await request({ url: '/campus/forum/categories' })
       const categories = data.categories || []
+      const matched = postTypes.find(item => item.value === this.data.postType)
+      const preferredCode = matched && categories.some(category => category.code === matched.category)
+        ? matched.category
+        : (categories[0] ? categories[0].code : 'study')
       this.setData({
         categories,
-        categoryCode: categories[0] ? categories[0].code : 'study'
+        categoryCode: this.data.categoryCode || preferredCode
       })
     } catch (err) {
       showError(err)
@@ -435,7 +447,7 @@ Page({
 
   async submit() {
     if (this.data.submitting) return
-    this.setData({ submitting: true })
+    this.setData({ submitting: true, uploadProgress: 0, submitStatusText: '准备发布...' })
     try {
       const payload = {
         category_code: this.data.categoryCode,
@@ -458,14 +470,22 @@ Page({
           return
         }
         await ensureVideoFileAllowed(this.data.localVideo)
+        this.setData({ submitStatusText: '上传视频中...', uploadProgress: 15 })
         const uploadedVideo = await uploadVideo(this.data.localVideo)
+        this.setData({ submitStatusText: '上传封面中...', uploadProgress: 70 })
         const uploadedCover = await uploadImage(this.data.coverImage)
         payload.media_type = 'video'
         payload.video_url = uploadedVideo.url
         payload.cover_url = uploadedCover.url
       } else if (this.data.mediaType === 'image') {
         const images = []
-        for (const filePath of this.data.localImages) {
+        const total = this.data.localImages.length || 1
+        for (let index = 0; index < this.data.localImages.length; index += 1) {
+          const filePath = this.data.localImages[index]
+          this.setData({
+            submitStatusText: `上传图片 ${index + 1}/${total}`,
+            uploadProgress: Math.round((index / total) * 75)
+          })
           const uploaded = await uploadImage(filePath)
           if (uploaded && uploaded.url) images.push(uploaded.url)
         }
@@ -477,6 +497,7 @@ Page({
       } else {
         payload.media_type = 'text'
       }
+      this.setData({ submitStatusText: '发布中...', uploadProgress: 88 })
       const created = await request({
         url: '/campus/forum/posts',
         method: 'POST',
@@ -491,7 +512,7 @@ Page({
         extra: { post_type: this.data.postType }
       })
       wx.removeStorageSync(DRAFT_KEY)
-      this.setData({ hasDraft: false })
+      this.setData({ hasDraft: false, uploadProgress: 100, submitStatusText: '已发布' })
       wx.showToast({ title: '已发布，去看看' })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]
@@ -504,9 +525,20 @@ Page({
         wx.navigateBack()
       }, 600)
     } catch (err) {
-      showError(err)
+      this.saveDraft()
+      wx.showModal({
+        title: '发布失败',
+        content: `${err.message || '网络或上传异常'}\n已自动保存草稿，可以稍后重试。`,
+        confirmText: '重试发布',
+        cancelText: '先留草稿',
+        success: res => {
+          if (res.confirm) {
+            setTimeout(() => this.submit(), 120)
+          }
+        }
+      })
     } finally {
-      this.setData({ submitting: false })
+      this.setData({ submitting: false, submitStatusText: '', uploadProgress: 0 })
     }
   }
 })

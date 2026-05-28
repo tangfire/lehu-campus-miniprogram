@@ -25,7 +25,8 @@ Page({
     loading: false,
     importing: false,
     showImportForm: true,
-    shareSummary: ''
+    shareSummary: '',
+    importButtonText: '导入演示课表'
   },
 
   onLoad() {
@@ -155,7 +156,8 @@ Page({
       selectedCourses: coursesForWeekday(courses, selectedWeekday),
       weekdayTabs: buildWeekdayTabs(courses),
       shareSummary: courses.length ? `${courses.length} 门课 · ${countBusyDays(courses)} 天有课` : '',
-      showImportForm: courses.length === 0
+      showImportForm: courses.length === 0,
+      importButtonText: courses.length ? '重新导入演示课表' : '导入演示课表'
     })
   },
 
@@ -179,6 +181,9 @@ function syncTabBar(page, selected) {
 function normalizeCourses(courses) {
   return (courses || []).map(course => ({
     ...course,
+    source: course.source || 'demo',
+    source_label: course.source === 'demo' || course.source === 'mock' ? '演示数据' : '教务数据',
+    is_demo: !course.source || course.source === 'demo' || course.source === 'mock' || course.source === 'educational_system',
     weekday: Number(course.weekday || 0),
     start_section: Number(course.start_section || 0),
     end_section: Number(course.end_section || 0),

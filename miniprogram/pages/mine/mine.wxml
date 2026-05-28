@@ -40,6 +40,16 @@
     </view>
   </view>
 
+  <view class="message-card" bindtap="goNotifications">
+    <view class="message-icon">信</view>
+    <view class="message-main">
+      <view class="message-title">消息中心</view>
+      <view class="message-desc">{{unreadCount ? unreadCount + ' 条未读消息' : '回复、赞藏和系统通知'}}</view>
+    </view>
+    <view wx:if="{{unreadCount}}" class="message-badge">{{unreadCount > 99 ? '99+' : unreadCount}}</view>
+    <view class="message-arrow">›</view>
+  </view>
+
   <view class="quick-grid">
     <view class="quick-card publish-card" bindtap="goMyPosts">
       <view class="quick-icon plane-icon"></view>

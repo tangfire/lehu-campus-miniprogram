@@ -11,7 +11,8 @@ Page({
     loggingIn: false,
     uploadingAvatar: false,
     hasDraft: false,
-    draftDesc: '暂无草稿'
+    draftDesc: '暂无草稿',
+    unreadCount: 0
   },
 
   onLoad() {
@@ -31,6 +32,16 @@ Page({
       hasDraft,
       draftDesc: hasDraft ? '1篇未发布' : '暂无草稿'
     })
+    if (wx.getStorageSync('token')) this.loadUnreadCount()
+  },
+
+  async loadUnreadCount() {
+    try {
+      const data = await request({ url: '/campus/notifications/unread-count' })
+      this.setData({ unreadCount: Number(data.total || 0) })
+    } catch (err) {
+      this.setData({ unreadCount: 0 })
+    }
   },
 
   login() {
@@ -149,6 +160,14 @@ Page({
       return
     }
     wx.navigateTo({ url: '/pages/my-comments/my-comments' })
+  },
+
+  goNotifications() {
+    if (!this.data.token) {
+      this.login()
+      return
+    }
+    wx.navigateTo({ url: '/pages/notifications/notifications' })
   },
 
   goDrafts() {

@@ -10,6 +10,16 @@
     </view>
   </view>
 
+  <view wx:if="{{submitting || submitStatusText}}" class="submit-progress panel">
+    <view class="submit-progress-head">
+      <text>{{submitStatusText || '发布中...'}}</text>
+      <text>{{uploadProgress}}%</text>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{uploadProgress}}%;"></view>
+    </view>
+  </view>
+
   <view wx:if="{{showMediaChooser && !localImages.length && !localVideo && mediaType !== 'text'}}" class="starter panel">
     <view class="starter-title">选择创作方式</view>
     <view class="starter-grid">

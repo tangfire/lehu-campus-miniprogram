@@ -4,9 +4,24 @@
       <view class="brand-title">首页</view>
       <view class="search-pill">
         <view class="search-icon"></view>
-        <input value="{{keyword}}" bindinput="onSearch" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索深汕攻略、问答" />
+        <input value="{{keyword}}" bindfocus="focusSearch" bindinput="onSearch" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索深汕攻略、问答" />
         <text wx:if="{{keyword}}" bindtap="clearSearch">×</text>
       </view>
+    </view>
+
+    <view wx:if="{{showSearchPanel && recentSearches.length}}" class="search-panel">
+      <view class="search-panel-head">
+        <text>最近搜索</text>
+        <text bindtap="clearRecentSearches">清空</text>
+      </view>
+      <view class="recent-row">
+        <view wx:for="{{recentSearches}}" wx:key="*this" class="recent-chip" data-keyword="{{item}}" bindtap="useRecentSearch">{{item}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{searchedKeyword}}" class="search-state">
+      <text>搜索：{{searchedKeyword}}</text>
+      <text bindtap="clearSearch">清除</text>
     </view>
 
     <scroll-view class="channel-scroll" scroll-x enhanced show-scrollbar="{{false}}">
@@ -22,7 +37,10 @@
     </scroll-view>
   </view>
 
-  <empty-state wx:if="{{!loading && posts.length === 0}}" title="还没有内容" desc="可以发一条攻略、提问、失物招领或校园瞬间。" />
+  <view wx:if="{{!loading && posts.length === 0}}" class="community-empty">
+    <empty-state title="{{emptyTitle}}" desc="{{emptyDesc}}" />
+    <button wx:if="{{searchedKeyword}}" class="ask-btn" bindtap="createQuestionFromSearch">发个提问</button>
+  </view>
 
   <view class="waterfall" wx:if="{{posts.length}}">
     <view class="waterfall-col">

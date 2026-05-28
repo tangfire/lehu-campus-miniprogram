@@ -31,6 +31,17 @@
   margin-top: 28rpx;
 }
 
+.demo-tip {
+  margin: 0 0 20rpx;
+  padding: 18rpx 22rpx;
+  border-radius: 20rpx;
+  background: #fff7f8;
+  color: #9f1239;
+  font-size: 24rpx;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
 .top-line {
   display: flex;
   align-items: flex-start;
@@ -63,6 +74,13 @@
 
 .panel-title {
   margin-bottom: 22rpx;
+}
+
+.import-note {
+  margin: -8rpx 0 16rpx;
+  color: #64748b;
+  font-size: 24rpx;
+  line-height: 1.55;
 }
 
 .panel-title.compact {
@@ -120,6 +138,18 @@
   font-size: 30rpx;
   font-weight: 800;
   line-height: 1.35;
+}
+
+.demo-tag {
+  display: inline-block;
+  margin-left: 10rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 999rpx;
+  background: #fff1f3;
+  color: #ff4d5f;
+  font-size: 20rpx;
+  font-weight: 900;
+  vertical-align: 3rpx;
 }
 
 .course-meta {

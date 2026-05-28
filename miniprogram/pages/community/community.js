@@ -8,6 +8,8 @@ const quickChannels = [
   { label: '社团', postType: 'club', sort: 'new' }
 ]
 
+const RECENT_SEARCH_KEY = 'campus_recent_searches_v1'
+
 Page({
   data: {
     quickChannels,
@@ -15,6 +17,11 @@ Page({
     activePostType: '',
     sort: 'recommend',
     keyword: '',
+    searchedKeyword: '',
+    recentSearches: [],
+    showSearchPanel: false,
+    emptyTitle: '还没有内容',
+    emptyDesc: '可以发一条攻略、提问、失物招领或校园瞬间。',
     posts: [],
     leftPosts: [],
     rightPosts: [],
@@ -25,6 +32,7 @@ Page({
   },
 
   onLoad() {
+    this.loadRecentSearches()
     this.loadPosts(true)
   },
 
@@ -58,11 +66,15 @@ Page({
       })
       const nextPosts = (data.posts || []).map(normalizePost)
       const posts = reset ? nextPosts : this.data.posts.concat(nextPosts)
+      const activeKeyword = this.data.keyword.trim()
       this.setData({
         posts,
         ...splitColumns(posts),
         total: data.page_stats ? data.page_stats.total : 0,
-        page: page + 1
+        page: page + 1,
+        searchedKeyword: activeKeyword,
+        emptyTitle: activeKeyword ? '没找到相关内容' : '还没有内容',
+        emptyDesc: activeKeyword ? '可以换个关键词，或者直接发个提问让同学来答。' : '可以发一条攻略、提问、失物招领或校园瞬间。'
       })
     } catch (err) {
       showError(err)
@@ -89,16 +101,44 @@ Page({
   },
 
   onSearch(e) {
-    this.setData({ keyword: e.detail.value })
+    this.setData({ keyword: e.detail.value, showSearchPanel: true })
   },
 
   submitSearch() {
+    this.saveRecentSearch(this.data.keyword)
+    this.setData({ showSearchPanel: false })
     this.loadPosts(true)
   },
 
   clearSearch() {
-    this.setData({ keyword: '' })
+    this.setData({ keyword: '', searchedKeyword: '', showSearchPanel: false })
     this.loadPosts(true)
+  },
+
+  focusSearch() {
+    this.setData({ showSearchPanel: true })
+  },
+
+  useRecentSearch(e) {
+    const keyword = e.currentTarget.dataset.keyword || ''
+    this.setData({ keyword, showSearchPanel: false })
+    this.saveRecentSearch(keyword)
+    this.loadPosts(true)
+  },
+
+  clearRecentSearches() {
+    wx.removeStorageSync(RECENT_SEARCH_KEY)
+    this.setData({ recentSearches: [] })
+  },
+
+  createQuestionFromSearch() {
+    const token = wx.getStorageSync('token')
+    if (!token) {
+      wx.switchTab({ url: '/pages/mine/mine' })
+      return
+    }
+    const keyword = this.data.searchedKeyword || this.data.keyword || ''
+    wx.navigateTo({ url: `/pages/publish/publish?mode=text&post_type=question&title=${encodeURIComponent(keyword)}` })
   },
 
   openPost(e) {
@@ -129,6 +169,19 @@ Page({
       this.updatePostLike(id, post.is_liked, Number(post.like_count || 0), false)
       showError(err)
     }
+  },
+
+  loadRecentSearches() {
+    const recentSearches = wx.getStorageSync(RECENT_SEARCH_KEY) || []
+    this.setData({ recentSearches: Array.isArray(recentSearches) ? recentSearches.slice(0, 6) : [] })
+  },
+
+  saveRecentSearch(keyword) {
+    const clean = String(keyword || '').trim()
+    if (!clean) return
+    const next = [clean].concat((wx.getStorageSync(RECENT_SEARCH_KEY) || []).filter(item => item !== clean)).slice(0, 6)
+    wx.setStorageSync(RECENT_SEARCH_KEY, next)
+    this.setData({ recentSearches: next })
   },
 
   updatePostLike(id, isLiked, likeCount, loading) {

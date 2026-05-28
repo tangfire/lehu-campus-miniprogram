@@ -11,6 +11,10 @@
   </view>
 
   <block wx:else>
+    <view class="demo-tip">
+      内测演示：真实教务导入需等学校确认开放，当前课表用于体验流程。
+    </view>
+
     <view class="today panel">
       <view class="top-line">
         <view>
@@ -29,7 +33,10 @@
         <view wx:for="{{todayCourses}}" wx:key="id" class="today-course">
           <view class="section">{{item.time_label}}</view>
           <view class="course-main">
-            <view class="course-name">{{item.course_name}}</view>
+            <view class="course-name">
+              {{item.course_name}}
+              <text wx:if="{{item.is_demo}}" class="demo-tag">演示数据</text>
+            </view>
             <view class="course-meta">{{item.classroom || '教室待定'}} · {{item.teacher || '教师待定'}}</view>
           </view>
         </view>
@@ -38,7 +45,8 @@
     </view>
 
     <view wx:if="{{showImportForm}}" class="panel import-panel">
-      <view class="panel-title">教务导入</view>
+      <view class="panel-title">演示课表导入</view>
+      <view class="import-note">输入任意符合格式的学号和密码即可生成演示课表；密码不会保存。</view>
       <view class="field">
         <text>学期</text>
         <input value="{{term}}" placeholder="例如 2026-2027-1" bindinput="onTermInput" />
@@ -51,7 +59,7 @@
         <text>密码</text>
         <input value="{{password}}" password placeholder="仅用于本次导入" bindinput="onPasswordInput" />
       </view>
-      <button class="primary-btn" loading="{{importing}}" bindtap="importTimetable">导入课表</button>
+      <button class="primary-btn" loading="{{importing}}" bindtap="importTimetable">{{importButtonText}}</button>
     </view>
 
     <view class="week panel">
@@ -77,7 +85,10 @@
             <text>{{item.week_label}}</text>
           </view>
           <view class="course-body">
-            <view class="course-name">{{item.course_name}}</view>
+            <view class="course-name">
+              {{item.course_name}}
+              <text wx:if="{{item.is_demo}}" class="demo-tag">演示数据</text>
+            </view>
             <view class="course-meta">{{item.classroom || '教室待定'}}</view>
             <view class="course-meta">{{item.teacher || '教师待定'}}</view>
           </view>

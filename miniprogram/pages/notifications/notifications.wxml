@@ -1,0 +1,48 @@
+<view class="page notifications">
+  <view class="head">
+    <view>
+      <view class="title">消息</view>
+      <view class="subtitle">{{unread.total ? unread.total + ' 条未读消息' : '暂无未读消息'}}</view>
+    </view>
+    <button wx:if="{{unread.total}}" class="read-all" bindtap="readAll">全部已读</button>
+  </view>
+
+  <scroll-view class="tabs" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="tab-row">
+      <view
+        wx:for="{{tabs}}"
+        wx:key="type"
+        class="tab {{activeType === item.type ? 'active' : ''}}"
+        data-type="{{item.type}}"
+        bindtap="switchTab"
+      >
+        <text>{{item.label}}</text>
+        <view wx:if="{{item.unread}}" class="tab-dot">{{item.unread > 99 ? '99+' : item.unread}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <empty-state wx:if="{{!loading && notifications.length === 0}}" title="暂无消息" desc="{{emptyDesc}}" />
+
+  <view class="list" wx:if="{{notifications.length}}">
+    <view
+      wx:for="{{notifications}}"
+      wx:key="id"
+      class="item {{item.is_read ? 'read' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="openNotification"
+    >
+      <view class="icon">{{item.icon_text}}</view>
+      <view class="body">
+        <view class="row">
+          <view class="item-title">{{item.title}}</view>
+          <view wx:if="{{!item.is_read}}" class="dot"></view>
+        </view>
+        <view class="content">{{item.content}}</view>
+        <view class="meta">{{item.actor_name}} · {{item.display_time}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">消息加载中...</view>
+</view>
