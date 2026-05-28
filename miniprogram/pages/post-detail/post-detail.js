@@ -377,7 +377,7 @@ Page({
     trackEvent('share', { page: 'post-detail', targetType: 'post', targetId: this.data.id, channel: 'app_message' })
     const post = this.data.post
     return {
-      title: post ? post.title : '深汕校园e站校园笔记',
+      title: post ? post.display_title : '深汕校园e站校园笔记',
       path: `/pages/post-detail/post-detail?id=${this.data.id}`
     }
   }
@@ -389,6 +389,7 @@ function normalizePost(post) {
   const postType = post.post_type || 'note'
   const typeLabel = postTypeLabel(postType)
   const teaser = cleanText(post.content || '')
+  const displayTitle = cleanText(post.title || teaser || '校园笔记')
   return {
     ...post,
     images,
@@ -396,12 +397,13 @@ function normalizePost(post) {
     post_type: postType,
     type_label: typeLabel,
     short_type_label: shortPostTypeLabel(postType),
+    display_title: displayTitle,
     display_author: displayAuthor(post.author),
     author_user_id: post.author ? post.author.user_id : '',
     avatar_text: post.is_official ? 'e' : '同',
     poster_class: `poster-${posterVariant(postType, post.id)}`,
     poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
-    poster_title: cleanText(post.title || teaser),
+    poster_title: displayTitle,
     display_time: formatDate(post.created_at),
     extra_items: extraItems(postType, post.extra || {}),
     is_official: !!post.is_official,

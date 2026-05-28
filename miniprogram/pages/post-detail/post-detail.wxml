@@ -35,7 +35,7 @@
         <view class="more" bindtap="openPostMenu">···</view>
       </view>
 
-      <view class="title">{{post.title}}</view>
+      <view class="title">{{post.display_title}}</view>
       <view class="tag-row">
         <text>{{post.short_type_label}}</text>
         <text wx:if="{{post.is_pinned}}">置顶</text>

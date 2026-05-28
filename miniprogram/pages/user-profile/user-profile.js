@@ -81,6 +81,62 @@ Page({
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${e.currentTarget.dataset.id}` })
   },
 
+  async toggleLike(e) {
+    const id = String(e.currentTarget.dataset.id || '')
+    if (!id) return
+    const token = wx.getStorageSync('token')
+    if (!token) {
+      wx.switchTab({ url: '/pages/mine/mine' })
+      return
+    }
+    const post = this.data.posts.find(item => String(item.id) === id)
+    if (!post || post._likeLoading) return
+    const nextLiked = !post.is_liked
+    const nextCount = Math.max(Number(post.like_count || 0) + (nextLiked ? 1 : -1), 0)
+    this.updatePostLike(id, nextLiked, nextCount, true)
+    try {
+      await request({
+        url: `/campus/forum/posts/${id}/like`,
+        method: nextLiked ? 'POST' : 'DELETE'
+      })
+      if (nextLiked) trackEvent('like', { page: 'user-profile', targetType: 'post', targetId: Number(id) || 0 })
+      this.updatePostLike(id, nextLiked, nextCount, false)
+    } catch (err) {
+      this.updatePostLike(id, post.is_liked, Number(post.like_count || 0), false)
+      showError(err)
+    }
+  },
+
+  updatePostLike(id, isLiked, likeCount, loading) {
+    const previous = this.data.posts.find(item => String(item.id) === String(id))
+    const posts = this.data.posts.map(item => {
+      if (String(item.id) !== String(id)) return item
+      return {
+        ...item,
+        is_liked: isLiked,
+        like_count: likeCount,
+        display_count: formatCount(likeCount),
+        _likeLoading: loading
+      }
+    })
+    const user = this.data.user
+    let nextUser = user
+    if (user && user.stats && previous && previous.is_liked !== isLiked) {
+      nextUser = {
+        ...user,
+        stats: {
+          ...user.stats,
+          like_count: Math.max(Number(user.stats.like_count || 0) + (isLiked ? 1 : -1), 0)
+        }
+      }
+    }
+    this.setData({
+      posts,
+      ...splitColumns(posts),
+      ...(nextUser !== user ? { user: nextUser } : {})
+    })
+  },
+
   openMenu() {
     if (!this.data.userId) return
     wx.showActionSheet({
@@ -143,6 +199,7 @@ function normalizePost(post) {
   return {
     ...post,
     images,
+    like_count: Number(post.like_count || 0),
     media_type: post.media_type || (images.length ? 'image' : 'text'),
     display_cover: post.cover_url || images[0] || '',
     display_title: title,
@@ -153,6 +210,7 @@ function normalizePost(post) {
     poster_title: title,
     display_time: formatDate(post.created_at),
     display_count: formatCount(post.like_count || 0),
+    is_liked: !!post.is_liked,
     is_official: !!post.is_official,
     is_featured: !!post.is_featured,
     is_pinned: !!post.is_pinned

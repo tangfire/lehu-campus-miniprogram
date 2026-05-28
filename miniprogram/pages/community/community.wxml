@@ -59,7 +59,7 @@
             <view class="poster-title">{{item.poster_title}}</view>
           </view>
           <view class="note-body">
-            <view class="note-title">{{item.title}}</view>
+            <view class="note-title">{{item.display_title}}</view>
             <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
               <text wx:if="{{item.is_pinned}}">置顶</text>
               <text wx:if="{{item.is_official}}">官方</text>
@@ -97,7 +97,7 @@
             <view class="poster-title">{{item.poster_title}}</view>
           </view>
           <view class="note-body">
-            <view class="note-title">{{item.title}}</view>
+            <view class="note-title">{{item.display_title}}</view>
             <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="flag-row">
               <text wx:if="{{item.is_pinned}}">置顶</text>
               <text wx:if="{{item.is_official}}">官方</text>

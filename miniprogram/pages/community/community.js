@@ -241,12 +241,14 @@ function normalizePost(post) {
   const postType = post.post_type || 'note'
   const typeLabel = postTypeLabel(postType)
   const teaser = cleanText(post.content || '')
+  const displayTitle = cleanText(post.title || teaser || '校园笔记')
   return {
     ...post,
     images,
     media_type: post.media_type || (images.length ? 'image' : 'text'),
     post_type: postType,
     type_label: typeLabel,
+    display_title: displayTitle,
     display_cover: cover,
     display_author: post.author ? (post.author.name || post.author.nickname || '同学') : '同学',
     author_label: post.is_official ? '深汕e仔' : (post.author ? (post.author.name || post.author.nickname || '同学') : '同学'),
@@ -254,7 +256,7 @@ function normalizePost(post) {
     avatar_text: post.is_official ? 'e' : '同',
     poster_class: `poster-${posterVariant(postType, post.id)}`,
     poster_kicker: post.is_official ? `深汕e仔 · ${typeLabel}` : typeLabel,
-    poster_title: cleanText(post.title || teaser),
+    poster_title: displayTitle,
     display_count: formatCount(post.like_count || 0),
     is_liked: !!post.is_liked,
     is_official: !!post.is_official,
