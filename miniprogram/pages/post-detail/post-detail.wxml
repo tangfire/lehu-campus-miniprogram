@@ -10,8 +10,7 @@
       </view>
     </view>
 
-    <video wx:if="{{post.media_type === 'video'}}" class="media-video" src="{{post.video_url}}" poster="{{post.cover_url}}" controls></video>
-    <swiper wx:elif="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
+    <swiper wx:if="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
       <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
         <swiper-item>
           <image class="media-image" src="{{img}}" mode="aspectFill" />

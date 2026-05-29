@@ -12,7 +12,6 @@
       <view class="post-review">
         <view wx:if="{{item.display_cover}}" class="thumb-wrap">
           <image class="thumb" src="{{item.display_cover}}" mode="aspectFill" />
-          <view wx:if="{{item.media_type === 'video'}}" class="video-badge">▶</view>
         </view>
         <view wx:else class="text-thumb">文</view>
         <view class="post-main">

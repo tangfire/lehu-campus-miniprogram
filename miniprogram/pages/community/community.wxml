@@ -48,7 +48,6 @@
         <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
           <view wx:if="{{item.display_cover}}" class="cover-wrap">
             <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
-            <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
             <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="cover-flags">
               <text wx:if="{{item.is_pinned}}">置顶</text>
               <text wx:if="{{item.is_official}}">官方</text>
@@ -86,7 +85,6 @@
         <view class="note-card" data-id="{{item.id}}" bindtap="openPost">
           <view wx:if="{{item.display_cover}}" class="cover-wrap">
             <image class="note-cover" src="{{item.display_cover}}" mode="widthFix" />
-            <view wx:if="{{item.media_type === 'video'}}" class="video-badge"></view>
             <view wx:if="{{item.is_pinned || item.is_official || item.is_featured}}" class="cover-flags">
               <text wx:if="{{item.is_pinned}}">置顶</text>
               <text wx:if="{{item.is_official}}">官方</text>

@@ -54,10 +54,12 @@ async function directUpload(filePath, mediaType) {
       size: info.size
     }
   })
-  if (!presign || !presign.upload_url || !presign.file_id) {
+  if (!presign || !presign.file_id) {
     throw new Error('直传地址无效')
   }
-  await putFileToObjectStorage(filePath, presign)
+  if (presign.upload_url) {
+    await putFileToObjectStorage(filePath, presign)
+  }
   return request({
     url: '/campus/upload/complete',
     method: 'POST',

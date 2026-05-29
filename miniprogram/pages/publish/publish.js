@@ -120,10 +120,6 @@ Page({
 
   changeMediaType(e) {
     const mediaType = e.currentTarget.dataset.type
-    if (mediaType === 'video') {
-      wx.showToast({ title: '首发暂不支持视频发布', icon: 'none' })
-      return
-    }
     if (mediaType === this.data.mediaType) return
     this.setData({
       mediaType,
@@ -179,18 +175,10 @@ Page({
       sizeType: ['compressed'],
       camera: 'back',
       success: async res => {
-        const files = res.tempFiles || []
-        const first = files[0]
-        if (!first) return
-        const fileType = first.fileType || res.type || inferMediaType(first.tempFilePath)
-        if (fileType === 'video') {
-          wx.showToast({ title: '首发暂不支持视频发布', icon: 'none' })
-          return
-        }
-        const images = files
-          .filter(file => (file.fileType || inferMediaType(file.tempFilePath)) !== 'video')
+        const images = (res.tempFiles || [])
           .map(file => file.tempFilePath)
           .filter(Boolean)
+        if (!images.length) return
         this.setData({
           mediaType: 'image',
           showMediaChooser: false,
@@ -259,13 +247,12 @@ Page({
   },
 
   restoreDraft(draft) {
-    const restoredMediaType = draft.mediaType === 'video' ? 'image' : (draft.mediaType || 'text')
     this.setData({
       postType: draft.postType || 'note',
       categoryCode: draft.categoryCode || this.data.categoryCode,
       title: draft.title || '',
       content: draft.content || '',
-      mediaType: restoredMediaType,
+      mediaType: draft.mediaType || 'text',
       localImages: draft.localImages || [],
       showMediaChooser: false,
       extra: {
@@ -341,13 +328,9 @@ Page({
         post_type: this.data.postType,
         extra: buildExtra(this.data.postType, this.data.extra),
         images: [],
-        cover_url: '',
-        video_url: ''
+        cover_url: ''
       }
-      if (this.data.mediaType === 'video') {
-        wx.showToast({ title: '首发暂不支持视频发布', icon: 'none' })
-        return
-      } else if (this.data.mediaType === 'image') {
+      if (this.data.mediaType === 'image') {
         const images = []
         const total = this.data.localImages.length || 1
         for (let index = 0; index < this.data.localImages.length; index += 1) {
@@ -434,14 +417,6 @@ function buildExtra(postType, extra) {
     return pick(extra, ['location'])
   }
   return {}
-}
-
-function inferMediaType(filePath) {
-  const lower = String(filePath || '').toLowerCase()
-  if (lower.endsWith('.mp4') || lower.endsWith('.mov') || lower.endsWith('.m4v')) {
-    return 'video'
-  }
-  return 'image'
 }
 
 function pick(source, keys) {

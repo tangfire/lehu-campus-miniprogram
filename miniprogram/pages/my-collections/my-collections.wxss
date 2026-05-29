@@ -36,20 +36,6 @@
   font-weight: 800;
 }
 
-.video-badge {
-  position: absolute;
-  left: 8rpx;
-  bottom: 8rpx;
-  width: 38rpx;
-  height: 38rpx;
-  line-height: 38rpx;
-  text-align: center;
-  border-radius: 50%;
-  background: rgba(15, 23, 42, 0.72);
-  color: #ffffff;
-  font-size: 18rpx;
-}
-
 .post-main {
   flex: 1;
   min-width: 0;

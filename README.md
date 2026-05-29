@@ -1,6 +1,6 @@
 # 深汕校园 e站小程序
 
-首发阶段只开放文字和图片发布，视频发布入口已关闭；后端默认 `LEHU_CAMPUS_ENABLE_VIDEO_POSTS=false` 会兜底拒绝视频上传和视频帖发布。
+首发阶段只开放文字和图片发布；后端会固定拒绝非文字/图片媒体。
 
 论坛先行的微信小程序前端，后端默认指向本地 Docker API：
 
@@ -23,7 +23,13 @@ trial: 'https://你的体验版API域名/v1',
 release: 'https://你的正式API域名/v1'
 ```
 
-同时在微信公众平台配置 request/upload/download 合法域名，并在开发者工具里开启合法域名校验。`project.config.json` 里的 `urlCheck: false` 只用于本地开发。
+同时在微信公众平台配置 request/upload/download 合法域名，并在开发者工具里开启合法域名校验。生产媒体使用 COS + CDN 时：
+
+- request 合法域名：校园 e站 API 域名。
+- uploadFile 合法域名：COS 上传域名，例如 `https://campus-1250000000.cos.ap-guangzhou.myqcloud.com`。
+- downloadFile 合法域名：CDN 下载域名，例如 `https://cdn.example.com`。
+
+小程序仍然只调用 `/v1/campus/upload/presign`、直传 PUT、再调用 `/v1/campus/upload/complete`，不会保存 COS 永久密钥。`project.config.json` 里的 `urlCheck: false` 只用于本地开发。
 
 ## 当前阶段
 
