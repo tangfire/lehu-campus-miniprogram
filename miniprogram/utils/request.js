@@ -36,7 +36,7 @@ function request(options) {
 }
 
 function uploadImage(filePath) {
-  return directUpload(filePath, 'image').catch(() => legacyUpload(filePath))
+  return directUpload(filePath, 'image')
 }
 
 async function directUpload(filePath, mediaType) {
@@ -67,41 +67,6 @@ async function directUpload(filePath, mediaType) {
       media_type: mediaType,
       file_id: presign.file_id
     }
-  })
-}
-
-function legacyUpload(filePath) {
-  const token = wx.getStorageSync('token')
-  const requestId = createRequestId()
-  const path = '/campus/upload/image'
-  const fallbackMessage = '图片上传失败'
-  return new Promise((resolve, reject) => {
-    wx.uploadFile({
-      url: `${app.globalData.apiBase}${path}`,
-      filePath,
-      name: 'file',
-      header: {
-        'X-Request-ID': requestId,
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
-      },
-      success(res) {
-        let body = {}
-        try {
-          body = JSON.parse(res.data || '{}')
-        } catch (err) {
-          reject(new Error('上传响应无效'))
-          return
-        }
-        if (res.statusCode >= 200 && res.statusCode < 300 && body.code === 0) {
-          resolve(body.data)
-          return
-        }
-        reject(createRequestError(body.message || fallbackMessage, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
-      },
-      fail(err) {
-        reject(createRequestError(err.errMsg || fallbackMessage, requestId, 0, null))
-      }
-    })
   })
 }
 
