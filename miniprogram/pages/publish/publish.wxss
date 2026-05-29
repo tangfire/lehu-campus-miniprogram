@@ -102,6 +102,42 @@
   transition: width 0.18s ease;
 }
 
+.success-panel {
+  display: flex;
+  align-items: center;
+  gap: 22rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 18rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 30rpx rgba(15, 23, 42, 0.035);
+}
+
+.success-art {
+  width: 116rpx;
+  height: 116rpx;
+  flex: none;
+}
+
+.success-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.success-title {
+  color: #18181b;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.success-desc {
+  margin-top: 8rpx;
+  color: #64748b;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
 .starter,
 .media-panel,
 .form {

@@ -5,9 +5,9 @@
 }
 
 .empty-art {
-  width: 260rpx;
-  height: 210rpx;
-  margin: 0 auto 18rpx;
+  width: 300rpx;
+  height: 260rpx;
+  margin: 0 auto 20rpx;
   display: block;
 }
 

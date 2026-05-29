@@ -218,6 +218,12 @@ async function main() {
       true
     )
   }
+
+  await resizeImage(source('ezai-timetable.png'), 'empty/timetable.png', 340)
+  await resizeImage(source('ezai-community.png'), 'empty/community.png', 340)
+  await resizeImage(source('ezai-message.png'), 'empty/message.png', 320)
+  await resizeImage(source('ezai-done.png'), 'stickers/done.png', 300)
+  await resizeImage(source('ezai-knowledge.png'), 'stickers/knowledge.png', 320)
 }
 
 main().catch(error => {

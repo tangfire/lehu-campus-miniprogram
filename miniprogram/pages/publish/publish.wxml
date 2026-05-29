@@ -21,6 +21,14 @@
     </view>
   </view>
 
+  <view wx:if="{{successTip}}" class="success-panel panel">
+    <image class="success-art" src="/assets/brand/stickers/done.png" mode="aspectFit" />
+    <view class="success-copy">
+      <view class="success-title">{{successTip.title}}</view>
+      <view class="success-desc">{{successTip.desc}}</view>
+    </view>
+  </view>
+
   <view wx:if="{{showMediaChooser && !localImages.length && !localVideo && mediaType !== 'text'}}" class="starter panel">
     <view class="starter-title">选择创作方式</view>
     <view class="starter-grid">

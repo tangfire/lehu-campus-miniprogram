@@ -132,12 +132,16 @@
   overflow: hidden;
 }
 
-.ezai-head {
+.ezai-grid {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 20rpx;
-  margin-bottom: 16rpx;
+  gap: 18rpx;
+}
+
+.ezai-copy {
+  flex: 1;
+  min-width: 0;
 }
 
 .ezai-name {
@@ -159,8 +163,10 @@
 }
 
 .ezai-sticker {
-  width: 136rpx;
-  height: 124rpx;
+  width: 190rpx;
+  height: 220rpx;
+  margin-top: -12rpx;
+  margin-right: -18rpx;
   flex: none;
 }
 

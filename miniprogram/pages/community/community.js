@@ -30,7 +30,8 @@ Page({
     page: 1,
     size: 20,
     total: 0,
-    loading: false
+    loading: false,
+    emptyImage: '/assets/brand/empty/community.png'
   },
 
   onLoad() {
@@ -85,7 +86,7 @@ Page({
         searchedKeyword: activeKeyword,
         emptyTitle: activeKeyword ? '没找到相关内容' : '还没有内容',
         emptyDesc: activeKeyword ? '可以换个关键词，或者直接发个提问让同学来答。' : '可以发一条攻略、提问、失物招领或校园瞬间。',
-        emptyImage: activeKeyword ? '/assets/brand/empty/question.png' : '/assets/brand/empty/note.png'
+        emptyImage: activeKeyword ? '/assets/brand/empty/question.png' : '/assets/brand/empty/community.png'
       })
     } catch (err) {
       showError(err)

@@ -41,7 +41,8 @@ Page({
     hasDraft: false,
     submitting: false,
     uploadProgress: 0,
-    submitStatusText: ''
+    submitStatusText: '',
+    successTip: null
   },
 
   onLoad(options = {}) {
@@ -518,11 +519,11 @@ Page({
       this.setData({
         hasDraft: false,
         uploadProgress: 100,
-        submitStatusText: pendingReview ? '已提交审核' : '已发布'
-      })
-      wx.showToast({
-        title: pendingReview ? '已提交，审核通过后展示' : '已发布，去看看',
-        icon: 'none'
+        submitStatusText: pendingReview ? '已提交审核' : '已发布',
+        successTip: {
+          title: pendingReview ? '已提交审核' : '已发布',
+          desc: pendingReview ? '审核通过后会展示在社区。' : '正在带你去看看这条内容。'
+        }
       })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]

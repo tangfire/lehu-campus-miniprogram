@@ -43,20 +43,20 @@
   <view class="section">
     <view class="section-title">关于深汕e仔</view>
     <view class="ezai-card">
-      <view class="ezai-head">
-        <view>
+      <view class="ezai-grid">
+        <view class="ezai-copy">
           <view class="ezai-name">深汕e仔</view>
           <view class="ezai-role">官方内容小伙伴</view>
+          <view class="paragraph">
+            它会在社区发布报到攻略、宿舍提醒、交通路线、课表说明和校园问答整理。它不代表学校官方通知，但会尽量把同学们常问、常找、容易错过的信息整理得更清楚。
+          </view>
+          <view class="ezai-tags">
+            <text>官方内容</text>
+            <text>新生攻略</text>
+            <text>校园提醒</text>
+          </view>
         </view>
-        <image class="ezai-sticker" src="/assets/brand/stickers/notice.png" mode="aspectFit" />
-      </view>
-      <view class="paragraph">
-        它会在社区发布报到攻略、宿舍提醒、交通路线、课表说明和校园问答整理。它不代表学校官方通知，但会尽量把同学们常问、常找、容易错过的信息整理得更清楚。
-      </view>
-      <view class="ezai-tags">
-        <text>官方内容</text>
-        <text>新生攻略</text>
-        <text>校园提醒</text>
+        <image class="ezai-sticker" src="/assets/brand/stickers/knowledge.png" mode="aspectFit" />
       </view>
     </view>
   </view>
