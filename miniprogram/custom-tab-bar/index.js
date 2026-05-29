@@ -3,16 +3,16 @@ Component({
     selected: 0,
     tabs: [
       {
-        key: 'home',
-        text: '首页',
-        icon: 'icon-home',
-        pagePath: '/pages/community/community'
-      },
-      {
         key: 'timetable',
         text: '课表',
         icon: 'icon-calendar',
         pagePath: '/pages/timetable/timetable'
+      },
+      {
+        key: 'community',
+        text: '社区',
+        icon: 'icon-home',
+        pagePath: '/pages/community/community'
       },
       {
         key: 'mine',

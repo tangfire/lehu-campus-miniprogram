@@ -45,7 +45,7 @@ Page({
   },
 
   onShow() {
-    syncTabBar(this, 1)
+    syncTabBar(this, 0)
     trackEvent('visit', { page: 'timetable' })
     const token = wx.getStorageSync('token') || ''
     this.setData({ token })

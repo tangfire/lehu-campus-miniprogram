@@ -1,11 +1,12 @@
 <view class="tab-shell">
   <view class="tab-bar">
     <view class="tab-item {{selected === 0 ? 'active' : ''}}" data-index="0" bindtap="switchTab">
-      <view class="tab-icon icon-home">
-        <view class="home-roof"></view>
-        <view class="home-body"></view>
+      <view class="tab-icon icon-calendar">
+        <view class="calendar-ring left"></view>
+        <view class="calendar-ring right"></view>
+        <view class="calendar-line"></view>
       </view>
-      <view class="tab-text">首页</view>
+      <view class="tab-text">课表</view>
     </view>
 
     <view class="tab-item publish-slot" bindtap="goPublish" aria-role="button" aria-label="发布">
@@ -17,12 +18,11 @@
     </view>
 
     <view class="tab-item {{selected === 1 ? 'active' : ''}}" data-index="1" bindtap="switchTab">
-      <view class="tab-icon icon-calendar">
-        <view class="calendar-ring left"></view>
-        <view class="calendar-ring right"></view>
-        <view class="calendar-line"></view>
+      <view class="tab-icon icon-home">
+        <view class="home-roof"></view>
+        <view class="home-body"></view>
       </view>
-      <view class="tab-text">课表</view>
+      <view class="tab-text">社区</view>
     </view>
 
     <view class="tab-item {{selected === 2 ? 'active' : ''}}" data-index="2" bindtap="switchTab">

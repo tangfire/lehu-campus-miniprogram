@@ -47,7 +47,7 @@ Page({
   },
 
   onShow() {
-    syncTabBar(this, 0)
+    syncTabBar(this, 1)
     trackEvent('visit', { page: 'community' })
     if (this._needsRefresh) {
       this._needsRefresh = false

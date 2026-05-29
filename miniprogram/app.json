@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/community/community",
     "pages/timetable/timetable",
+    "pages/community/community",
     "pages/mine/mine",
     "pages/post-detail/post-detail",
     "pages/user-profile/user-profile",
@@ -29,12 +29,12 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/community/community",
-        "text": "首页"
-      },
-      {
         "pagePath": "pages/timetable/timetable",
         "text": "课表"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区"
       },
       {
         "pagePath": "pages/mine/mine",
