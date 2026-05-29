@@ -29,7 +29,7 @@
     </view>
   </view>
 
-  <view wx:if="{{showMediaChooser && !localImages.length && !localVideo && mediaType !== 'text'}}" class="starter panel">
+  <view wx:if="{{showMediaChooser && !localImages.length && mediaType !== 'text'}}" class="starter panel">
     <view class="starter-title">选择创作方式</view>
     <view class="starter-grid">
       <view class="starter-item" bindtap="chooseFromAlbum">
@@ -51,7 +51,6 @@
     <view class="media-panel-head">
       <text>内容素材</text>
       <text wx:if="{{mediaType === 'image'}}">{{localImages.length}}/9</text>
-      <text wx:elif="{{mediaType === 'video'}}">最长30秒</text>
       <text wx:else>文字笔记</text>
     </view>
 
@@ -66,32 +65,6 @@
         </view>
       </block>
       <view wx:if="{{localImages.length < 9}}" class="add-image" bindtap="chooseImages">+</view>
-    </view>
-
-    <view wx:elif="{{mediaType === 'video'}}" class="video-picker">
-      <view wx:if="{{localVideo}}" class="video-wrap">
-        <video class="picked-video" src="{{localVideo}}" poster="{{coverImage}}" controls></video>
-        <view class="remove" bindtap="removeVideo">×</view>
-      </view>
-      <view wx:else class="add-video" bindtap="chooseVideo">
-        <view class="add-video-icon">▶</view>
-        <view>选择视频</view>
-        <text>最长30秒，会自动压缩</text>
-      </view>
-      <view wx:if="{{localVideo && (videoSizeLabel || videoDurationLabel || videoProcessLabel)}}" class="video-meta">
-        <text wx:if="{{videoDurationLabel}}">{{videoDurationLabel}}</text>
-        <text wx:if="{{videoSizeLabel}}">{{videoSizeLabel}}</text>
-        <text wx:if="{{videoProcessLabel}}">{{videoProcessLabel}}</text>
-      </view>
-
-      <view class="cover-row">
-        <view class="cover-label">封面</view>
-        <view wx:if="{{coverImage}}" class="cover-wrap">
-          <image class="cover-image" src="{{coverImage}}" mode="aspectFill" />
-          <view class="remove small" bindtap="removeCover">×</view>
-        </view>
-        <view wx:else class="add-cover" bindtap="chooseCover">+</view>
-      </view>
     </view>
 
     <view wx:else class="text-preview">

@@ -36,11 +36,7 @@ function request(options) {
 }
 
 function uploadImage(filePath) {
-  return directUpload(filePath, 'image').catch(() => legacyUpload(filePath, 'image'))
-}
-
-function uploadVideo(filePath) {
-  return directUpload(filePath, 'video').catch(() => legacyUpload(filePath, 'video'))
+  return directUpload(filePath, 'image').catch(() => legacyUpload(filePath))
 }
 
 async function directUpload(filePath, mediaType) {
@@ -72,11 +68,11 @@ async function directUpload(filePath, mediaType) {
   })
 }
 
-function legacyUpload(filePath, mediaType) {
+function legacyUpload(filePath) {
   const token = wx.getStorageSync('token')
   const requestId = createRequestId()
-  const path = mediaType === 'video' ? '/campus/upload/video' : '/campus/upload/image'
-  const fallbackMessage = mediaType === 'video' ? '视频上传失败' : '图片上传失败'
+  const path = '/campus/upload/image'
+  const fallbackMessage = '图片上传失败'
   return new Promise((resolve, reject) => {
     wx.uploadFile({
       url: `${app.globalData.apiBase}${path}`,
@@ -127,9 +123,6 @@ function validateUploadFile(info, mediaType) {
   if (mediaType === 'image' && size > 5 * 1024 * 1024) {
     throw new Error('图片不能超过 5MB')
   }
-  if (mediaType === 'video' && size > 20 * 1024 * 1024) {
-    throw new Error('视频压缩后不能超过 20MB')
-  }
 }
 
 function putFileToObjectStorage(filePath, presign) {
@@ -161,9 +154,6 @@ function putFileToObjectStorage(filePath, presign) {
 function inferFileType(filePath, mediaType) {
   const lower = String(filePath || '').split('?')[0].toLowerCase()
   const ext = lower.includes('.') ? lower.slice(lower.lastIndexOf('.') + 1) : ''
-  if (mediaType === 'video') {
-    return ext === 'mov' ? 'mov' : 'mp4'
-  }
   if (ext === 'jpeg') return 'jpg'
   if (ext === 'png' || ext === 'webp' || ext === 'jpg') return ext
   return 'jpg'
@@ -235,7 +225,6 @@ function trackEvent(eventType, options = {}) {
 module.exports = {
   request,
   uploadImage,
-  uploadVideo,
   trackEvent,
   showError
 }
