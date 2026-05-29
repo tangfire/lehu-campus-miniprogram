@@ -2,6 +2,7 @@ const app = getApp()
 
 function request(options) {
   const token = wx.getStorageSync('token')
+  const requestId = createRequestId()
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${app.globalData.apiBase}${options.url}`,
@@ -9,6 +10,7 @@ function request(options) {
       data: options.data || {},
       header: {
         'content-type': 'application/json',
+        'X-Request-ID': requestId,
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...(options.header || {})
       },
@@ -24,10 +26,10 @@ function request(options) {
           wx.removeStorageSync('user')
           wx.removeStorageSync('profile')
         }
-        reject(new Error(message))
+        reject(createRequestError(message, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
       },
       fail(err) {
-        reject(new Error(err.errMsg || '网络不可用'))
+        reject(createRequestError(err.errMsg || '网络不可用', requestId, 0, null))
       }
     })
   })
@@ -72,6 +74,7 @@ async function directUpload(filePath, mediaType) {
 
 function legacyUpload(filePath, mediaType) {
   const token = wx.getStorageSync('token')
+  const requestId = createRequestId()
   const path = mediaType === 'video' ? '/campus/upload/video' : '/campus/upload/image'
   const fallbackMessage = mediaType === 'video' ? '视频上传失败' : '图片上传失败'
   return new Promise((resolve, reject) => {
@@ -80,6 +83,7 @@ function legacyUpload(filePath, mediaType) {
       filePath,
       name: 'file',
       header: {
+        'X-Request-ID': requestId,
         ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
       success(res) {
@@ -94,10 +98,10 @@ function legacyUpload(filePath, mediaType) {
           resolve(body.data)
           return
         }
-        reject(new Error(body.message || fallbackMessage))
+        reject(createRequestError(body.message || fallbackMessage, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
       },
       fail(err) {
-        reject(new Error(err.errMsg || fallbackMessage))
+        reject(createRequestError(err.errMsg || fallbackMessage, requestId, 0, null))
       }
     })
   })
@@ -173,10 +177,44 @@ function inferFilename(filePath, fileType) {
 }
 
 function showError(err) {
+  const requestId = err && err.requestId ? String(err.requestId) : ''
+  if (requestId) {
+    console.error('[request failed]', {
+      request_id: requestId,
+      status_code: err.statusCode,
+      message: err.message,
+      data: err.data
+    })
+    wx.showModal({
+      title: '操作失败',
+      content: `${err.message || '操作失败'}\n请求编号：${requestId}`,
+      confirmText: '知道了',
+      cancelText: '复制编号',
+      success: res => {
+        if (res.cancel) {
+          wx.setClipboardData({ data: requestId })
+        }
+      }
+    })
+    return
+  }
   wx.showToast({
     title: err.message || '操作失败',
     icon: 'none'
   })
+}
+
+function createRequestId() {
+  const random = Math.random().toString(16).slice(2, 10)
+  return `mp-${Date.now()}-${random}`
+}
+
+function createRequestError(message, requestId, statusCode, data) {
+  const err = new Error(message || '请求失败')
+  err.requestId = requestId || ''
+  err.statusCode = statusCode || 0
+  err.data = data || null
+  return err
 }
 
 function trackEvent(eventType, options = {}) {
