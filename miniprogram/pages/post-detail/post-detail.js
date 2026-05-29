@@ -18,8 +18,13 @@ Page({
 
   onLoad(query) {
     this.setupNavBar()
-    this.setData({ id: query.id })
-    trackEvent('post_detail_visit', { page: 'post-detail', targetType: 'post', targetId: query.id })
+    const id = resolvePostId(query)
+    if (!id) {
+      wx.showToast({ title: '帖子不存在', icon: 'none' })
+      return
+    }
+    this.setData({ id })
+    trackEvent('post_detail_visit', { page: 'post-detail', targetType: 'post', targetId: id })
     this.loadPost()
     this.loadComments()
   },
@@ -429,6 +434,27 @@ function normalizePost(post) {
     is_official: !!post.is_official,
     is_featured: !!post.is_featured,
     is_pinned: !!post.is_pinned
+  }
+}
+
+function resolvePostId(query = {}) {
+  if (query.id) return String(query.id).trim()
+  const scene = query.scene ? safeDecode(query.scene) : ''
+  if (!scene) return ''
+  if (/^\d+$/.test(scene)) return scene
+  const params = {}
+  scene.split('&').forEach((part) => {
+    const [key, value = ''] = part.split('=')
+    if (key) params[key] = value
+  })
+  return String(params.id || params.post_id || '').trim()
+}
+
+function safeDecode(value) {
+  try {
+    return decodeURIComponent(value)
+  } catch (err) {
+    return String(value || '')
   }
 }
 
