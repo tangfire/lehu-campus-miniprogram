@@ -69,18 +69,18 @@
   font-weight: 800;
 }
 
-.status-pill.status-0 {
+.status-pill.state-syncing {
   background: #fffbeb;
   color: #b45309;
 }
 
-.status-pill.status-2,
-.status-pill.status-3 {
+.status-pill.state-needs_attention,
+.status-pill.state-hidden {
   background: #fef2f2;
   color: #dc2626;
 }
 
-.audit-reason {
+.status-detail {
   margin-top: 10rpx;
   padding: 10rpx 12rpx;
   border-radius: 12rpx;

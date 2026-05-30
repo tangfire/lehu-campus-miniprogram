@@ -358,8 +358,6 @@ Page({
       })
       const post = created && created.post ? created.post : null
       const postID = post ? post.id : ''
-      const postStatus = Number(post ? post.status : 1)
-      const pendingReview = postStatus === 0
       trackEvent('publish_success', {
         page: 'publish',
         targetType: 'post',
@@ -371,17 +369,17 @@ Page({
       this.setData({
         hasDraft: false,
         uploadProgress: 100,
-        submitStatusText: pendingReview ? '已提交审核' : '已发布',
+        submitStatusText: '发布成功',
         successTip: {
-          title: pendingReview ? '已提交审核' : '已发布',
-          desc: pendingReview ? '审核通过后会展示在社区。' : '正在带你去看看这条内容。'
+          title: '发布成功',
+          desc: postID ? '正在带你去看看这条内容。' : '可以在我的帖子里继续查看。'
         }
       })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]
       if (prev) prev._needsRefresh = true
       setTimeout(() => {
-        if (postID && !pendingReview) {
+        if (postID) {
           wx.redirectTo({ url: `/pages/post-detail/post-detail?id=${postID}` })
           return
         }

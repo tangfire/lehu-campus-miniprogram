@@ -54,16 +54,7 @@ Page({
 
   openPost(e) {
     const id = String(e.currentTarget.dataset.id || '')
-    const post = this.data.posts.find(item => String(item.id) === id)
-    if (post && Number(post.status) !== 1) {
-      wx.showModal({
-        title: post.status_label || '内容状态',
-        content: post.audit_reason || '这条内容暂未公开展示，审核通过后同学才可以看到。',
-        showCancel: false,
-        confirmText: '知道了'
-      })
-      return
-    }
+    if (!id) return
     wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${id}` })
   },
 
@@ -91,27 +82,51 @@ Page({
 function normalizePost(post) {
   const images = post.images || []
   const status = Number(post.status == null ? 1 : post.status)
+  const rawPublishState = normalizePublishState(post, status)
+  const publicVisible = post.public_visible != null ? !!post.public_visible : rawPublishState === 'visible'
+  const publishState = !publicVisible && rawPublishState === 'visible' ? 'syncing' : rawPublishState
+  const useFallbackStatus = !publicVisible && rawPublishState === 'visible'
   return {
     ...post,
     images,
     status,
-    status_label: statusLabel(status),
-    status_class: `status-${status}`,
-    audit_reason: post.audit_reason || '',
+    publish_state: publishState,
+    public_visible: publicVisible,
+    status_label: useFallbackStatus ? statusLabel(publishState) : (post.client_status_label || statusLabel(publishState)),
+    status_detail: useFallbackStatus ? statusDetail(publishState) : (post.client_status_detail || statusDetail(publishState)),
+    status_class: `state-${publishState}`,
     media_type: post.media_type || (images.length ? 'image' : 'text'),
     type_label: postTypeLabel(post.post_type),
     display_cover: post.cover_url || images[0] || ''
   }
 }
 
-function statusLabel(status) {
+function normalizePublishState(post, status) {
+  if (post && post.publish_state) return post.publish_state
+  if (status === 1) return 'visible'
+  if (status === 2) return 'needs_attention'
+  if (status === 3) return 'hidden'
+  return 'syncing'
+}
+
+function statusLabel(state) {
   const map = {
-    0: '待审核',
-    1: '正常展示',
-    2: '未通过',
-    3: '已撤回'
+    syncing: '同步中',
+    visible: '已发布',
+    needs_attention: '需修改',
+    hidden: '已撤回'
   }
-  return map[Number(status)] || '未知'
+  return map[state] || '同步中'
+}
+
+function statusDetail(state) {
+  const map = {
+    syncing: '正在同步到社区，只有你自己可以看到。',
+    visible: '',
+    needs_attention: '这条内容暂未同步，请修改后再发布。',
+    hidden: '这条内容已撤回。'
+  }
+  return map[state] || ''
 }
 
 function postTypeLabel(postType) {

@@ -25,8 +25,7 @@ Page({
     }
     this.setData({ id })
     trackEvent('post_detail_visit', { page: 'post-detail', targetType: 'post', targetId: id })
-    this.loadPost()
-    this.loadComments()
+    this.loadInitialDetail()
   },
 
   onShow() {
@@ -59,13 +58,29 @@ Page({
   async loadPost() {
     try {
       const data = await request({ url: `/campus/forum/posts/${this.data.id}` })
-      this.setData({ post: normalizePost(data.post) })
+      const post = normalizePost(data.post)
+      this.setData({ post })
+      return post
     } catch (err) {
       showError(err)
+      return null
     }
   },
 
+  async loadInitialDetail() {
+    const post = await this.loadPost()
+    if (post && post.can_interact) {
+      this.loadComments()
+      return
+    }
+    this.setData({ comments: [] })
+  },
+
   async loadComments() {
+    if (this.data.post && !this.data.post.can_interact) {
+      this.setData({ comments: [] })
+      return
+    }
     try {
       const data = await request({ url: `/campus/forum/posts/${this.data.id}/comments` })
       this.setData({ comments: (data.comments || []).map(normalizeComment) })
@@ -91,6 +106,10 @@ Page({
     const content = this.data.commentText.trim()
     if (!content) {
       wx.showToast({ title: '写点内容再发', icon: 'none' })
+      return
+    }
+    if (this.data.post && !this.data.post.can_interact) {
+      wx.showToast({ title: '内容同步后可评论', icon: 'none' })
       return
     }
     const replyTarget = this.data.replyTarget
@@ -206,6 +225,10 @@ Page({
       return
     }
     const post = this.data.post
+    if (!post || !post.can_interact) {
+      wx.showToast({ title: '内容同步后可点赞', icon: 'none' })
+      return
+    }
     try {
       await request({
         url: `/campus/forum/posts/${this.data.id}/like`,
@@ -225,6 +248,10 @@ Page({
       return
     }
     const post = this.data.post
+    if (!post || !post.can_interact) {
+      wx.showToast({ title: '内容同步后可收藏', icon: 'none' })
+      return
+    }
     try {
       await request({
         url: `/campus/forum/posts/${this.data.id}/collection`,
@@ -401,6 +428,12 @@ Page({
   onShareAppMessage() {
     trackEvent('share', { page: 'post-detail', targetType: 'post', targetId: this.data.id, channel: 'app_message' })
     const post = this.data.post
+    if (post && !post.can_interact) {
+      return {
+        title: '深汕校园e站',
+        path: '/pages/community/community'
+      }
+    }
     return {
       title: post ? post.display_title : '深汕校园e站校园笔记',
       path: `/pages/post-detail/post-detail?id=${this.data.id}`
@@ -415,9 +448,21 @@ function normalizePost(post) {
   const typeLabel = postTypeLabel(postType)
   const teaser = cleanText(post.content || '')
   const displayTitle = cleanText(post.title || teaser || '校园笔记')
+  const status = Number(post.status == null ? 1 : post.status)
+  const rawPublishState = normalizePublishState(post, status)
+  const publicVisible = post.public_visible != null ? !!post.public_visible : rawPublishState === 'visible'
+  const publishState = !publicVisible && rawPublishState === 'visible' ? 'syncing' : rawPublishState
+  const useFallbackStatus = !publicVisible && rawPublishState === 'visible'
   return {
     ...post,
     images,
+    status,
+    publish_state: publishState,
+    public_visible: publicVisible,
+    client_status_label: useFallbackStatus ? statusLabel(publishState) : (post.client_status_label || statusLabel(publishState)),
+    client_status_detail: useFallbackStatus ? statusDetail(publishState) : (post.client_status_detail || statusDetail(publishState)),
+    status_class: `state-${publishState}`,
+    can_interact: publicVisible && publishState === 'visible',
     media_type: post.media_type || (images.length ? 'image' : 'text'),
     post_type: postType,
     type_label: typeLabel,
@@ -435,6 +480,34 @@ function normalizePost(post) {
     is_featured: !!post.is_featured,
     is_pinned: !!post.is_pinned
   }
+}
+
+function normalizePublishState(post, status) {
+  if (post && post.publish_state) return post.publish_state
+  if (status === 1) return 'visible'
+  if (status === 2) return 'needs_attention'
+  if (status === 3) return 'hidden'
+  return 'syncing'
+}
+
+function statusLabel(state) {
+  const map = {
+    syncing: '同步中',
+    visible: '已发布',
+    needs_attention: '需修改',
+    hidden: '已撤回'
+  }
+  return map[state] || '同步中'
+}
+
+function statusDetail(state) {
+  const map = {
+    syncing: '正在同步到社区，只有你自己可以看到。',
+    visible: '',
+    needs_attention: '这条内容暂未同步，请修改后再发布。',
+    hidden: '这条内容已撤回。'
+  }
+  return map[state] || ''
 }
 
 function resolvePostId(query = {}) {

@@ -13,7 +13,7 @@
           <text class="status-pill {{item.status_class}}">{{item.status_label}}</text>
           <text>{{item.category_name}} · {{item.type_label}} · {{item.created_at}}</text>
         </view>
-        <view wx:if="{{item.status !== 1 && item.audit_reason}}" class="audit-reason">{{item.audit_reason}}</view>
+        <view wx:if="{{item.publish_state !== 'visible' && item.status_detail}}" class="status-detail">{{item.status_detail}}</view>
         <view class="post-content">{{item.content}}</view>
       </view>
       <button class="delete-btn" data-id="{{item.id}}" catchtap="withdrawPost">撤回</button>
