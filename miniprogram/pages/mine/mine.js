@@ -1,4 +1,5 @@
 const { request, uploadImage, trackEvent, showError } = require('../../utils/request')
+const { getSession, setSession, patchUser, clearSession, subscribeSession } = require('../../utils/session')
 
 const DRAFT_KEY = 'campus_publish_draft_v1'
 
@@ -21,6 +22,20 @@ Page({
     const statusBarHeight = info.statusBarHeight || 0
     const navSafeHeight = menu && menu.bottom ? menu.bottom + Math.max(menu.top - statusBarHeight, 0) : statusBarHeight + 52
     this.setData({ navSafeHeight })
+    this._unsubscribeSession = subscribeSession(session => {
+      this.setData({
+        token: session.token,
+        user: session.user,
+        profile: session.profile
+      })
+    })
+  },
+
+  onUnload() {
+    if (this._unsubscribeSession) {
+      this._unsubscribeSession()
+      this._unsubscribeSession = null
+    }
   },
 
   onShow() {
@@ -28,14 +43,15 @@ Page({
     trackEvent('visit', { page: 'mine' })
     const draft = wx.getStorageSync(DRAFT_KEY)
     const hasDraft = Boolean(draft && draft.updated_at)
+    const session = getSession()
     this.setData({
-      token: wx.getStorageSync('token') || '',
-      user: wx.getStorageSync('user') || null,
-      profile: wx.getStorageSync('profile') || null,
+      token: session.token,
+      user: session.user,
+      profile: session.profile,
       hasDraft,
       draftDesc: hasDraft ? '1篇未发布' : '暂无草稿'
     })
-    if (wx.getStorageSync('token')) this.loadUnreadCount()
+    if (session.token) this.loadUnreadCount()
   },
 
   async loadUnreadCount() {
@@ -62,10 +78,11 @@ Page({
               nickname: '深汕同学'
             }
           })
-          wx.setStorageSync('token', data.token)
-          wx.setStorageSync('user', data.user)
-          wx.setStorageSync('profile', data.profile)
-          this.setData({ token: data.token, user: data.user, profile: data.profile })
+          setSession({
+            token: data.token,
+            user: data.user,
+            profile: data.profile
+          })
           wx.showToast({ title: '已登录' })
         } catch (err) {
           showError(err)
@@ -81,10 +98,8 @@ Page({
   },
 
   logout() {
-    wx.removeStorageSync('token')
-    wx.removeStorageSync('user')
-    wx.removeStorageSync('profile')
-    this.setData({ token: '', user: null, profile: null })
+    clearSession()
+    this.setData({ unreadCount: 0 })
   },
 
   changeAvatar() {
@@ -109,8 +124,7 @@ Page({
             method: 'PUT',
             data: { avatar: uploaded.url }
           })
-          wx.setStorageSync('user', data.user)
-          this.setData({ user: data.user })
+          patchUser(data.user)
           wx.showToast({ title: '头像已更新' })
         } catch (err) {
           showError(err)

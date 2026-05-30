@@ -1,7 +1,12 @@
 const app = getApp()
+const { getSession, clearSession } = require('./session')
+
+const IMAGE_MAX_UPLOAD_SIZE = 10 * 1024 * 1024
+const IMAGE_COMPRESS_TRIGGER_SIZE = 1200 * 1024
+const IMAGE_COMPRESS_QUALITIES = [82, 72, 62, 52]
 
 function request(options) {
-  const token = wx.getStorageSync('token')
+  const token = getSession().token
   const requestId = createRequestId()
   return new Promise((resolve, reject) => {
     wx.request({
@@ -22,9 +27,7 @@ function request(options) {
         }
         const message = body.message || '请求失败'
         if (res.statusCode === 401) {
-          wx.removeStorageSync('token')
-          wx.removeStorageSync('user')
-          wx.removeStorageSync('profile')
+          clearSession()
         }
         reject(createRequestError(message, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
       },
@@ -35,12 +38,13 @@ function request(options) {
   })
 }
 
-function uploadImage(filePath) {
-  return directUpload(filePath, 'image')
+async function uploadImage(filePath) {
+  const prepared = await prepareImageForUpload(filePath)
+  return directUpload(prepared.filePath, 'image', prepared.info)
 }
 
-async function directUpload(filePath, mediaType) {
-  const info = await getUploadFileInfo(filePath)
+async function directUpload(filePath, mediaType, knownInfo) {
+  const info = knownInfo || await getUploadFileInfo(filePath)
   validateUploadFile(info, mediaType)
   const fileType = inferFileType(filePath, mediaType)
   const presign = await request({
@@ -70,6 +74,37 @@ async function directUpload(filePath, mediaType) {
   })
 }
 
+async function prepareImageForUpload(filePath) {
+  let currentPath = filePath
+  let currentInfo = await getUploadFileInfo(currentPath)
+  if (!wx.compressImage || currentInfo.size <= IMAGE_COMPRESS_TRIGGER_SIZE) {
+    return { filePath: currentPath, info: currentInfo }
+  }
+  for (const quality of IMAGE_COMPRESS_QUALITIES) {
+    const compressedPath = await compressImage(currentPath, quality).catch(() => '')
+    if (!compressedPath || compressedPath === currentPath) continue
+    const compressedInfo = await getUploadFileInfo(compressedPath).catch(() => null)
+    if (!compressedInfo || !compressedInfo.size) continue
+    if (compressedInfo.size < currentInfo.size) {
+      currentPath = compressedPath
+      currentInfo = compressedInfo
+    }
+    if (currentInfo.size <= IMAGE_MAX_UPLOAD_SIZE && quality <= 72) break
+  }
+  return { filePath: currentPath, info: currentInfo }
+}
+
+function compressImage(src, quality) {
+  return new Promise((resolve, reject) => {
+    wx.compressImage({
+      src,
+      quality,
+      success: res => resolve(res.tempFilePath || src),
+      fail: err => reject(new Error(err.errMsg || '图片压缩失败'))
+    })
+  })
+}
+
 function getUploadFileInfo(filePath) {
   return new Promise((resolve, reject) => {
     wx.getFileInfo({
@@ -87,8 +122,8 @@ function validateUploadFile(info, mediaType) {
   if (!size || !digest) {
     throw new Error('文件信息无效')
   }
-  if (mediaType === 'image' && size > 5 * 1024 * 1024) {
-    throw new Error('图片不能超过 5MB')
+  if (mediaType === 'image' && size > IMAGE_MAX_UPLOAD_SIZE) {
+    throw new Error('图片压缩后仍超过 10MB，请换一张更小的图片')
   }
 }
 

@@ -1,4 +1,5 @@
 const { request, showError, trackEvent } = require('../../utils/request')
+const { hasToken } = require('../../utils/session')
 
 Page({
   data: {
@@ -84,8 +85,7 @@ Page({
   async toggleLike(e) {
     const id = String(e.currentTarget.dataset.id || '')
     if (!id) return
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }

@@ -1,4 +1,5 @@
 const { request, trackEvent, showError } = require('../../utils/request')
+const { getSession, hasToken } = require('../../utils/session')
 
 const reportReasons = ['虚假信息', '人身攻击', '泄露隐私', '广告引流', '低俗不适', '其他']
 
@@ -29,7 +30,7 @@ Page({
   },
 
   onShow() {
-    const user = wx.getStorageSync('user') || {}
+    const user = getSession().user || {}
     this.setData({ currentUserId: user.id || '' })
   },
 
@@ -98,8 +99,7 @@ Page({
   },
 
   async submitComment() {
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }
@@ -191,8 +191,7 @@ Page({
   },
 
   async toggleCommentLike(e) {
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }
@@ -219,8 +218,7 @@ Page({
   },
 
   async toggleLike() {
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }
@@ -242,8 +240,7 @@ Page({
   },
 
   async toggleCollection() {
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }
@@ -385,8 +382,7 @@ Page({
   },
 
   reportContent(url) {
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }

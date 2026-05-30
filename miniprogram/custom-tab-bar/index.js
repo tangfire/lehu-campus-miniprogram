@@ -1,3 +1,5 @@
+const { hasToken } = require('../utils/session')
+
 Component({
   data: {
     selected: 0,
@@ -32,8 +34,7 @@ Component({
     },
 
     goPublish() {
-      const token = wx.getStorageSync('token')
-      if (!token) {
+      if (!hasToken()) {
         wx.switchTab({ url: '/pages/mine/mine' })
         return
       }
