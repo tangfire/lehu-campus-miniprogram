@@ -1,4 +1,5 @@
 const { request, showError } = require('../../utils/request')
+const { getSession, patchProfile } = require('../../utils/session')
 
 Page({
   data: {
@@ -15,7 +16,7 @@ Page({
   },
 
   onLoad() {
-    const profile = wx.getStorageSync('profile')
+    const profile = getSession().profile
     if (profile) {
       this.setData({ form: { ...this.data.form, ...profile } })
     }
@@ -26,7 +27,7 @@ Page({
     try {
       const data = await request({ url: '/campus/profile' })
       const profile = data.profile || {}
-      wx.setStorageSync('profile', profile)
+      patchProfile(profile)
       this.setData({ form: { ...this.data.form, ...profile } })
     } catch (err) {
       showError(err)
@@ -47,7 +48,7 @@ Page({
         method: 'PUT',
         data: this.data.form
       })
-      wx.setStorageSync('profile', data.profile)
+      patchProfile(data.profile)
       wx.showToast({ title: '已保存' })
       setTimeout(() => wx.navigateBack(), 500)
     } catch (err) {

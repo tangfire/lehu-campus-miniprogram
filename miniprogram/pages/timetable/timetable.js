@@ -1,4 +1,5 @@
 const { request, trackEvent, showError } = require('../../utils/request')
+const { getSession } = require('../../utils/session')
 
 const weekdays = [
   { value: 1, label: '周一', short: '一' },
@@ -37,7 +38,7 @@ Page({
     const navSafeHeight = menu && menu.bottom ? menu.bottom + Math.max(menu.top - statusBarHeight, 0) : statusBarHeight + 52
     const today = toCampusWeekday(new Date().getDay())
     this.setData({
-      token: wx.getStorageSync('token') || '',
+      token: getSession().token,
       term: defaultTerm(),
       selectedWeekday: today,
       navSafeHeight
@@ -47,7 +48,7 @@ Page({
   onShow() {
     syncTabBar(this, 0)
     trackEvent('visit', { page: 'timetable' })
-    const token = wx.getStorageSync('token') || ''
+    const token = getSession().token
     this.setData({ token })
     if (token) {
       this.loadTimetable()

@@ -1,4 +1,4 @@
-const { request, uploadImage, uploadVideo, trackEvent, showError } = require('../../utils/request')
+const { request, uploadImage, trackEvent, showError } = require('../../utils/request')
 
 const postTypes = [
   { value: 'note', label: '普通笔记', category: 'life' },
@@ -8,8 +8,6 @@ const postTypes = [
   { value: 'club', label: '社团', category: 'club' }
 ]
 
-const MAX_VIDEO_SIZE = 20 * 1024 * 1024
-const MAX_VIDEO_DURATION = 30
 const DRAFT_KEY = 'campus_publish_draft_v1'
 
 Page({
@@ -22,11 +20,6 @@ Page({
     content: '',
     mediaType: 'image',
     localImages: [],
-    localVideo: '',
-    videoSizeLabel: '',
-    videoDurationLabel: '',
-    videoProcessLabel: '',
-    coverImage: '',
     createMode: 'album',
     showMediaChooser: true,
     extra: {
@@ -131,11 +124,6 @@ Page({
     this.setData({
       mediaType,
       localImages: [],
-      localVideo: '',
-      videoSizeLabel: '',
-      videoDurationLabel: '',
-      videoProcessLabel: '',
-      coverImage: ''
     })
     this.saveDraftSoon()
   },
@@ -152,11 +140,6 @@ Page({
     this.setData({
       mediaType: 'text',
       localImages: [],
-      localVideo: '',
-      videoSizeLabel: '',
-      videoDurationLabel: '',
-      videoProcessLabel: '',
-      coverImage: '',
       showMediaChooser: false
     })
     this.saveDraftSoon()
@@ -187,56 +170,18 @@ Page({
     }
     wx.chooseMedia({
       count: 9,
-      mediaType: ['image', 'video'],
+      mediaType: ['image'],
       sourceType,
       sizeType: ['compressed'],
-      maxDuration: MAX_VIDEO_DURATION,
       camera: 'back',
       success: async res => {
-        const files = res.tempFiles || []
-        const first = files[0]
-        if (!first) return
-        const fileType = first.fileType || res.type || inferMediaType(first.tempFilePath)
-        if (fileType === 'video') {
-          const duration = Number(first.duration || 0)
-          if (duration > MAX_VIDEO_DURATION + 1) {
-            wx.showToast({ title: `视频不能超过 ${MAX_VIDEO_DURATION} 秒`, icon: 'none' })
-            return
-          }
-          try {
-            const video = await prepareVideoForUpload(first.tempFilePath || '', Number(first.size || 0), duration)
-            this.setData({
-              mediaType: 'video',
-              showMediaChooser: false,
-              localImages: [],
-              localVideo: video.filePath,
-              coverImage: first.thumbTempFilePath || '',
-              videoSizeLabel: video.size ? formatFileSize(video.size) : '',
-              videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
-              videoProcessLabel: video.compressed ? '已自动压缩' : ''
-            })
-            this.saveDraftSoon()
-          } catch (err) {
-            wx.showModal({
-              title: '视频太大',
-              content: err.message || '这个视频压缩后还是偏大，建议裁剪到30秒以内或换一个更短的视频。',
-              showCancel: false
-            })
-          }
-          return
-        }
-        const images = files
-          .filter(file => (file.fileType || inferMediaType(file.tempFilePath)) !== 'video')
+        const images = (res.tempFiles || [])
           .map(file => file.tempFilePath)
           .filter(Boolean)
+        if (!images.length) return
         this.setData({
           mediaType: 'image',
           showMediaChooser: false,
-          localVideo: '',
-          coverImage: '',
-          videoSizeLabel: '',
-          videoDurationLabel: '',
-          videoProcessLabel: '',
           localImages: this.data.localImages.concat(images).slice(0, 9)
         })
         this.saveDraftSoon()
@@ -275,64 +220,6 @@ Page({
     })
   },
 
-  chooseVideo(sourceType = ['album', 'camera']) {
-    const sources = Array.isArray(sourceType) ? sourceType : ['album', 'camera']
-    wx.chooseVideo({
-      sourceType: sources,
-      maxDuration: MAX_VIDEO_DURATION,
-      compressed: true,
-      success: async res => {
-        const size = Number(res.size || 0)
-        const duration = Number(res.duration || 0)
-        if (duration > MAX_VIDEO_DURATION + 1) {
-          wx.showToast({ title: `视频不能超过 ${MAX_VIDEO_DURATION} 秒`, icon: 'none' })
-          return
-        }
-        try {
-          const video = await prepareVideoForUpload(res.tempFilePath || '', size, duration)
-          this.setData({
-            mediaType: 'video',
-            showMediaChooser: false,
-            localVideo: video.filePath,
-            videoSizeLabel: video.size ? formatFileSize(video.size) : '',
-            videoDurationLabel: duration ? `${Math.ceil(duration)}秒` : '',
-            videoProcessLabel: video.compressed ? '已自动压缩' : ''
-          })
-          this.saveDraftSoon()
-        } catch (err) {
-          wx.showModal({
-            title: '视频太大',
-            content: err.message || '这个视频压缩后还是偏大，建议裁剪到30秒以内或换一个更短的视频。',
-            showCancel: false
-          })
-        }
-      }
-    })
-  },
-
-  removeVideo() {
-    this.setData({ localVideo: '', videoSizeLabel: '', videoDurationLabel: '', videoProcessLabel: '' })
-    this.saveDraftSoon()
-  },
-
-  chooseCover() {
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: res => {
-        const files = res.tempFilePaths || []
-        this.setData({ coverImage: files[0] || '' })
-        this.saveDraftSoon()
-      }
-    })
-  },
-
-  removeCover() {
-    this.setData({ coverImage: '' })
-    this.saveDraftSoon()
-  },
-
   checkDraft() {
     const draft = wx.getStorageSync(DRAFT_KEY)
     if (!draft || !draft.updated_at) return
@@ -367,11 +254,6 @@ Page({
       content: draft.content || '',
       mediaType: draft.mediaType || 'text',
       localImages: draft.localImages || [],
-      localVideo: draft.localVideo || '',
-      videoSizeLabel: draft.videoSizeLabel || '',
-      videoDurationLabel: draft.videoDurationLabel || '',
-      videoProcessLabel: draft.videoProcessLabel || '',
-      coverImage: draft.coverImage || '',
       showMediaChooser: false,
       extra: {
         ...this.data.extra,
@@ -394,11 +276,6 @@ Page({
           title: '',
           content: '',
           localImages: [],
-          localVideo: '',
-          coverImage: '',
-          videoSizeLabel: '',
-          videoDurationLabel: '',
-          videoProcessLabel: '',
           hasDraft: false,
           showMediaChooser: true
         })
@@ -419,9 +296,7 @@ Page({
     const hasContent = Boolean(
       this.data.title.trim() ||
       this.data.content.trim() ||
-      this.data.localImages.length ||
-      this.data.localVideo ||
-      this.data.coverImage
+      this.data.localImages.length
     )
     if (!hasContent) {
       wx.removeStorageSync(DRAFT_KEY)
@@ -435,11 +310,6 @@ Page({
       content: this.data.content,
       mediaType: this.data.mediaType,
       localImages: this.data.localImages,
-      localVideo: this.data.localVideo,
-      videoSizeLabel: this.data.videoSizeLabel,
-      videoDurationLabel: this.data.videoDurationLabel,
-      videoProcessLabel: this.data.videoProcessLabel,
-      coverImage: this.data.coverImage,
       extra: this.data.extra,
       updated_at: Date.now()
     })
@@ -458,27 +328,9 @@ Page({
         post_type: this.data.postType,
         extra: buildExtra(this.data.postType, this.data.extra),
         images: [],
-        cover_url: '',
-        video_url: ''
+        cover_url: ''
       }
-      if (this.data.mediaType === 'video') {
-        if (!this.data.localVideo) {
-          wx.showToast({ title: '请选择视频', icon: 'none' })
-          return
-        }
-        if (!this.data.coverImage) {
-          wx.showToast({ title: '请选择视频封面', icon: 'none' })
-          return
-        }
-        await ensureVideoFileAllowed(this.data.localVideo)
-        this.setData({ submitStatusText: '上传视频中...', uploadProgress: 15 })
-        const uploadedVideo = await uploadVideo(this.data.localVideo)
-        this.setData({ submitStatusText: '上传封面中...', uploadProgress: 70 })
-        const uploadedCover = await uploadImage(this.data.coverImage)
-        payload.media_type = 'video'
-        payload.video_url = uploadedVideo.url
-        payload.cover_url = uploadedCover.url
-      } else if (this.data.mediaType === 'image') {
+      if (this.data.mediaType === 'image') {
         const images = []
         const total = this.data.localImages.length || 1
         for (let index = 0; index < this.data.localImages.length; index += 1) {
@@ -506,8 +358,6 @@ Page({
       })
       const post = created && created.post ? created.post : null
       const postID = post ? post.id : ''
-      const postStatus = Number(post ? post.status : 1)
-      const pendingReview = postStatus === 0
       trackEvent('publish_success', {
         page: 'publish',
         targetType: 'post',
@@ -519,17 +369,17 @@ Page({
       this.setData({
         hasDraft: false,
         uploadProgress: 100,
-        submitStatusText: pendingReview ? '已提交审核' : '已发布',
+        submitStatusText: '发布成功',
         successTip: {
-          title: pendingReview ? '已提交审核' : '已发布',
-          desc: pendingReview ? '审核通过后会展示在社区。' : '正在带你去看看这条内容。'
+          title: '发布成功',
+          desc: postID ? '正在带你去看看这条内容。' : '可以在我的帖子里继续查看。'
         }
       })
       const pages = getCurrentPages()
       const prev = pages[pages.length - 2]
       if (prev) prev._needsRefresh = true
       setTimeout(() => {
-        if (postID && !pendingReview) {
+        if (postID) {
           wx.redirectTo({ url: `/pages/post-detail/post-detail?id=${postID}` })
           return
         }
@@ -554,49 +404,6 @@ Page({
   }
 })
 
-async function prepareVideoForUpload(filePath, size, duration) {
-  if (!filePath) {
-    throw new Error('请选择视频')
-  }
-  if (size > 0 && size <= MAX_VIDEO_SIZE) {
-    return { filePath, size, compressed: false }
-  }
-  if (!wx.compressVideo) {
-    throw new Error('当前微信版本暂不支持自动压缩，请选择更短的视频。')
-  }
-  wx.showLoading({ title: '正在压缩视频', mask: true })
-  try {
-    const compressed = await compressVideo(filePath)
-    const compressedSize = Number(compressed.size || 0)
-    const checkedSize = compressedSize || await getFileSize(compressed.tempFilePath)
-    if (checkedSize > MAX_VIDEO_SIZE) {
-      throw new Error('这个视频压缩后还是偏大，建议裁剪到30秒以内或换一个更短的视频。')
-    }
-    return {
-      filePath: compressed.tempFilePath,
-      size: checkedSize,
-      duration,
-      compressed: true
-    }
-  } finally {
-    wx.hideLoading()
-  }
-}
-
-function compressVideo(filePath) {
-  return new Promise((resolve, reject) => {
-    wx.compressVideo({
-      src: filePath,
-      quality: 'medium',
-      bitrate: 900,
-      fps: 24,
-      resolution: 0.75,
-      success: resolve,
-      fail: () => reject(new Error('视频压缩失败，请换一个更短的视频。'))
-    })
-  })
-}
-
 function buildExtra(postType, extra) {
   if (postType === 'lost') {
     return pick(extra, ['lost_kind', 'location', 'event_time', 'contact'])
@@ -608,48 +415,6 @@ function buildExtra(postType, extra) {
     return pick(extra, ['location'])
   }
   return {}
-}
-
-function ensureVideoFileAllowed(filePath) {
-  return new Promise((resolve, reject) => {
-    wx.getFileInfo({
-      filePath,
-      success: res => {
-        if (Number(res.size || 0) > MAX_VIDEO_SIZE) {
-          reject(new Error('视频压缩后不能超过 20MB'))
-          return
-        }
-        resolve()
-      },
-      fail: () => resolve()
-    })
-  })
-}
-
-function getFileSize(filePath) {
-  return new Promise(resolve => {
-    wx.getFileInfo({
-      filePath,
-      success: res => resolve(Number(res.size || 0)),
-      fail: () => resolve(0)
-    })
-  })
-}
-
-function formatFileSize(size) {
-  if (!size) return ''
-  if (size >= 1024 * 1024) {
-    return `${(size / 1024 / 1024).toFixed(1)}MB`
-  }
-  return `${Math.ceil(size / 1024)}KB`
-}
-
-function inferMediaType(filePath) {
-  const lower = String(filePath || '').toLowerCase()
-  if (lower.endsWith('.mp4') || lower.endsWith('.mov') || lower.endsWith('.m4v')) {
-    return 'video'
-  }
-  return 'image'
 }
 
 function pick(source, keys) {

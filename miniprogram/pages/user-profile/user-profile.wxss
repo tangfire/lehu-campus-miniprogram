@@ -214,28 +214,6 @@
   display: block;
 }
 
-.video-badge {
-  position: absolute;
-  right: 12rpx;
-  top: 12rpx;
-  width: 46rpx;
-  height: 46rpx;
-  border-radius: 50%;
-  background: rgba(17, 24, 39, 0.66);
-}
-
-.video-badge::before {
-  content: "";
-  position: absolute;
-  left: 18rpx;
-  top: 13rpx;
-  width: 0;
-  height: 0;
-  border-top: 10rpx solid transparent;
-  border-bottom: 10rpx solid transparent;
-  border-left: 15rpx solid #ffffff;
-}
-
 .cover-flags {
   position: absolute;
   left: 12rpx;

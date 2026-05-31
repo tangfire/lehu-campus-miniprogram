@@ -1,11 +1,20 @@
 const app = getApp()
+const { getSession, clearSession } = require('./session')
+
+const IMAGE_MAX_UPLOAD_SIZE = 10 * 1024 * 1024
+const IMAGE_COMPRESS_TRIGGER_SIZE = 1200 * 1024
+const IMAGE_COMPRESS_QUALITIES = [82, 72, 62, 52]
 
 function request(options) {
-  const token = wx.getStorageSync('token')
+  const token = getSession().token
   const requestId = createRequestId()
+  const apiBase = String(app.globalData.apiBase || '')
+  if (!isApiBaseConfigured(apiBase)) {
+    return Promise.reject(createRequestError('API 域名未配置，请先在 config.js 填写正式 HTTPS 地址', '', 0, null))
+  }
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${app.globalData.apiBase}${options.url}`,
+      url: `${apiBase}${options.url}`,
       method: options.method || 'GET',
       data: options.data || {},
       header: {
@@ -22,11 +31,9 @@ function request(options) {
         }
         const message = body.message || '请求失败'
         if (res.statusCode === 401) {
-          wx.removeStorageSync('token')
-          wx.removeStorageSync('user')
-          wx.removeStorageSync('profile')
+          clearSession()
         }
-        reject(createRequestError(message, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
+        reject(createRequestError(message, body.request_id || getResponseHeader(res.header, 'x-request-id') || requestId, res.statusCode, body))
       },
       fail(err) {
         reject(createRequestError(err.errMsg || '网络不可用', requestId, 0, null))
@@ -35,16 +42,13 @@ function request(options) {
   })
 }
 
-function uploadImage(filePath) {
-  return directUpload(filePath, 'image').catch(() => legacyUpload(filePath, 'image'))
+async function uploadImage(filePath) {
+  const prepared = await prepareImageForUpload(filePath)
+  return directUpload(prepared.filePath, 'image', prepared.info)
 }
 
-function uploadVideo(filePath) {
-  return directUpload(filePath, 'video').catch(() => legacyUpload(filePath, 'video'))
-}
-
-async function directUpload(filePath, mediaType) {
-  const info = await getUploadFileInfo(filePath)
+async function directUpload(filePath, mediaType, knownInfo) {
+  const info = knownInfo || await getUploadFileInfo(filePath)
   validateUploadFile(info, mediaType)
   const fileType = inferFileType(filePath, mediaType)
   const presign = await request({
@@ -58,10 +62,12 @@ async function directUpload(filePath, mediaType) {
       size: info.size
     }
   })
-  if (!presign || !presign.upload_url || !presign.file_id) {
+  if (!presign || !presign.file_id) {
     throw new Error('直传地址无效')
   }
-  await putFileToObjectStorage(filePath, presign)
+  if (presign.upload_url) {
+    await putFileToObjectStorage(filePath, presign)
+  }
   return request({
     url: '/campus/upload/complete',
     method: 'POST',
@@ -72,37 +78,33 @@ async function directUpload(filePath, mediaType) {
   })
 }
 
-function legacyUpload(filePath, mediaType) {
-  const token = wx.getStorageSync('token')
-  const requestId = createRequestId()
-  const path = mediaType === 'video' ? '/campus/upload/video' : '/campus/upload/image'
-  const fallbackMessage = mediaType === 'video' ? '视频上传失败' : '图片上传失败'
+async function prepareImageForUpload(filePath) {
+  let currentPath = filePath
+  let currentInfo = await getUploadFileInfo(currentPath)
+  if (!wx.compressImage || currentInfo.size <= IMAGE_COMPRESS_TRIGGER_SIZE) {
+    return { filePath: currentPath, info: currentInfo }
+  }
+  for (const quality of IMAGE_COMPRESS_QUALITIES) {
+    const compressedPath = await compressImage(currentPath, quality).catch(() => '')
+    if (!compressedPath || compressedPath === currentPath) continue
+    const compressedInfo = await getUploadFileInfo(compressedPath).catch(() => null)
+    if (!compressedInfo || !compressedInfo.size) continue
+    if (compressedInfo.size < currentInfo.size) {
+      currentPath = compressedPath
+      currentInfo = compressedInfo
+    }
+    if (currentInfo.size <= IMAGE_MAX_UPLOAD_SIZE && quality <= 72) break
+  }
+  return { filePath: currentPath, info: currentInfo }
+}
+
+function compressImage(src, quality) {
   return new Promise((resolve, reject) => {
-    wx.uploadFile({
-      url: `${app.globalData.apiBase}${path}`,
-      filePath,
-      name: 'file',
-      header: {
-        'X-Request-ID': requestId,
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
-      },
-      success(res) {
-        let body = {}
-        try {
-          body = JSON.parse(res.data || '{}')
-        } catch (err) {
-          reject(new Error('上传响应无效'))
-          return
-        }
-        if (res.statusCode >= 200 && res.statusCode < 300 && body.code === 0) {
-          resolve(body.data)
-          return
-        }
-        reject(createRequestError(body.message || fallbackMessage, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
-      },
-      fail(err) {
-        reject(createRequestError(err.errMsg || fallbackMessage, requestId, 0, null))
-      }
+    wx.compressImage({
+      src,
+      quality,
+      success: res => resolve(res.tempFilePath || src),
+      fail: err => reject(new Error(err.errMsg || '图片压缩失败'))
     })
   })
 }
@@ -124,11 +126,8 @@ function validateUploadFile(info, mediaType) {
   if (!size || !digest) {
     throw new Error('文件信息无效')
   }
-  if (mediaType === 'image' && size > 5 * 1024 * 1024) {
-    throw new Error('图片不能超过 5MB')
-  }
-  if (mediaType === 'video' && size > 20 * 1024 * 1024) {
-    throw new Error('视频压缩后不能超过 20MB')
+  if (mediaType === 'image' && size > IMAGE_MAX_UPLOAD_SIZE) {
+    throw new Error('图片压缩后仍超过 10MB，请换一张更小的图片')
   }
 }
 
@@ -161,9 +160,6 @@ function putFileToObjectStorage(filePath, presign) {
 function inferFileType(filePath, mediaType) {
   const lower = String(filePath || '').split('?')[0].toLowerCase()
   const ext = lower.includes('.') ? lower.slice(lower.lastIndexOf('.') + 1) : ''
-  if (mediaType === 'video') {
-    return ext === 'mov' ? 'mov' : 'mp4'
-  }
   if (ext === 'jpeg') return 'jpg'
   if (ext === 'png' || ext === 'webp' || ext === 'jpg') return ext
   return 'jpg'
@@ -209,6 +205,19 @@ function createRequestId() {
   return `mp-${Date.now()}-${random}`
 }
 
+function getResponseHeader(headers = {}, key) {
+  const target = String(key || '').toLowerCase()
+  for (const name in headers || {}) {
+    if (String(name).toLowerCase() === target) return headers[name]
+  }
+  return ''
+}
+
+function isApiBaseConfigured(apiBase) {
+  if (!apiBase) return false
+  return !/YOUR_(TRIAL|RELEASE)_API_DOMAIN/.test(apiBase)
+}
+
 function createRequestError(message, requestId, statusCode, data) {
   const err = new Error(message || '请求失败')
   err.requestId = requestId || ''
@@ -235,7 +244,6 @@ function trackEvent(eventType, options = {}) {
 module.exports = {
   request,
   uploadImage,
-  uploadVideo,
   trackEvent,
   showError
 }

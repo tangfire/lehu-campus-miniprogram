@@ -1,6 +1,7 @@
 <view class="page policy">
   <view class="policy-hero">
     <view class="policy-title">{{doc.title}}</view>
+    <view class="policy-meta">生效/更新日期：{{doc.updatedAt}}</view>
     <view class="policy-desc">{{doc.desc}}</view>
   </view>
 
@@ -12,4 +13,8 @@
       </view>
     </view>
   </block>
+
+  <view class="policy-footer">
+    如你对协议、隐私或社区处理有疑问，可以在“我的 - 意见反馈 / 联系我们”提交说明。
+  </view>
 </view>

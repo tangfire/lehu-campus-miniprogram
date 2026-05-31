@@ -1,4 +1,5 @@
 const { request, trackEvent, showError } = require('../../utils/request')
+const { hasToken } = require('../../utils/session')
 
 const quickChannels = [
   { label: '推荐', postType: '', sort: 'recommend' },
@@ -144,8 +145,7 @@ Page({
   },
 
   createQuestionFromSearch() {
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }
@@ -166,8 +166,7 @@ Page({
   async toggleLike(e) {
     const id = String(e.currentTarget.dataset.id || '')
     if (!id) return
-    const token = wx.getStorageSync('token')
-    if (!token) {
+    if (!hasToken()) {
       wx.switchTab({ url: '/pages/mine/mine' })
       return
     }

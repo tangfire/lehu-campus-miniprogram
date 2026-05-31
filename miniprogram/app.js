@@ -1,4 +1,5 @@
 const { getApiBase, getEnvVersion } = require('./utils/config')
+const { initSession } = require('./utils/session')
 
 App({
   globalData: {
@@ -7,11 +8,6 @@ App({
   },
 
   onLaunch() {
-    const token = wx.getStorageSync('token')
-    const user = wx.getStorageSync('user')
-    const profile = wx.getStorageSync('profile')
-    this.globalData.token = token || ''
-    this.globalData.user = user || null
-    this.globalData.profile = profile || null
+    initSession()
   }
 })

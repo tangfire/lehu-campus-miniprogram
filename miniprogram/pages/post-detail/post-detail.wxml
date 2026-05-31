@@ -10,8 +10,7 @@
       </view>
     </view>
 
-    <video wx:if="{{post.media_type === 'video'}}" class="media-video" src="{{post.video_url}}" poster="{{post.cover_url}}" controls></video>
-    <swiper wx:elif="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
+    <swiper wx:if="{{post.images && post.images.length}}" class="media-swiper" indicator-dots circular>
       <block wx:for="{{post.images}}" wx:for-item="img" wx:key="*this">
         <swiper-item>
           <image class="media-image" src="{{img}}" mode="aspectFill" />
@@ -35,6 +34,11 @@
         <view class="more" bindtap="openPostMenu">···</view>
       </view>
 
+      <view wx:if="{{post.publish_state !== 'visible'}}" class="sync-status {{post.status_class}}">
+        <view>{{post.client_status_label}}</view>
+        <view>{{post.client_status_detail}}</view>
+      </view>
+
       <view class="title">{{post.display_title}}</view>
       <view class="tag-row">
         <text>{{post.short_type_label}}</text>
@@ -51,55 +55,61 @@
     </view>
   </view>
 
-  <view class="comment-title">共 {{post ? (post.comment_count || 0) : 0}} 条评论</view>
-  <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" image="/assets/brand/empty/message.png" />
-  <block wx:for="{{comments}}" wx:key="id">
-    <view class="comment" data-id="{{item.id}}" bindlongpress="openCommentMenu">
-      <view class="comment-avatar-wrap" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">
-        <image wx:if="{{item.author && item.author.avatar}}" class="avatar small" src="{{item.author.avatar}}" mode="aspectFill" />
-        <view wx:else class="avatar small avatar-placeholder">{{item.avatar_text}}</view>
-      </view>
-      <view class="comment-main">
-        <view class="comment-top">
-          <view class="comment-body" data-id="{{item.id}}" catchtap="startReply">
-            <view class="comment-author" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">{{item.display_author}}</view>
-            <view class="comment-content">{{item.content}}</view>
-          </view>
-          <view class="comment-like {{item.is_liked ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleCommentLike">
-            <text class="heart">{{item.is_liked ? '♥' : '♡'}}</text>
-            <text>{{item.like_count || ''}}</text>
-          </view>
+  <block wx:if="{{post && post.can_interact}}">
+    <view class="comment-title">共 {{post.comment_count || 0}} 条评论</view>
+    <empty-state wx:if="{{comments.length === 0}}" title="暂无评论" desc="做第一个回应的同学。" image="/assets/brand/empty/message.png" />
+    <block wx:for="{{comments}}" wx:key="id">
+      <view class="comment" data-id="{{item.id}}" bindlongpress="openCommentMenu">
+        <view class="comment-avatar-wrap" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">
+          <image wx:if="{{item.author && item.author.avatar}}" class="avatar small" src="{{item.author.avatar}}" mode="aspectFill" />
+          <view wx:else class="avatar small avatar-placeholder">{{item.avatar_text}}</view>
         </view>
-        <view class="comment-meta">
-          <text>{{item.display_time}}</text>
-          <text data-id="{{item.id}}" catchtap="startReply">回复</text>
-        </view>
-
-        <view wx:if="{{item.preview_replies && item.preview_replies.length}}" class="reply-list">
-          <block wx:for="{{item.preview_replies}}" wx:for-item="reply" wx:key="id">
-            <view class="reply-item" data-id="{{reply.id}}" catchlongpress="openCommentMenu">
-              <view class="reply-body" data-id="{{reply.id}}" catchtap="startReply">
-                <text class="reply-author" data-user-id="{{reply.author_user_id}}" catchtap="openUserProfile">{{reply.display_author}}</text>
-                <text wx:if="{{reply.reply_to_user && reply.reply_to_comment_id !== item.id}}" class="reply-prefix" data-user-id="{{reply.reply_to_user_id}}" catchtap="openUserProfile"> 回复 {{reply.reply_to_name}}</text>
-                <text class="reply-text">：{{reply.content}}</text>
-              </view>
-              <view class="reply-foot">
-                <text>{{reply.display_time}}</text>
-                <text data-id="{{reply.id}}" catchtap="startReply">回复</text>
-                <text class="reply-like {{reply.is_liked ? 'active' : ''}}" data-id="{{reply.id}}" catchtap="toggleCommentLike">{{reply.is_liked ? '♥' : '♡'}} {{reply.like_count || ''}}</text>
-              </view>
+        <view class="comment-main">
+          <view class="comment-top">
+            <view class="comment-body" data-id="{{item.id}}" catchtap="startReply">
+              <view class="comment-author" data-user-id="{{item.author_user_id}}" catchtap="openUserProfile">{{item.display_author}}</view>
+              <view class="comment-content">{{item.content}}</view>
             </view>
-          </block>
-        </view>
-        <view wx:if="{{item.hidden_reply_count > 0 && !item.replies_expanded}}" class="expand-replies" data-id="{{item.id}}" catchtap="loadReplies">
-          展开 {{item.hidden_reply_count}} 条回复
+            <view class="comment-like {{item.is_liked ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleCommentLike">
+              <text class="heart">{{item.is_liked ? '♥' : '♡'}}</text>
+              <text>{{item.like_count || ''}}</text>
+            </view>
+          </view>
+          <view class="comment-meta">
+            <text>{{item.display_time}}</text>
+            <text data-id="{{item.id}}" catchtap="startReply">回复</text>
+          </view>
+
+          <view wx:if="{{item.preview_replies && item.preview_replies.length}}" class="reply-list">
+            <block wx:for="{{item.preview_replies}}" wx:for-item="reply" wx:key="id">
+              <view class="reply-item" data-id="{{reply.id}}" catchlongpress="openCommentMenu">
+                <view class="reply-body" data-id="{{reply.id}}" catchtap="startReply">
+                  <text class="reply-author" data-user-id="{{reply.author_user_id}}" catchtap="openUserProfile">{{reply.display_author}}</text>
+                  <text wx:if="{{reply.reply_to_user && reply.reply_to_comment_id !== item.id}}" class="reply-prefix" data-user-id="{{reply.reply_to_user_id}}" catchtap="openUserProfile"> 回复 {{reply.reply_to_name}}</text>
+                  <text class="reply-text">：{{reply.content}}</text>
+                </view>
+                <view class="reply-foot">
+                  <text>{{reply.display_time}}</text>
+                  <text data-id="{{reply.id}}" catchtap="startReply">回复</text>
+                  <text class="reply-like {{reply.is_liked ? 'active' : ''}}" data-id="{{reply.id}}" catchtap="toggleCommentLike">{{reply.is_liked ? '♥' : '♡'}} {{reply.like_count || ''}}</text>
+                </view>
+              </view>
+            </block>
+          </view>
+          <view wx:if="{{item.hidden_reply_count > 0 && !item.replies_expanded}}" class="expand-replies" data-id="{{item.id}}" catchtap="loadReplies">
+            展开 {{item.hidden_reply_count}} 条回复
+          </view>
         </view>
       </view>
-    </view>
+    </block>
   </block>
+  <view wx:if="{{post && !post.can_interact}}" class="sync-lock">
+    <view>{{post.client_status_label}}</view>
+    <view>{{post.client_status_detail || '内容同步完成后，同学们就可以互动。'}}</view>
+  </view>
 
-  <view class="comment-safe"></view>
-  <view wx:if="{{post}}" class="comment-bar">
+  <view wx:if="{{post && post.can_interact}}" class="comment-safe"></view>
+  <view wx:if="{{post && post.can_interact}}" class="comment-bar">
     <view wx:if="{{replyTarget}}" class="replying-strip">
       <text>回复 {{replyTarget.name}}</text>
       <text bindtap="clearReply">取消</text>

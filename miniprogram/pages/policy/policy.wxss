@@ -31,6 +31,13 @@
   line-height: 1.65;
 }
 
+.policy-meta {
+  margin-top: 12rpx;
+  color: #94a3b8;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
 .policy-section {
   padding: 28rpx;
   margin-bottom: 18rpx;
@@ -65,4 +72,11 @@
   height: 10rpx;
   border-radius: 50%;
   background: #ff4d5f;
+}
+
+.policy-footer {
+  padding: 24rpx 28rpx;
+  color: #64748b;
+  font-size: 25rpx;
+  line-height: 1.7;
 }
