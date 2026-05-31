@@ -29,7 +29,7 @@ release: 'https://你的正式API域名/v1'
 - uploadFile 合法域名：COS 上传域名，例如 `https://campus-1250000000.cos.ap-guangzhou.myqcloud.com`。
 - downloadFile 合法域名：CDN 下载域名，例如 `https://cdn.example.com`。
 
-小程序仍然只调用 `/v1/campus/upload/presign`、直传 PUT、再调用 `/v1/campus/upload/complete`，不会保存 COS 永久密钥。`project.config.json` 里的 `urlCheck: false` 只用于本地开发。
+小程序仍然只调用 `/v1/campus/upload/presign`、直传 PUT、再调用 `/v1/campus/upload/complete`，不会保存 COS 永久密钥。`project.config.json` 默认开启 `urlCheck`，本地开发如果需要关闭合法域名校验，用 `project.private.config.json` 覆盖。
 
 图片在上传前会统一走 `miniprogram/utils/request.js` 的 `uploadImage`，先尝试客户端压缩，再计算 MD5、申请预签名 URL 和直传 COS。压缩后仍超过 10MB 的图片会提示用户换一张更小的图，避免一张高清原图把 3M/5M 带宽和 COS 流量打爆。
 

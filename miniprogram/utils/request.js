@@ -8,9 +8,13 @@ const IMAGE_COMPRESS_QUALITIES = [82, 72, 62, 52]
 function request(options) {
   const token = getSession().token
   const requestId = createRequestId()
+  const apiBase = String(app.globalData.apiBase || '')
+  if (!isApiBaseConfigured(apiBase)) {
+    return Promise.reject(createRequestError('API 域名未配置，请先在 config.js 填写正式 HTTPS 地址', '', 0, null))
+  }
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${app.globalData.apiBase}${options.url}`,
+      url: `${apiBase}${options.url}`,
       method: options.method || 'GET',
       data: options.data || {},
       header: {
@@ -29,7 +33,7 @@ function request(options) {
         if (res.statusCode === 401) {
           clearSession()
         }
-        reject(createRequestError(message, body.request_id || res.header['X-Request-ID'] || requestId, res.statusCode, body))
+        reject(createRequestError(message, body.request_id || getResponseHeader(res.header, 'x-request-id') || requestId, res.statusCode, body))
       },
       fail(err) {
         reject(createRequestError(err.errMsg || '网络不可用', requestId, 0, null))
@@ -199,6 +203,19 @@ function showError(err) {
 function createRequestId() {
   const random = Math.random().toString(16).slice(2, 10)
   return `mp-${Date.now()}-${random}`
+}
+
+function getResponseHeader(headers = {}, key) {
+  const target = String(key || '').toLowerCase()
+  for (const name in headers || {}) {
+    if (String(name).toLowerCase() === target) return headers[name]
+  }
+  return ''
+}
+
+function isApiBaseConfigured(apiBase) {
+  if (!apiBase) return false
+  return !/YOUR_(TRIAL|RELEASE)_API_DOMAIN/.test(apiBase)
 }
 
 function createRequestError(message, requestId, statusCode, data) {

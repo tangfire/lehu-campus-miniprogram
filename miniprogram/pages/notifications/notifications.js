@@ -148,6 +148,7 @@ function notificationIcon(type) {
     post_like: '赞',
     post_collect: '藏',
     comment_like: '赞',
+    mention: '@',
     system: 'e'
   }
   return map[type] || '信'

@@ -11,7 +11,7 @@
 
 ## 正式版
 
-- `project.config.json` 正式提审前开启 URL 检查，不依赖本地 `urlCheck: false`。
+- `project.config.json` 保持开启 URL 检查，不依赖本地 `project.private.config.json` 里的 `urlCheck: false`。
 - 在 `miniprogram/utils/config.js` 配置 `release` 的 HTTPS API 域名。
 - 补齐微信小程序隐私保护指引：微信登录、头像、相册、相机、图片上传、网络请求、内容发布、用户反馈。
 - 检查用户协议、隐私政策、社区规范入口都能打开。

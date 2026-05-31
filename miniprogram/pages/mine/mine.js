@@ -1,5 +1,6 @@
 const { request, uploadImage, trackEvent, showError } = require('../../utils/request')
 const { getSession, setSession, patchUser, clearSession, subscribeSession } = require('../../utils/session')
+const { getEnvVersion } = require('../../utils/config')
 
 const DRAFT_KEY = 'campus_publish_draft_v1'
 
@@ -69,7 +70,10 @@ Page({
     wx.login({
       success: async res => {
         try {
-          const code = res.code || 'mock-campus'
+          const code = res.code || (getEnvVersion() === 'develop' ? 'mock-campus' : '')
+          if (!code) {
+            throw new Error('微信登录凭证获取失败，请重试')
+          }
           const data = await request({
             url: '/auth/wechat-login',
             method: 'POST',
