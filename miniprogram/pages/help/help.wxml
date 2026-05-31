@@ -1,0 +1,72 @@
+<view class="page help-page">
+  <view class="hero panel">
+    <view class="hero-action" bindtap="goPublish">
+      <view class="action-icon need">+</view>
+      <view>
+        <view class="action-title">发布需求</view>
+        <view class="action-sub">帮买帮取帮送</view>
+      </view>
+    </view>
+    <view class="hero-divider"></view>
+    <view class="hero-action" bindtap="goVerify">
+      <view class="action-icon runner">✓</view>
+      <view>
+        <view class="action-title">认证跑腿</view>
+        <view class="action-sub">首版先开放试运行</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="warn-bar">
+    <text class="warn-badge">提示</text>
+    <text>取消订单会记录，完成率过低后续将限制接单。</text>
+  </view>
+
+  <view class="tabs panel">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="switchTab"
+    >{{item.label}}</view>
+  </view>
+
+  <view wx:if="{{needLogin}}" class="empty panel">
+    <view class="empty-title">登录后可查看互助订单</view>
+    <view class="empty-desc">发布需求、接单和订单消息都需要绑定你的账号。</view>
+    <button class="primary-btn" bindtap="goLogin">去登录</button>
+  </view>
+
+  <view wx:elif="{{!loading && orders.length === 0}}" class="empty panel">
+    <view class="empty-title">暂时没有互助订单</view>
+    <view class="empty-desc">可以先发布一个取快递、帮买或帮送需求。</view>
+    <button class="primary-btn" bindtap="goPublish">发布需求</button>
+  </view>
+
+  <view class="order-list">
+    <view wx:for="{{orders}}" wx:key="id" class="order-card panel" data-id="{{item.id}}" bindtap="openOrder">
+      <view class="order-head">
+        <view class="author">
+          <image wx:if="{{item.avatar}}" class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <view wx:else class="avatar placeholder">{{item.avatar_text}}</view>
+          <view>
+            <view class="author-name">{{item.display_author}}</view>
+            <view class="order-time">{{item.time_text}} 发布</view>
+          </view>
+        </view>
+        <view class="status {{item.status_class}}">{{item.status_label}}</view>
+      </view>
+
+      <view class="order-title">{{item.display_content}}</view>
+      <view class="tag-row">
+        <view class="campus-tag">{{item.campus_text}}</view>
+        <view wx:if="{{item.category_label}}" class="category-tag">{{item.category_label}}</view>
+      </view>
+      <view class="reward-row">
+        <text>订单金额</text>
+        <text class="reward">{{item.reward_text}}</text>
+      </view>
+    </view>
+  </view>
+</view>

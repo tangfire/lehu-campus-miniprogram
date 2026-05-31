@@ -1,0 +1,54 @@
+<view class="page help-publish-page">
+  <view class="panel form-card">
+    <view class="section-title">发布互助需求</view>
+    <view class="section-sub">写清楚地点、时间和金额，方便同学判断是否接单。</view>
+
+    <view class="category-row">
+      <view
+        wx:for="{{categories}}"
+        wx:key="value"
+        class="category {{category === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="selectCategory"
+      >{{item.label}}</view>
+    </view>
+
+    <view class="field">
+      <view class="label">标题</view>
+      <input value="{{title}}" data-key="title" bindinput="onInput" maxlength="80" placeholder="例如：取快递到令德 16" />
+    </view>
+
+    <view class="field">
+      <view class="label">具体需求</view>
+      <textarea value="{{content}}" data-key="content" bindinput="onInput" maxlength="1000" auto-height placeholder="写清楚取件码、地点、时间要求等必要信息，隐私内容建议接单后再沟通。" />
+    </view>
+
+    <view class="grid">
+      <view class="field">
+        <view class="label">校区</view>
+        <input value="{{campusName}}" data-key="campusName" bindinput="onInput" maxlength="40" />
+      </view>
+      <view class="field">
+        <view class="label">悬赏金额</view>
+        <input value="{{rewardAmount}}" data-key="rewardAmount" bindinput="onInput" type="digit" placeholder="2.00" />
+      </view>
+    </view>
+
+    <view class="field">
+      <view class="label">取货/出发地点</view>
+      <input value="{{pickupLocation}}" data-key="pickupLocation" bindinput="onInput" maxlength="120" placeholder="例如：西门外卖柜" />
+    </view>
+
+    <view class="field">
+      <view class="label">送达/目标地点</view>
+      <input value="{{deliveryLocation}}" data-key="deliveryLocation" bindinput="onInput" maxlength="120" placeholder="例如：令德十楼下" />
+    </view>
+
+    <view class="field">
+      <view class="label">截止时间</view>
+      <input value="{{deadlineAt}}" data-key="deadlineAt" bindinput="onInput" placeholder="可选，例如 2026-06-01 20:00" />
+    </view>
+  </view>
+
+  <button class="primary-btn submit-btn" loading="{{submitting}}" bindtap="submit">发布需求</button>
+</view>

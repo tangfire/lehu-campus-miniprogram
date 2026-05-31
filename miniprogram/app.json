@@ -2,8 +2,11 @@
   "pages": [
     "pages/timetable/timetable",
     "pages/community/community",
+    "pages/help/help",
     "pages/mine/mine",
     "pages/post-detail/post-detail",
+    "pages/help-detail/help-detail",
+    "pages/help-publish/help-publish",
     "pages/user-profile/user-profile",
     "pages/publish/publish",
     "pages/profile-edit/profile-edit",
@@ -35,6 +38,10 @@
       {
         "pagePath": "pages/community/community",
         "text": "社区"
+      },
+      {
+        "pagePath": "pages/help/help",
+        "text": "互助"
       },
       {
         "pagePath": "pages/mine/mine",

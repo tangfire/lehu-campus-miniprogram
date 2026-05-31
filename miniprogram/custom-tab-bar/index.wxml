@@ -9,14 +9,6 @@
       <view class="tab-text">课表</view>
     </view>
 
-    <view class="tab-item publish-slot" bindtap="goPublish" aria-role="button" aria-label="发布">
-      <view class="publish-button">
-        <view class="publish-line horizontal"></view>
-        <view class="publish-line vertical"></view>
-      </view>
-      <view class="tab-text publish-text">发布</view>
-    </view>
-
     <view class="tab-item {{selected === 1 ? 'active' : ''}}" data-index="1" bindtap="switchTab">
       <view class="tab-icon icon-home">
         <view class="home-roof"></view>
@@ -25,7 +17,24 @@
       <view class="tab-text">社区</view>
     </view>
 
+    <view class="tab-item publish-slot" bindtap="goPublish" aria-role="button" aria-label="发布">
+      <view class="publish-button">
+        <view class="publish-line horizontal"></view>
+        <view class="publish-line vertical"></view>
+      </view>
+      <view class="tab-text publish-text">发布</view>
+    </view>
+
     <view class="tab-item {{selected === 2 ? 'active' : ''}}" data-index="2" bindtap="switchTab">
+      <view class="tab-icon icon-help">
+        <view class="help-dot left"></view>
+        <view class="help-dot right"></view>
+        <view class="help-link"></view>
+      </view>
+      <view class="tab-text">互助</view>
+    </view>
+
+    <view class="tab-item {{selected === 3 ? 'active' : ''}}" data-index="3" bindtap="switchTab">
       <view class="tab-icon icon-user">
         <view class="user-head"></view>
         <view class="user-body"></view>

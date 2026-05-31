@@ -96,6 +96,10 @@ Page({
       wx.navigateTo({ url: `/pages/post-detail/post-detail?id=${params.id}` })
       return
     }
+    if (page === 'help-detail' && (params.id || params.order_id)) {
+      wx.navigateTo({ url: `/pages/help-detail/help-detail?id=${params.id || params.order_id}` })
+      return
+    }
     if (page === 'my-posts') {
       wx.navigateTo({ url: '/pages/my-posts/my-posts' })
       return
@@ -149,6 +153,7 @@ function notificationIcon(type) {
     post_collect: '藏',
     comment_like: '赞',
     mention: '@',
+    help: '助',
     system: 'e'
   }
   return map[type] || '信'

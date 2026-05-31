@@ -1,0 +1,82 @@
+.help-publish-page {
+  padding-bottom: 80rpx;
+}
+
+.form-card {
+  padding: 30rpx;
+  border-radius: 18rpx;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.section-sub {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.category-row {
+  margin-top: 26rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.category {
+  padding: 14rpx 22rpx;
+  border-radius: 999rpx;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.category.active {
+  background: #fff1f3;
+  color: #ff4d5f;
+}
+
+.field {
+  margin-top: 28rpx;
+}
+
+.label {
+  margin-bottom: 12rpx;
+  font-size: 25rpx;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 82rpx;
+  border-radius: 16rpx;
+  background: #f8fafc;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #0f172a;
+}
+
+textarea {
+  min-height: 190rpx;
+  line-height: 1.55;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18rpx;
+}
+
+.submit-btn {
+  margin-top: 28rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+}

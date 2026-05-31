@@ -1,0 +1,87 @@
+<view class="page help-detail-page" wx:if="{{order}}">
+  <view class="summary panel">
+    <view class="summary-top">
+      <view class="author">
+        <image wx:if="{{order.requester_avatar}}" class="avatar" src="{{order.requester_avatar}}" mode="aspectFill" />
+        <view wx:else class="avatar placeholder">{{order.requester_initial}}</view>
+        <view>
+          <view class="name">{{order.requester_name}}</view>
+          <view class="muted-text">{{order.created_at}} 发布</view>
+        </view>
+      </view>
+      <view class="reward-block">
+        <view class="reward-label">悬赏佣金</view>
+        <view class="reward">{{order.reward_text}}</view>
+      </view>
+    </view>
+
+    <view class="title">{{order.title}}</view>
+    <view class="content">{{order.content}}</view>
+
+    <view class="status-line">
+      <view class="status {{order.status_class}}">{{order.status_label}}</view>
+      <view class="campus">{{order.campus_name}}</view>
+    </view>
+  </view>
+
+  <view class="panel detail-card">
+    <view class="row">
+      <text>取货/出发</text>
+      <text>{{order.pickup_text}}</text>
+    </view>
+    <view class="row">
+      <text>送达/目标</text>
+      <text>{{order.delivery_text}}</text>
+    </view>
+    <view class="row">
+      <text>截止时间</text>
+      <text>{{order.deadline_text}}</text>
+    </view>
+    <view wx:if="{{order.helper_name}}" class="row">
+      <text>接单同学</text>
+      <text>{{order.helper_name}}</text>
+    </view>
+  </view>
+
+  <view class="panel flow-card">
+    <view class="flow-title">平台居间保障，单独推送，效率更高</view>
+    <view class="flow">
+      <view class="flow-item">
+        <view class="flow-icon">1</view>
+        <text>查看需求</text>
+      </view>
+      <view class="flow-line"></view>
+      <view class="flow-item">
+        <view class="flow-icon">2</view>
+        <text>接单帮忙</text>
+      </view>
+      <view class="flow-line"></view>
+      <view class="flow-item">
+        <view class="flow-icon">3</view>
+        <text>完成订单</text>
+      </view>
+      <view class="flow-line"></view>
+      <view class="flow-item">
+        <view class="flow-icon">4</view>
+        <text>确认完成</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{order.completion_note}}" class="panel note-card">
+    <view class="note-title">完成说明</view>
+    <view class="note-content">{{order.completion_note}}</view>
+  </view>
+
+  <view class="action-bar">
+    <button wx:if="{{order.actions.can_accept}}" class="primary-btn" loading="{{acting}}" bindtap="acceptOrder">接单帮忙</button>
+    <button wx:if="{{order.actions.can_submit_complete}}" class="primary-btn" loading="{{acting}}" bindtap="submitComplete">提交完成</button>
+    <button wx:if="{{order.actions.can_confirm}}" class="primary-btn" loading="{{acting}}" bindtap="confirmComplete">确认完成</button>
+    <button wx:if="{{order.actions.can_cancel}}" class="ghost-btn" loading="{{acting}}" bindtap="cancelOrder">取消订单</button>
+    <button wx:if="{{!order.actions.can_accept && !order.actions.can_submit_complete && !order.actions.can_confirm && !order.actions.can_cancel}}" class="ghost-btn" bindtap="goHall">返回互助大厅</button>
+  </view>
+</view>
+
+<view wx:else class="page">
+  <view class="panel loading-card">正在加载互助订单...</view>
+</view>

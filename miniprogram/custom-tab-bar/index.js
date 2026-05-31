@@ -17,6 +17,12 @@ Component({
         pagePath: '/pages/community/community'
       },
       {
+        key: 'help',
+        text: '互助',
+        icon: 'icon-help',
+        pagePath: '/pages/help/help'
+      },
+      {
         key: 'mine',
         text: '我的',
         icon: 'icon-user',
@@ -39,12 +45,13 @@ Component({
         return
       }
       wx.showActionSheet({
-        itemList: ['发图文', '拍摄', '写文字'],
+        itemList: ['发图文', '拍摄', '写文字', '发布互助'],
         success: res => {
           const urls = [
             '/pages/publish/publish?mode=album',
             '/pages/publish/publish?mode=camera',
-            '/pages/publish/publish?mode=text'
+            '/pages/publish/publish?mode=text',
+            '/pages/help-publish/help-publish'
           ]
           wx.navigateTo({ url: urls[res.tapIndex] || urls[0] })
         }

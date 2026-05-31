@@ -14,7 +14,7 @@
 .tab-bar {
   height: 112rpx;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
   padding: 6rpx 10rpx 0;
   box-sizing: border-box;
@@ -69,6 +69,39 @@
 .icon-calendar {
   border: 3rpx solid currentColor;
   border-radius: 10rpx;
+}
+
+.icon-help {
+  width: 50rpx;
+}
+
+.help-dot {
+  position: absolute;
+  top: 10rpx;
+  width: 22rpx;
+  height: 22rpx;
+  border: 3rpx solid currentColor;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.help-dot.left {
+  left: 2rpx;
+}
+
+.help-dot.right {
+  right: 2rpx;
+}
+
+.help-link {
+  position: absolute;
+  left: 18rpx;
+  right: 18rpx;
+  top: 20rpx;
+  height: 3rpx;
+  border-radius: 999rpx;
+  background: currentColor;
 }
 
 .calendar-line {

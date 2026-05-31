@@ -40,7 +40,7 @@ Page({
   },
 
   onShow() {
-    syncTabBar(this, 2)
+    syncTabBar(this, 3)
     trackEvent('visit', { page: 'mine' })
     const draft = wx.getStorageSync(DRAFT_KEY)
     const hasDraft = Boolean(draft && draft.updated_at)
