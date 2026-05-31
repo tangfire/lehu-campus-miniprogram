@@ -24,9 +24,12 @@ Page({
     this.setData({ loading: true })
     try {
       const data = await request({ url: `/campus/help/orders/${this.data.id}` })
-      this.setData({ order: normalizeOrder(data.order) })
+      const order = normalizeOrder(data.order)
+      this.setData({ order })
+      return order
     } catch (err) {
       showError(err)
+      return null
     } finally {
       this.setData({ loading: false })
     }
@@ -44,14 +47,15 @@ Page({
       wx.showToast({ title: '已接单' })
     } catch (err) {
       if (err.statusCode === 409) {
+        const latest = await this.loadOrder()
+        const helperName = latest && latest.helper_name ? `\n接单人：${latest.helper_name}` : ''
         wx.showModal({
           title: '来晚啦',
-          content: err.message || '该订单已被其他同学接走',
+          content: `${err.message || '该订单已被其他同学接走'}${helperName}`,
           confirmText: '返回大厅',
           showCancel: true,
           cancelText: '查看详情',
           success: res => {
-            this.loadOrder()
             if (res.confirm) wx.switchTab({ url: '/pages/help/help' })
           }
         })
@@ -139,8 +143,32 @@ function normalizeOrder(order) {
     status_class: statusClass(order.status),
     deadline_text: order.deadline_at || '未设置',
     pickup_text: order.pickup_location || '未填写',
-    delivery_text: order.delivery_location || '未填写'
+    delivery_text: order.delivery_location || '未填写',
+    events: (order.events || []).map(normalizeEvent)
   }
+}
+
+function normalizeEvent(event) {
+  const actor = event.actor || {}
+  return {
+    ...event,
+    actor_name: actor.name || actor.nickname || '',
+    display_content: event.content || event.label || '订单更新',
+    time_text: event.created_at || '',
+    event_class: eventClass(event.event_type)
+  }
+}
+
+function eventClass(eventType) {
+  const map = {
+    created: 'created',
+    accepted: 'active',
+    submitted: 'submitted',
+    completed: 'done',
+    cancelled: 'muted',
+    helper_cancelled: 'muted'
+  }
+  return map[eventType] || 'muted'
 }
 
 function statusClass(status) {

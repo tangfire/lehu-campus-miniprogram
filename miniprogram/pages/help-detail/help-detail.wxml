@@ -73,6 +73,25 @@
     <view class="note-content">{{order.completion_note}}</view>
   </view>
 
+  <view wx:if="{{order.events && order.events.length}}" class="panel timeline-card">
+    <view class="timeline-title">订单动态</view>
+    <view class="timeline">
+      <view wx:for="{{order.events}}" wx:key="id" class="timeline-item">
+        <view class="timeline-dot {{item.event_class}}"></view>
+        <view class="timeline-body">
+          <view class="timeline-head">
+            <text>{{item.label}}</text>
+            <text>{{item.time_text}}</text>
+          </view>
+          <view class="timeline-content">
+            <text>{{item.display_content}}</text>
+            <text wx:if="{{item.actor_name}}"> · {{item.actor_name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <view class="action-bar">
     <button wx:if="{{order.actions.can_accept}}" class="primary-btn" loading="{{acting}}" bindtap="acceptOrder">接单帮忙</button>
     <button wx:if="{{order.actions.can_submit_complete}}" class="primary-btn" loading="{{acting}}" bindtap="submitComplete">提交完成</button>

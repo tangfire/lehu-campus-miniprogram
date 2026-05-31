@@ -5,7 +5,8 @@
 .summary,
 .detail-card,
 .flow-card,
-.note-card {
+.note-card,
+.timeline-card {
   border-radius: 18rpx;
   padding: 30rpx;
 }
@@ -123,7 +124,8 @@
 
 .detail-card,
 .flow-card,
-.note-card {
+.note-card,
+.timeline-card {
   margin-top: 20rpx;
 }
 
@@ -198,6 +200,77 @@
   font-size: 26rpx;
   line-height: 1.6;
   color: #475569;
+}
+
+.timeline-title {
+  font-size: 27rpx;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.timeline {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 22rpx 1fr;
+  gap: 16rpx;
+  align-items: flex-start;
+}
+
+.timeline-dot {
+  width: 18rpx;
+  height: 18rpx;
+  margin-top: 10rpx;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.timeline-dot.created {
+  background: #2563eb;
+}
+
+.timeline-dot.active,
+.timeline-dot.submitted {
+  background: #0f766e;
+}
+
+.timeline-dot.done {
+  background: #16a34a;
+}
+
+.timeline-dot.muted {
+  background: #94a3b8;
+}
+
+.timeline-body {
+  min-width: 0;
+}
+
+.timeline-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18rpx;
+  font-size: 25rpx;
+  color: #0f172a;
+  font-weight: 900;
+}
+
+.timeline-head text:last-child {
+  color: #94a3b8;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.timeline-content {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #64748b;
 }
 
 .action-bar {
